@@ -9,6 +9,8 @@ export const MAIN_NAV = [
       { label: "Mission & Vision", href: "/vision-mission" },
       { label: "Founder & Trustees", href: "/founder" },
       { label: "Team Members", href: "/team" },
+      { label: "Certificates & Documents", href: "/certificates" },
+      { label: "Awards & Recognition", href: "/awards" },
       { label: "Registration & Legal", href: "/legal" },
       { label: "12A & 80G Info", href: "/80g-12a" },
     ],
