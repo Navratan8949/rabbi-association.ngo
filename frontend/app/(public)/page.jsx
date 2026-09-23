@@ -11,7 +11,8 @@ import { CtaBand } from "@/components/sections/cta-band";
 
 export const metadata = {
   title: "Rabbi Association | Education | Empowerment | Equal Opportunities",
-  description: "Rabbi Association is committed to making life better through education.",
+  description:
+    "Rabbi Association is committed to making life better through education.",
 };
 
 export default function HomePage() {
@@ -20,7 +21,7 @@ export default function HomePage() {
       <Hero />
       <AboutPreview />
       <FocusAreas />
-      <BrochurePartner />
+      {/* <BrochurePartner /> */}
       <FeaturedProjects />
       <ParallaxBanner />
       <Testimonials />

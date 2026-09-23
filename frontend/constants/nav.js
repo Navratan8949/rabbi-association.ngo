@@ -1,4 +1,4 @@
-export const isGroup = (item) => item.children !== undefined
+export const isGroup = (item) => item.children !== undefined;
 
 export const MAIN_NAV = [
   { label: "Home", href: "/" },
@@ -26,8 +26,8 @@ export const MAIN_NAV = [
   {
     label: "Media & Reports",
     children: [
-      { label: "Photo & Video Gallery", href: "/gallery" },
       { label: "News & Blog", href: "/news" },
+      { label: "Photo & Video Gallery", href: "/gallery" },
       { label: "Annual Reports", href: "/reports/annual" },
       { label: "Financial Transparency", href: "/reports/financial" },
     ],
@@ -50,7 +50,7 @@ export const FOOTER_QUICK_LINKS = [
   { label: "Programmes", href: "/programmes" },
   { label: "Contact Us", href: "/contact" },
   { label: "Donate", href: "/donate" },
-]
+];
 
 export const FOOTER_RESOURCE_LINKS = [
   { label: "Vision & Mission", href: "/vision-mission" },
@@ -58,4 +58,4 @@ export const FOOTER_RESOURCE_LINKS = [
   { label: "CSR Support", href: "/csr" },
   { label: "Volunteer", href: "/volunteer" },
   { label: "Membership", href: "/membership" },
-]
+];

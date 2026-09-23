@@ -13,11 +13,9 @@ export const metadata = {
 export default async function GalleryPage() {
   let gallery = [];
   try {
-    const data = await getGalleryItems({ type: "image", status: "active" }); // Assuming backend uses type 'image' or returns all photos
+    const data = await getGalleryItems({ status: "active" }); 
     if (data?.success) {
       gallery = data.data || data.gallery || [];
-      // Filter out only images just in case
-      gallery = gallery.filter(item => item.type === "image" || !item.type);
     }
   } catch (error) {
     // error ignored
@@ -31,7 +29,7 @@ export default async function GalleryPage() {
         breadcrumbItems={[
           { label: "Home", href: "/" },
           { label: "Media & Reports", href: "/news" },
-          { label: "Gallery", href: "/gallery/photos" },
+          { label: "Gallery", href: "/gallery" },
         ]}
       />
 
@@ -42,15 +40,26 @@ export default async function GalleryPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {gallery.map((item, index) => (
                 <div key={item._id || index} className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-slate-200 shadow-sm border border-slate-100">
-                  <Image
-                    src={item.image?.url || item.url || "/placeholder-image.jpg"}
-                    alt={item.title || "Gallery Image"}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                    <h3 className="text-white font-bold text-lg">{item.title || "Media Event"}</h3>
-                  </div>
+                  {item.type === 'video' && item.videoUrl ? (
+                    <iframe 
+                      src={item.videoUrl} 
+                      className="w-full h-full object-cover"
+                      allowFullScreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    ></iframe>
+                  ) : (
+                    <>
+                      <Image
+                        src={item.image?.url || item.url || "/placeholder-image.jpg"}
+                        alt={item.title || "Gallery Image"}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
+                        <h3 className="text-white font-bold text-lg">{item.title || "Media Event"}</h3>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>

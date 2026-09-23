@@ -107,12 +107,12 @@ function HoverDropdown({ item, isGroupActive, isActive }) {
             <Link
               href={child.href}
               className={`group/link flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${isActive(child.href)
-                ? "bg-primary/10 font-bold text-primary"
+                ? "bg-primary/10 font-bold text-primary hover:bg-primary hover:text-white group-data-[highlighted]/item:bg-primary group-data-[highlighted]/item:!text-white group-focus/item:bg-primary group-focus/item:!text-white"
                 : "text-foreground/70 hover:bg-primary hover:text-white hover:shadow-sm group-data-[highlighted]/item:bg-primary group-data-[highlighted]/item:!text-white group-focus/item:bg-primary group-focus/item:!text-white"
                 }`}
             >
               <span className="font-medium">{child.label}</span>
-              <ChevronRight className={`size-4 transition-transform duration-300 ${isActive(child.href) ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-100"}`} />
+              <ChevronRight className={`size-4 transition-transform duration-300 ${isActive(child.href) ? "translate-x-0 opacity-100 group-hover/link:text-white group-data-[highlighted]/item:text-white group-focus/item:text-white" : "-translate-x-2 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-100"}`} />
             </Link>
           </DropdownMenuItem>
         ))}
