@@ -7,6 +7,7 @@ import { FeaturedProjects } from "@/components/sections/featured-projects";
 import { ParallaxBanner } from "@/components/sections/parallax-banner";
 import { Testimonials } from "@/components/sections/testimonials";
 import { LatestUpdates } from "@/components/sections/latest-updates";
+import { CrowdfundingPreview } from "@/components/sections/crowdfunding-preview";
 import { CtaBand } from "@/components/sections/cta-band";
 
 export const metadata = {
@@ -25,6 +26,7 @@ export default function HomePage() {
       <FeaturedProjects />
       <ParallaxBanner />
       <Testimonials />
+      <CrowdfundingPreview />
       <LatestUpdates />
       <CtaBand />
     </>

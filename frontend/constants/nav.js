@@ -7,6 +7,7 @@ export const MAIN_NAV = [
     children: [
       { label: "About Organization", href: "/about" },
       { label: "Mission & Vision", href: "/vision-mission" },
+      { label: "Our Approach", href: "/approach" },
       { label: "Founder & Trustees", href: "/founder" },
       { label: "Team Members", href: "/team" },
       { label: "Certificates & Documents", href: "/certificates" },
@@ -18,7 +19,9 @@ export const MAIN_NAV = [
   {
     label: "Our Work",
     children: [
+      { label: "What We Do", href: "/services" },
       { label: "Projects & Activities", href: "/projects" },
+      { label: "Crowdfunding & Support", href: "/crowdfunding" },
       { label: "Success Stories", href: "/success-stories" },
       { label: "Events", href: "/events" },
     ],
