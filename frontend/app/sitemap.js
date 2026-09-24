@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rabbiassociation.org'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rabbi.co.in'
 
   const routes = [
     '',

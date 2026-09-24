@@ -282,7 +282,7 @@ export default function Page() {
               <IdCard
                 member={idCardMember}
                 user={idCardMember.user}
-                verificationUrl={`${typeof window !== "undefined" ? window.location.origin : "https://real-human-trust-nu.vercel.app"}/verify-member/${idCardMember.memberId}`}
+                verificationUrl={`${typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_SITE_URL || "https://rabbi.co.in"}/verify-member/${idCardMember.memberId}`}
               />
             </div>
 

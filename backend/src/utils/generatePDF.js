@@ -45,7 +45,7 @@ const generateReceiptPDF = (donation, donorName, donorEmail, siteName, siteLogoD
             // Header
             doc.fontSize(22).font('Helvetica-Bold').text(siteName || "Rabbi Association", { align: "center" });
             doc.fontSize(10).font('Helvetica').text("1st Floor, DK Plaza Complex, New Naherunagar Nagar Main Road, Rajkot, Gujarat. 360002", { align: "center" });
-            doc.text("Email: info@rabbiassociation.org | Phone: +918735899909", { align: "center" });
+            doc.text("Email: info@rabbi.co.in | Phone: +918735899909", { align: "center" });
             doc.moveDown(2);
 
             // Title

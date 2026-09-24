@@ -230,7 +230,7 @@ exports.createVolunteerDirectly = async (req, res) => {
         }
 
         const volunteerId = generateVolunteerId();
-        const verificationLink = `${process.env.FRONTEND_URL || "https://rabbiassociation.org/"}/verify-volunteer/${volunteerId}`;
+        const verificationLink = `${process.env.FRONTEND_URL || "https://rabbi.co.in/"}/verify-volunteer/${volunteerId}`;
         const qrCodeData = await QRCode.toDataURL(verificationLink);
 
         const volunteer = await Volunteer.create({
@@ -298,7 +298,7 @@ exports.approveVolunteer = async (req, res) => {
             volunteer.volunteerId = generateVolunteerId();
         }
 
-        const verificationLink = `${process.env.FRONTEND_URL || "https://rabbiassociation.org/"}/verify-volunteer/${volunteer.volunteerId}`;
+        const verificationLink = `${process.env.FRONTEND_URL || "https://rabbi.co.in/"}/verify-volunteer/${volunteer.volunteerId}`;
         volunteer.qrCode = await QRCode.toDataURL(verificationLink);
 
         await volunteer.save();
