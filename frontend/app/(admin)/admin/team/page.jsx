@@ -8,6 +8,7 @@ import { Eye, XCircle, User, Mail, Phone, Link as LinkIcon, BadgeCheck, UsersRou
 const TEAM_SCHEMA = [
   { name: "name", label: "Name", type: "text", required: true },
   { name: "designation", label: "Designation", type: "text", required: true },
+  { name: "description", label: "Description (Optional)", type: "textarea" },
   { name: "email", label: "Email (Optional)", type: "email" },
   { name: "phone", label: "Phone (Optional)", type: "text" },
   { name: "website", label: "Website / Social Link (Optional)", type: "text" },
@@ -136,9 +137,15 @@ export default function Page() {
                   {/* Details Side */}
                   <div className="w-full sm:w-2/3 p-6 flex flex-col justify-center">
                     <h4 className="text-2xl font-bold text-navy leading-tight">{viewItem.name}</h4>
-                    <p className="text-sm font-bold text-blue-600 uppercase tracking-widest mt-1 mb-6 flex items-center gap-1.5">
+                    <p className="text-sm font-bold text-blue-600 uppercase tracking-widest mt-1 mb-2 flex items-center gap-1.5">
                       <BadgeCheck className="size-4" /> {viewItem.designation}
                     </p>
+                    
+                    {viewItem.description && (
+                      <p className="text-sm text-slate-600 mb-6 font-medium leading-relaxed">
+                        {viewItem.description}
+                      </p>
+                    )}
 
                     <div className="space-y-3">
                       {viewItem.email && (

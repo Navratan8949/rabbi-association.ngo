@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Reveal } from "@/components/shared/reveal"
+import { Reveal } from "@/components/shared/reveal";
 
 export function TextMaskBanner() {
   return (
@@ -8,11 +8,11 @@ export function TextMaskBanner() {
       <Reveal>
         <div className="mx-auto w-full max-w-[100vw] px-4 text-center">
           <h2
-            className="bg-[url('/rabbi-context/image copy 4.png')] bg-cover bg-fixed bg-center bg-no-repeat bg-clip-text font-sans text-[15vw] font-black uppercase leading-[0.85] tracking-tighter text-transparent md:text-[12vw]"
+            className="bg-[url('/placeholder.svg')] bg-cover bg-fixed bg-center bg-no-repeat bg-clip-text font-sans text-[15vw] font-black uppercase leading-[0.85] tracking-tighter text-transparent md:text-[12vw]"
             style={{
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0px 10px 20px rgba(0,0,0,0.5))"
+              filter: "drop-shadow(0px 10px 20px rgba(0,0,0,0.5))",
             }}
           >
             KNOWLEDGE
@@ -24,5 +24,5 @@ export function TextMaskBanner() {
         </div>
       </Reveal>
     </section>
-  )
+  );
 }
