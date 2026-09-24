@@ -38,7 +38,7 @@ export default async function AnnualReportsPage() {
           
           <div className="bg-white p-12 rounded-[2rem] shadow-sm border border-slate-100 text-center">
             <div className="flex size-20 items-center justify-center rounded-full bg-accent/10 mb-6 mx-auto">
-              <FileText className="size-10 text-accent-foreground" />
+              <FileText className="size-10 text-accent" />
             </div>
             <h2 className="text-3xl font-bold text-navy mb-4">Annual Reports Archive</h2>
             <p className="text-lg text-slate-600 font-medium leading-relaxed mb-8">

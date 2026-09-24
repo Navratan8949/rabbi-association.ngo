@@ -37,7 +37,7 @@ export default async function MembershipPage() {
           
           <div className="mb-12 text-center">
             <div className="flex size-20 mx-auto items-center justify-center rounded-full bg-accent/10 mb-6">
-              <Users className="size-10 text-accent-foreground" />
+              <Users className="size-10 text-accent" />
             </div>
             <h2 className="text-3xl font-bold text-navy mb-4">Become a Member</h2>
             

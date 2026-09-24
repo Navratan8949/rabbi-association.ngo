@@ -137,7 +137,7 @@ export default async function TeamPage() {
       <div className="py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="text-center mb-16 max-w-3xl mx-auto">
-            <span className="inline-block rounded-full bg-accent/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-accent-foreground mb-4">
+            <span className="inline-block rounded-full bg-accent/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-accent mb-4">
               Leadership
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">

@@ -61,7 +61,7 @@ export default async function TaxInfoPage() {
               <div className="space-y-8">
                 <div className="flex items-start gap-4">
                   <div className="bg-accent/20 p-3 rounded-xl shrink-0">
-                    <ShieldCheck className="size-6 text-accent-foreground" />
+                    <ShieldCheck className="size-6 text-accent" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-navy mb-2">

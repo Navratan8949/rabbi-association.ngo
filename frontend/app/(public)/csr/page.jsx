@@ -37,7 +37,7 @@ export default async function CSRPage() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           
           <div className="text-center mb-16 max-w-3xl mx-auto">
-            <span className="inline-block rounded-full bg-accent/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-accent-foreground mb-4">
+            <span className="inline-block rounded-full bg-accent/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-accent mb-4">
               Corporate Social Responsibility
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">
@@ -88,7 +88,7 @@ export default async function CSRPage() {
               <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="bg-accent/10 p-3 rounded-xl">
-                    <Handshake className="size-6 text-accent-foreground" />
+                    <Handshake className="size-6 text-accent" />
                   </div>
                   <h3 className="text-2xl font-bold text-navy">Potential Areas of Collaboration</h3>
                 </div>

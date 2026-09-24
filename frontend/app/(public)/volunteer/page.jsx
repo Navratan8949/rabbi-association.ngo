@@ -43,7 +43,7 @@ export default async function VolunteerPage() {
               <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="bg-accent/10 p-3 rounded-2xl">
-                    <HandHeart className="size-6 text-accent-foreground" />
+                    <HandHeart className="size-6 text-accent" />
                   </div>
                   <h2 className="text-2xl font-bold text-navy">Make an Impact</h2>
                 </div>

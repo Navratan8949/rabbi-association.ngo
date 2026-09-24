@@ -43,7 +43,7 @@ export default function MemberCertificatesPage() {
                   </div>
                 )}
 
-                <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-accent/20 text-accent-foreground">
+                <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-accent/20 text-accent">
                   <FileBadge className="size-6 text-red-500" />
                 </div>
 
