@@ -61,7 +61,8 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden w-full h-[85vh] min-h-[600px] flex items-center justify-center bg-navy">
-      <AnimatePresence mode="wait" initial={false}>
+      {/* Background Images */}
+      <AnimatePresence>
         <motion.div
           key={`bg-${currentSlide}`}
           initial={{ opacity: 0 }}
@@ -70,19 +71,24 @@ export function Hero() {
           transition={{ duration: 1 }}
           className="absolute inset-0 z-0"
         >
-          <Image
-            src={activeSlide.image || activeSlide.image_url || defaultSlides[0].image}
+          <img
+            src={(() => {
+              const url = activeSlide.image || activeSlide.image_url || defaultSlides[0].image;
+              // Add width param to Unsplash to prevent loading 4000px images which crash the browser
+              if (url?.includes("unsplash.com") && !url.includes("&w=")) {
+                return `${url}&w=1920`;
+              }
+              return url;
+            })()}
             alt={activeSlide.title || "Hero Background"}
-            fill
-            className="object-cover"
-            priority
-            unoptimized
+            className="w-full h-full object-cover"
+            fetchPriority={currentSlide === 0 ? "high" : "auto"}
           />
           <div className="absolute inset-0 bg-navy/70" />
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-6 lg:px-12 text-center pt-20">
+      <div className="relative z-20 mx-auto w-full max-w-5xl px-6 lg:px-12 text-center pt-20">
         
         {/* Navigation Arrows */}
         <button onClick={prevSlide} className="absolute left-2 md:-left-10 top-1/2 -translate-y-1/2 p-2 text-white/50 hover:text-white transition-colors hidden md:block z-50">
@@ -92,7 +98,8 @@ export function Hero() {
           <ChevronRight className="size-12" />
         </button>
 
-        <AnimatePresence mode="wait" initial={false}>
+        {/* Content */}
+        <AnimatePresence mode="wait">
           <motion.div
             key={`content-${currentSlide}`}
             initial={{ opacity: 0, y: 20 }}
@@ -116,14 +123,14 @@ export function Hero() {
             </p>
 
             {activeSlide.motto && (
-              <div className="flex justify-center mb-10">
+              <div className="flex justify-center mb-10 hidden sm:flex">
                 <p className="text-base md:text-lg italic text-white/70 font-medium">
                   "{activeSlide.motto}"
                 </p>
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 z-30 relative">
               <Button
                 asChild
                 size="lg"

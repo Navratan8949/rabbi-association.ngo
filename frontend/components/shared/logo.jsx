@@ -23,13 +23,11 @@ export function Logo({ variant = "dark", showText = true, className = "" }) {
       className={`flex items-center gap-2 sm:gap-3 shrink-0 ${className}`}
       aria-label={`${shortName} home`}
     >
-      <Image
+      <img
         src={logo || "/placeholder.svg"}
         alt={`${shortName} logo`}
-        width={400}
-        height={400}
         className="size-12 sm:size-16 shrink-0 object-contain"
-        priority
+        fetchPriority="high"
       />
       {showText && (
         <span className="flex flex-col leading-tight min-w-0">
