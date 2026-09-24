@@ -87,43 +87,43 @@ export function FocusAreas() {
             const Icon = LucideIcons[a.icon] || LucideIcons.Heart;
 
             return (
-               <Reveal key={i} delay={(i % 3) * 0.1}>
-                 <div className="group flex flex-col h-full bg-white rounded-lg shadow-sm hover:shadow-md border border-border overflow-hidden transition-all duration-300">
-                   {/* Image Container */}
-                   <div className="relative h-56 w-full overflow-hidden bg-muted">
-                     <Image
-                       src={a.image}
-                       alt={a.title}
-                       fill
-                       priority={i < 3}
-                       unoptimized={true}
-                       className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
-                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                     />
-                   </div>
- 
-                   {/* Content Container */}
-                   <div className="relative flex-1 p-6 pt-8 flex flex-col bg-white">
-                     {/* Clean Icon Badge Overlapping Image */}
-                     <div className="absolute -top-7 left-6 flex h-14 w-14 items-center justify-center rounded-md bg-primary text-white shadow-sm border-2 border-white">
-                       <Icon className="h-6 w-6" />
-                     </div>
- 
-                     <h3 className="mb-3 text-lg font-bold text-foreground tracking-wide">
-                       {a.title}
-                     </h3>
-                     <p className="text-muted-foreground leading-relaxed flex-1 font-medium text-[15px]">
-                       {a.desc}
-                     </p>
- 
-                     {/* Learn More link */}
-                     <div className="mt-6 pt-4 border-t border-border flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary transition-colors group-hover:text-foreground">
+              <Reveal key={i} delay={(i % 3) * 0.1}>
+                <div className="group flex flex-col h-full bg-white rounded-lg shadow-sm hover:shadow-md border border-border overflow-hidden transition-all duration-300">
+                  {/* Image Container */}
+                  <div className="relative h-56 w-full overflow-hidden bg-muted">
+                    <Image
+                      src={a.image}
+                      alt={a.title}
+                      fill
+                      priority={i < 3}
+                      unoptimized={true}
+                      className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+
+                  {/* Content Container */}
+                  <div className="relative flex-1 p-6 pt-8 flex flex-col bg-white">
+                    {/* Clean Icon Badge Overlapping Image */}
+                    <div className="absolute -top-7 left-6 flex h-14 w-14 items-center justify-center rounded-md bg-primary text-white shadow-sm border-2 border-white">
+                      <Icon className="h-6 w-6" />
+                    </div>
+
+                    <h3 className="mb-3 text-lg font-bold text-foreground tracking-wide">
+                      {a.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed flex-1 font-medium text-[15px]">
+                      {a.desc}
+                    </p>
+
+                    {/* Learn More link */}
+                    {/* <div className="mt-6 pt-4 border-t border-border flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary transition-colors group-hover:text-foreground">
                        Explore Program
                        <ArrowRight className="h-4 w-4" />
-                     </div>
-                   </div>
-                 </div>
-               </Reveal>
+                     </div> */}
+                  </div>
+                </div>
+              </Reveal>
             );
           })}
         </div>

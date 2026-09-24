@@ -34,7 +34,7 @@ export default async function Page() {
         eyebrow="Love & Service"
         title={title}
         description="Love God and Serve Humanity"
-        image="/placeholder.svg"
+        image={image}
       />
 
       <section className="py-20">
