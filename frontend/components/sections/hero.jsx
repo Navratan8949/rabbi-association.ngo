@@ -61,7 +61,7 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden w-full h-[85vh] min-h-[600px] flex items-center justify-center bg-navy">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={`bg-${currentSlide}`}
           initial={{ opacity: 0 }}
@@ -92,7 +92,7 @@ export function Hero() {
           <ChevronRight className="size-12" />
         </button>
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={`content-${currentSlide}`}
             initial={{ opacity: 0, y: 20 }}
