@@ -9,13 +9,13 @@ import { useSelector } from "react-redux";
 
 const DEFAULT_AREAS = [
   {
-    icon: "Building",
+    icon: "School",
     title: "01 — NEW SCHOOL SETUP CONSULTANCY",
     desc: "From Vision to Institution. Strategic guidance for establishing new educational institutions—from initial concept to commencement.",
     image: "/rabbi-context/focus_1.jpg",
   },
   {
-    icon: "ClipboardCheck",
+    icon: "ClipboardList",
     title: "02 — AFFILIATION & UPGRADATION SUPPORT",
     desc: "Professional consultancy, guidance, and documentation support to institutions seeking appropriate educational board affiliation.",
     image: "/rabbi-context/focus_2.jpg",
@@ -33,7 +33,7 @@ const DEFAULT_AREAS = [
     image: "/rabbi-context/focus_4.jpg",
   },
   {
-    icon: "GraduationCap",
+    icon: "Presentation",
     title: "05 — TEACHER TRAINING & CAPACITY BUILDING",
     desc: "Empowering Educators to Inspire the Next Generation. Support the professional development of educators through training, orientation, and capacity-building programmes.",
     image: "/rabbi-context/focus_5.jpg",

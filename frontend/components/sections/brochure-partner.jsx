@@ -11,21 +11,25 @@ const reasons = [
     title: "Trusted Partner",
     desc: "Transparent, professional and value-driven.",
     icon: Handshake,
+    bg: "bg-[#0b53a0]", // Blue from image
   },
   {
     title: "100% Compliant",
     desc: "Follows legal and regulatory requirements including CSR, FCRA, 12A/80G.",
     icon: ShieldCheck,
+    bg: "bg-[#2d7d32]", // Green from image
   },
   {
     title: "Measurable Impact",
     desc: "Clear goals, reports and real change on ground.",
     icon: Target,
+    bg: "bg-[#f57c00]", // Orange from image
   },
   {
     title: "Long-Term Partnership",
     desc: "Working together for sustainable development.",
     icon: Users,
+    bg: "bg-[#7b1fa2]", // Purple from image
   },
 ];
 
@@ -70,9 +74,9 @@ export function BrochurePartner() {
               {reasons.map((r, i) => (
                 <Reveal key={r.title} delay={i * 0.1} className={`flex ${i % 2 !== 0 ? 'sm:mt-10' : ''}`}>
                   <div className="bg-white p-8 rounded-lg shadow-sm border border-border w-full transition-shadow hover:shadow-md">
-                    <div className="relative">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-secondary border border-border text-foreground mb-6">
-                        <r.icon className="h-7 w-7 text-primary" />
+                    <div className="relative flex flex-col items-center text-center">
+                      <div className={`flex h-20 w-20 items-center justify-center rounded-full text-white shadow-sm mb-5 ${r.bg}`}>
+                        <r.icon className="h-10 w-10" />
                       </div>
                       <h3 className="font-bold text-foreground mb-3 text-xl">{r.title}</h3>
                       <p className="text-muted-foreground text-[15px] font-medium leading-relaxed">{r.desc}</p>

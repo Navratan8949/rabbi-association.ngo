@@ -1,5 +1,5 @@
 import { PageHero } from "@/components/pages/page-hero";
-import { BookOpen, GraduationCap, Building2, Lightbulb, Users, LineChart, Building, HeartHandshake } from "lucide-react";
+import { School, ClipboardList, Users, BookOpen, Presentation, Megaphone, Settings, UserSearch } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 
 export const metadata = {
@@ -23,7 +23,7 @@ const services = [
       "Pre-launch planning",
       "Institutional development"
     ],
-    icon: Building2
+    icon: School
   },
   {
     id: "02",
@@ -41,7 +41,7 @@ const services = [
       "Institutional readiness",
       "Upgradation planning"
     ],
-    icon: BookOpen
+    icon: ClipboardList
   },
   {
     id: "03",
@@ -58,7 +58,7 @@ const services = [
       "Administrative systems",
       "Leadership support"
     ],
-    icon: LineChart
+    icon: Users
   },
   {
     id: "04",
@@ -75,7 +75,7 @@ const services = [
       "Academic monitoring",
       "Learning improvement strategies"
     ],
-    icon: GraduationCap
+    icon: BookOpen
   },
   {
     id: "05",
@@ -92,7 +92,7 @@ const services = [
       "Student-centred learning",
       "Continuous professional development"
     ],
-    icon: Users
+    icon: Presentation
   },
   {
     id: "06",
@@ -109,7 +109,7 @@ const services = [
       "Digital communication",
       "Institutional profile development"
     ],
-    icon: Lightbulb
+    icon: Megaphone
   },
   {
     id: "07",
@@ -127,7 +127,7 @@ const services = [
       "Administrative areas",
       "Student-friendly environments"
     ],
-    icon: Building
+    icon: Settings
   },
   {
     id: "08",
@@ -144,7 +144,7 @@ const services = [
       "Office staff",
       "Support staff"
     ],
-    icon: HeartHandshake
+    icon: UserSearch
   }
 ];
 
