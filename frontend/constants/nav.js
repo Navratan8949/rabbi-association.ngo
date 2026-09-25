@@ -49,8 +49,8 @@ export const MAIN_NAV = [
 export const FOOTER_QUICK_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "What We Do", href: "/services/school-setup" },
-  { label: "Programmes", href: "/programmes" },
+  { label: "What We Do", href: "/services" },
+  { label: "Programmes", href: "/projects" },
   { label: "Contact Us", href: "/contact" },
   { label: "Donate", href: "/donate" },
 ];
