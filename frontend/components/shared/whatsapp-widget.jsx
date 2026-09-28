@@ -1,10 +1,28 @@
 "use client"
 import { useEffect, useState } from "react"
 import { MessageCircle } from "lucide-react"
+import { useSelector } from "react-redux"
 
 export function WhatsAppWidget() {
   const [show, setShow] = useState(false)
-  const phoneNumber = "919999999999" // TODO: Should be fetched from SiteContent
+  const { data: siteContent } = useSelector((state) => state.siteContent)
+  
+  let phoneNumber = "919999999999" // Fallback dummy
+  if (siteContent?.contact_info?.content) {
+    try {
+      const parsed = JSON.parse(siteContent.contact_info.content)
+      if (parsed.phones && parsed.phones.length > 0) {
+        let rawNum = parsed.phones[0].number.replace(/[\s\-\(\)]/g, "")
+        if (rawNum.startsWith("+")) {
+          rawNum = rawNum.substring(1)
+        } else if (rawNum.length === 10) {
+          rawNum = "91" + rawNum
+        }
+        phoneNumber = rawNum
+      }
+    } catch (e) {}
+  }
+
   const message = "Hello Rabbi Association, I would like to know more about your work."
 
   useEffect(() => {

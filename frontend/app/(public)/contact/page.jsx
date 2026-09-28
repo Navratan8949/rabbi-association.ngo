@@ -42,20 +42,32 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-background">
       {/* Premium Hero Section */}
-      <section className="relative pt-32 pb-48 overflow-hidden bg-navy">
+      <section className="relative pt-32 pb-48 overflow-hidden flex flex-col justify-center min-h-[500px]">
+        {/* Background Image with Parallax */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed scale-105"
+          style={{ backgroundImage: `url('/rabbi-context/focus_3.jpg')` }}
+        />
+        
+        {/* Premium Dark Overlay */}
+        <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[1px]" />
+        
+        {/* Subtle Gradient for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/90" />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 to-navy pointer-events-none"></div>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-accent/20 blur-[120px] rounded-full pointer-events-none"></div>
+        {/* Subtle bottom border */}
+        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center mt-4">
           <Reveal>
-            <span className="inline-block rounded-full border border-accent/30 bg-accent/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-accent mb-6 backdrop-blur-sm">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-amber-500 backdrop-blur-md">
+              <span className="size-1.5 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)] animate-pulse" />
               Get In Touch
             </span>
-            <h1 className="text-5xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl">
-              Contact <span className="text-accent text-gradient">Us</span>
+            <h1 className="text-5xl font-bold tracking-tight text-white md:text-6xl lg:text-[4rem] drop-shadow-xl">
+              Contact <span className="text-amber-500">Us</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-white/70 font-medium">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300 font-medium drop-shadow-lg">
               We're here to assist you with membership, events, academic
               programs, collaborations, or any general inquiries.
             </p>

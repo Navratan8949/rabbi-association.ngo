@@ -39,6 +39,7 @@ const GreenCardHeader = ({ icon: Icon, title, description }) => (
 )
 const SaveBtn = ({ onClick, disabled, children }) => (
   <button
+    type="button"
     onClick={onClick}
     disabled={disabled}
     className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed"
@@ -51,7 +52,7 @@ const ItemCard = ({ label, onDelete, children }) => (
   <div className="relative rounded-2xl border border-primary/10 bg-blue-50/40 p-5 space-y-4">
     <div className="flex items-center justify-between">
       <span className="text-sm font-bold text-primary">{label}</span>
-      <button onClick={onDelete} className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 transition">
+      <button type="button" onClick={onDelete} className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 transition">
         <Trash2 className="h-4 w-4" />
       </button>
     </div>
@@ -59,7 +60,7 @@ const ItemCard = ({ label, onDelete, children }) => (
   </div>
 )
 const AddBtn = ({ onClick, children }) => (
-  <button onClick={onClick} className="inline-flex items-center gap-2 rounded-xl border-2 border-dashed border-primary/30 px-4 py-2.5 text-sm font-semibold text-primary hover:border-primary hover:bg-blue-50 transition">
+  <button type="button" onClick={onClick} className="inline-flex items-center gap-2 rounded-xl border-2 border-dashed border-primary/30 px-4 py-2.5 text-sm font-semibold text-primary hover:border-primary hover:bg-blue-50 transition">
     <Plus className="h-4 w-4" />{children}
   </button>
 )

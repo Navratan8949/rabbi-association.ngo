@@ -25,8 +25,8 @@ export async function generateMetadata() {
 
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-    // Fetch site content
-    const res = await fetch(`${apiUrl}/site-content`, { cache: 'no-store' });
+    // Fetch site content with revalidation (allows static pages to build while keeping data fresh)
+    const res = await fetch(`${apiUrl}/site-content`, { next: { revalidate: 60 } });
     if (res.ok) {
       const data = await res.json();
       
@@ -191,7 +191,7 @@ export default async function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${fontPrimary.variable} font-sans antialiased`} suppressHydrationWarning>
+      <body className={`${fontPrimary.variable} font-sans antialiased overflow-x-hidden`} suppressHydrationWarning>
         <ReduxProvider>
           {children}
           <Toaster position="top-center" richColors />

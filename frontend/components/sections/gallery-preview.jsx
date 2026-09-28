@@ -33,7 +33,7 @@ export function GalleryPreview() {
             description="A visual record of our work, events, and gatherings."
           />
           <Button asChild variant="outline" className="shrink-0 border-navy/20">
-            <Link href="/gallery/photos">
+            <Link href="/gallery">
               Photo Gallery
               <ArrowRight className="ml-2 size-4" />
             </Link>
@@ -43,7 +43,7 @@ export function GalleryPreview() {
           {gallery.map((item) => (
             <Link
               key={item._id}
-              href="/gallery/photos"
+              href="/gallery"
               className="group relative aspect-square overflow-hidden rounded-2xl border bg-secondary"
             >
               {item.image?.url ? (

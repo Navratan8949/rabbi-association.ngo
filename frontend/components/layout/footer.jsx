@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, ChevronRight, GraduationCap } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { FOOTER_QUICK_LINKS, FOOTER_RESOURCE_LINKS } from "@/constants/nav";
 import { SITE } from "@/constants/site";
@@ -87,17 +87,20 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative overflow-hidden bg-navy text-navy-foreground">
-      <div className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-accent/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-16 size-64 rounded-full bg-accent/10 blur-3xl" />
+    <footer className="relative overflow-hidden bg-slate-950 text-slate-300">
+      {/* Premium glowing top border */}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+      
+      {/* Massive subtle watermark */}
+      <GraduationCap className="pointer-events-none absolute -bottom-32 -right-32 size-[500px] text-slate-800/30 -rotate-12" strokeWidth={0.5} />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-14">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <div className="relative mx-auto max-w-7xl px-4 py-16">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <div className="inline-flex rounded-xl bg-white p-2.5 shadow-sm">
+            <div className="inline-flex rounded-xl bg-white p-3 shadow-lg shadow-black/20 border border-slate-800">
               <Logo />
             </div>
-            <p className="mt-5 text-sm leading-relaxed text-white/65">
+            <p className="mt-6 text-sm leading-relaxed text-slate-400">
               {site.description}
             </p>
             <div className="mt-6 flex items-center gap-2.5">
@@ -106,43 +109,44 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="inline-flex size-6 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex size-8 items-center justify-center rounded-xl bg-slate-800 text-slate-400 transition hover:bg-amber-500 hover:text-slate-950"
               >
-                <FacebookIcon className="size-5" />
+                <FacebookIcon className="size-4" />
               </a>
               <a
                 href={site.socials.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="inline-flex size-6 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex size-8 items-center justify-center rounded-xl bg-slate-800 text-slate-400 transition hover:bg-amber-500 hover:text-slate-950"
               >
-                <InstagramIcon className="size-5" />
+                <InstagramIcon className="size-4" />
               </a>
               <a
                 href={site.socials.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
-                className="inline-flex size-6 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex size-8 items-center justify-center rounded-xl bg-slate-800 text-slate-400 transition hover:bg-amber-500 hover:text-slate-950"
               >
-                <YoutubeIcon className="size-5" />
+                <YoutubeIcon className="size-4" />
               </a>
             </div>
           </div>
 
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-accent">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
               Quick Links
             </h3>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-6 space-y-3">
               {FOOTER_QUICK_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-white/65 transition hover:text-accent"
+                    className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
                   >
-                    {l.label}
+                    <ChevronRight className="mr-0.5 size-4 text-amber-500 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0 group-hover:mr-2" />
+                    <span className="transition-transform group-hover:translate-x-1">{l.label}</span>
                   </Link>
                 </li>
               ))}
@@ -150,17 +154,18 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-accent">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
               Resources
             </h3>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-6 space-y-3">
               {FOOTER_RESOURCE_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-white/65 transition hover:text-accent"
+                    className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
                   >
-                    {l.label}
+                    <ChevronRight className="mr-0.5 size-4 text-amber-500 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0 group-hover:mr-2" />
+                    <span className="transition-transform group-hover:translate-x-1">{l.label}</span>
                   </Link>
                 </li>
               ))}
@@ -168,38 +173,38 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-accent">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
               Reach Us
             </h3>
-            <ul className="mt-4 space-y-4 text-sm text-white/65">
-              <li className="flex gap-3">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-accent" />
-                <span className="leading-relaxed">{site.address}</span>
+            <ul className="mt-6 space-y-4 text-sm text-slate-400 font-medium">
+              <li className="flex gap-3 group">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
+                <span className="leading-relaxed transition-colors group-hover:text-slate-300">{site.address}</span>
               </li>
-              <li className="flex gap-3">
-                <Phone className="mt-0.5 size-4 shrink-0 text-accent" />
-                <span className="flex flex-col gap-0.5">
+              <li className="flex gap-3 group">
+                <Phone className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
+                <span className="flex flex-col gap-1">
                   {site.phones.map((p) => (
                     <a
                       key={p}
                       href={`tel:${p.replace(/\s/g, "")}`}
-                      className="hover:text-accent"
+                      className="transition-colors hover:text-white"
                     >
                       {p}
                     </a>
                   ))}
                 </span>
               </li>
-              <li className="flex gap-3">
-                <Mail className="mt-0.5 size-4 shrink-0 text-accent" />
-                <a href={`mailto:${site.email}`} className="hover:text-accent">
+              <li className="flex gap-3 group">
+                <Mail className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
+                <a href={`mailto:${site.email}`} className="transition-colors hover:text-white">
                   {site.email}
                 </a>
               </li>
             </ul>
             <Link
               href="/membership"
-              className="mt-6 inline-flex h-10 items-center rounded-xl bg-accent px-5 text-sm font-bold text-accent-foreground transition hover:bg-accent/90"
+              className="mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-amber-500 px-6 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400 hover:scale-105 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]"
             >
               Become a Member
             </Link>
@@ -207,35 +212,35 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="relative border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-4 py-8 text-center text-white/60">
-          <p className="text-sm sm:text-base italic mb-1">
+      <div className="relative border-t border-slate-800">
+        <div className="mx-auto max-w-7xl px-4 py-8 text-center text-slate-500">
+          <p className="text-sm sm:text-base italic mb-1 font-medium text-slate-400">
             Christ the Rabbi — Our Teacher, Model & Guide
           </p>
-          <p className="text-sm sm:text-base italic mb-6">
+          <p className="text-sm sm:text-base italic mb-6 font-medium text-slate-400">
             Led by the Holy Spirit — the Advocate
           </p>
-          <div className="flex flex-col items-center justify-center gap-4 text-xs md:flex-row">
+          <div className="flex flex-col items-center justify-center gap-4 text-xs md:flex-row font-medium">
             <p>
               © 2026 {site.name}. All Rights Reserved.
             </p>
             <div className="flex gap-4">
             <Link
               href="/privacy-policy"
-              className="hover:text-white transition"
+              className="hover:text-amber-500 transition"
             >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white transition">
+            <Link href="/terms" className="hover:text-amber-500 transition">
               Terms & Conditions
             </Link>
           </div>
           <p>Registered Charitable Trust · 80G &amp; 12A Certified</p>
         </div>
         <div className="flex justify-center items-center pb-6 pt-2">
-          <p className="text-sm font-medium text-white/60 tracking-wide">
+          <p className="text-sm font-semibold text-slate-500 tracking-wide">
             Designed by{" "}
-            <span className="font-black text-white tracking-wider drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/70">
+            <span className="font-black text-white tracking-wider">
               ZDC Tech Global Solutions
             </span>
           </p>

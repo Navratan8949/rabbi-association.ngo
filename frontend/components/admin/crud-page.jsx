@@ -180,12 +180,24 @@ export function AdminCrudPage({
         }
 
         return (
-          <div className="flex gap-3 text-xs font-semibold items-center">
+          <div className="flex gap-2.5 text-xs font-semibold items-center flex-wrap">
             {showEdit && (
-              <button type="button" onClick={() => handleEdit(row)} className="text-navy hover:underline flex items-center gap-1"><Edit className="size-3" /> Edit</button>
+              <button 
+                type="button" 
+                onClick={() => handleEdit(row)} 
+                className="inline-flex items-center justify-center rounded-lg h-7 px-3 border border-slate-200 bg-white text-navy hover:bg-slate-50 transition-colors shadow-sm gap-1.5"
+              >
+                <Edit className="size-3.5" /> Edit
+              </button>
             )}
             {showDelete && (
-              <button type="button" onClick={() => handleDelete(row._id || row.id)} className="text-rose-600 hover:underline flex items-center gap-1"><Trash2 className="size-3" /> Delete</button>
+              <button 
+                type="button" 
+                onClick={() => handleDelete(row._id || row.id)} 
+                className="inline-flex items-center justify-center rounded-lg h-7 px-3 border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors shadow-sm gap-1.5"
+              >
+                <Trash2 className="size-3.5" /> Delete
+              </button>
             )}
             {custom}
           </div>
