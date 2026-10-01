@@ -4,6 +4,7 @@ import { SplashScreen } from "@/components/splash-screen/splash-screen";
 import { ReduxProvider } from "@/redux/Provider";
 import { cookies } from "next/headers";
 import { Outfit } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const fontPrimary = Outfit({ subsets: ["latin"], variable: "--font-sans" });
@@ -177,6 +178,22 @@ export default async function RootLayout({ children }) {
   return (
     <html lang={lang} dir={dir} className="bg-background" suppressHydrationWarning>
       <head>
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-8Z1TG8F08N`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-8Z1TG8F08N');
+            `,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(r){for(var i of r)i.unregister()})}`,
