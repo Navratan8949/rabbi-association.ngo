@@ -226,11 +226,11 @@ function TopBar() {
             <div className="flex items-center gap-4">
               <Link href="/login" className="inline-flex items-center gap-1.5 text-white/90 transition hover:text-white text-[11px] font-semibold tracking-wide">
                 <User className="size-3.5 text-amber-400" />
-                Login
+                Member / Volunteer Login
               </Link>
               <Link href="/admin-login" className="inline-flex items-center gap-1.5 text-white/90 transition hover:text-white text-[11px] font-semibold tracking-wide">
                 <Lock className="size-3.5 text-amber-400" />
-                Admin
+                Admin Login
               </Link>
             </div>
           )}
@@ -437,13 +437,13 @@ export function Navbar() {
                           <Button asChild variant="outline" className="h-11 rounded-xl font-bold border-border shadow-sm text-foreground hover:bg-secondary">
                             <Link href="/login">
                               <User className="mr-2 size-4 text-primary" />
-                              Login
+                              Member / Volunteer Login
                             </Link>
                           </Button>
                           <Button asChild variant="outline" className="h-11 rounded-xl font-bold border-border shadow-sm text-foreground hover:bg-secondary">
                             <Link href="/admin-login">
                               <Lock className="mr-2 size-4 text-primary" />
-                              Admin
+                              Admin Login
                             </Link>
                           </Button>
                         </>

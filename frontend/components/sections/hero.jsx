@@ -5,7 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
-import { ArrowRight, Users, ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import {
+  ArrowRight,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const defaultSlides = [
@@ -14,22 +20,25 @@ const defaultSlides = [
     highlight: "Through Education",
     desc: "Building Better Schools. Empowering Educators. Transforming Lives. Rabbi Association is committed to strengthening education and sustainable human development.",
     motto: "Love & Service",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80",
+    image:
+      "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80",
   },
   {
     title: "Education With",
     highlight: "Purpose",
     desc: "We work with schools, educational institutions, educators, and communities to create better learning environments and stronger educational systems.",
     motto: "Excellence With Values",
-    image: "https://images.unsplash.com/photo-1427504494785-319ce224ce02?auto=format&fit=crop&q=80",
+    image:
+      "https://images.unsplash.com/photo-1427504494785-319ce224ce02?auto=format&fit=crop&q=80",
   },
   {
     title: "Partner With",
     highlight: "Rabbi Association",
     desc: "Whether you are planning to establish a new school, strengthen an existing institution, or build your team, we are ready to explore the possibilities.",
     motto: "Christ the Rabbi — Our Teacher, Model & Guide",
-    image: "https://images.unsplash.com/photo-1524185962737-ea7c028a12cd?auto=format&fit=crop&q=80",
-  }
+    image:
+      "https://images.unsplash.com/photo-1524185962737-ea7c028a12cd?auto=format&fit=crop&q=80",
+  },
 ];
 
 export function Hero() {
@@ -55,7 +64,8 @@ export function Hero() {
   }, [slides.length]);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const prevSlide = () =>
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   const activeSlide = slides[currentSlide];
 
@@ -73,7 +83,10 @@ export function Hero() {
         >
           <img
             src={(() => {
-              const url = activeSlide.image || activeSlide.image_url || defaultSlides[0].image;
+              const url =
+                activeSlide.image ||
+                activeSlide.image_url ||
+                defaultSlides[0].image;
               // Add width param to Unsplash to prevent loading 4000px images which crash the browser
               if (url?.includes("unsplash.com") && !url.includes("&w=")) {
                 return `${url}&w=1920`;
@@ -89,12 +102,17 @@ export function Hero() {
       </AnimatePresence>
 
       <div className="relative z-20 mx-auto w-full max-w-5xl px-6 lg:px-12 text-center pt-20">
-        
         {/* Navigation Arrows */}
-        <button onClick={prevSlide} className="absolute left-2 md:-left-10 top-1/2 -translate-y-1/2 p-2 text-white/50 hover:text-white transition-colors hidden md:block z-50">
+        <button
+          onClick={prevSlide}
+          className="absolute left-2 md:-left-10 top-1/2 -translate-y-1/2 p-2 text-white/50 hover:text-white transition-colors hidden md:block z-50"
+        >
           <ChevronLeft className="size-12" />
         </button>
-        <button onClick={nextSlide} className="absolute right-2 md:-right-10 top-1/2 -translate-y-1/2 p-2 text-white/50 hover:text-white transition-colors hidden md:block z-50">
+        <button
+          onClick={nextSlide}
+          className="absolute right-2 md:-right-10 top-1/2 -translate-y-1/2 p-2 text-white/50 hover:text-white transition-colors hidden md:block z-50"
+        >
           <ChevronRight className="size-12" />
         </button>
 
@@ -120,7 +138,7 @@ export function Hero() {
               {activeSlide.highlight}
             </h2>
 
-            <p className="text-lg md:text-xl leading-relaxed text-white/90 max-w-2xl mx-auto font-medium mb-10">
+            <p className="text-lg md:text-xl leading-relaxed text-white/90 max-w-2xl mx-auto font-medium mb-8">
               {activeSlide.desc}
             </p>
 
@@ -132,7 +150,7 @@ export function Hero() {
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 z-30 relative">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 z-30 relative">
               <Button
                 asChild
                 size="lg"
