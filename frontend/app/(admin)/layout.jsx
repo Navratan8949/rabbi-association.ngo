@@ -26,12 +26,6 @@ export default function AdminLayout({ children }) {
     else setGreeting("Good evening")
   }, [])
 
-  const initials = user?.fullName
-    ?.split(" ")
-    .map((n) => n[0])
-    .join("")
-    .substring(0, 2)
-    .toUpperCase() || "AD"
 
   const handleLogout = async () => {
     try {
@@ -46,7 +40,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <AdminAuthGuard>
-      <div className="flex min-h-dvh bg-[#f4f7f6]">
+      <div className="flex min-h-dvh bg-[#f4f7f6] lg:pl-[260px]">
         <AdminSidebar />
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-navy/5 bg-white/70 px-4 backdrop-blur-xl md:px-8 shadow-[0_4px_24px_rgba(2,61,40,0.04)]">
@@ -97,11 +91,7 @@ export default function AdminLayout({ children }) {
               <div className="h-6 w-px bg-navy/10 hidden sm:block"></div>
 
               <Link href="/admin/profile" className="flex size-9 overflow-hidden items-center justify-center rounded-full bg-slate-100 border-2 border-white shadow-md transition hover:ring-2 hover:ring-blue-500 hover:ring-offset-2 hover:ring-offset-[#f4f7f6]">
-                {user?.profileImage?.url ? (
-                  <img src={user.profileImage.url} alt="Profile" className="size-full object-cover" />
-                ) : (
-                  <span className="text-xs font-extrabold text-navy">{initials}</span>
-                )}
+                <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "Admin")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
               </Link>
 
               <button

@@ -26,7 +26,7 @@ export function VolunteerFormClient() {
       })
       
       if (res.data?.token && res.data?.user) {
-        localStorage.setItem("token", res.data.token)
+        sessionStorage.setItem("token", res.data.token)
         dispatch(setUser(res.data.user))
         
         setSuccess(true)

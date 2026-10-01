@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Award,
   Bell,
@@ -23,10 +23,8 @@ import {
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useSelector } from "react";
-import { selectUser } from "@/redux/features/userSlice";
+import { selectUser, clearUser } from "@/redux/features/userSlice";
 import { canAccessAdminPath } from "@/lib/admin-permissions";
-
 export const ADMIN_NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
 
@@ -67,7 +65,8 @@ export function getAllowedAdminNav(user) {
 
 import { useState, useEffect } from "react";
 import api from "@/service/api";
-import { useSelector as reduxUseSelector } from "react-redux";
+import { useSelector as reduxUseSelector, useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 export function AdminNavLinks({ user, onNavigate, className }) {
   const pathname = usePathname();
@@ -146,9 +145,23 @@ export function AdminNavLinks({ user, onNavigate, className }) {
 
 export function AdminSidebar() {
   const user = reduxUseSelector(selectUser);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      await api.get("/auth/logout");
+    } catch (err) {
+      console.error("Logout error", err);
+    } finally {
+      dispatch(clearUser());
+      toast.success("Logged out successfully");
+      router.push("/admin-login");
+    }
+  };
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 flex-col bg-navy text-white shadow-xl lg:flex overflow-hidden relative border-r border-white/5">
+    <aside className="fixed left-0 top-0 hidden h-screen w-[260px] shrink-0 flex-col bg-navy text-white shadow-xl lg:flex overflow-hidden border-r border-white/5 z-30">
       <div className="border-b border-white/10 px-6 py-7 relative z-10">
         <Link href="/admin" className="flex flex-col gap-1.5 group">
           <div className="text-sm leading-tight font-extrabold text-white tracking-wider uppercase transition-transform group-hover:translate-x-1">
@@ -170,13 +183,13 @@ export function AdminSidebar() {
       </div>
 
       <div className="border-t border-white/10 p-5 relative z-10 bg-black/10 backdrop-blur-md">
-        <Link
-          href="/"
+        <button
+          onClick={handleLogout}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs font-bold text-white shadow-sm transition hover:bg-white/10 hover:-translate-y-0.5"
         >
           <LogOut className="size-4" />
-          Log out / Website
-        </Link>
+          Log out
+        </button>
       </div>
     </aside>
   );

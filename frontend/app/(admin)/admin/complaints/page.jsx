@@ -79,14 +79,14 @@ export default function Page() {
         schema={schema}
         columns={columns}
         primaryAction={null} // Disable creation from admin
-        hideDelete={true} // Complaints should only be resolved, not deleted
-        disableActions={(row) => row.status === "closed"} // cannot edit if closed
+         
+         
         customActions={(item) => (
           <Button 
             onClick={() => setViewItem(item)} 
             variant="outline" 
             size="sm" 
-            className="h-7 px-3 bg-navy/5 text-navy hover:bg-navy hover:text-white border-navy/20 rounded-lg ml-2"
+            className="h-7 px-3 bg-navy/5 text-navy hover:bg-navy hover:text-white border-navy/20 rounded-lg"
           >
             <Eye className="size-3.5 mr-1.5" /> View
           </Button>

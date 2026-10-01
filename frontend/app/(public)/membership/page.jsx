@@ -4,7 +4,7 @@ import { MembershipFormClient } from "@/components/forms/membership-form";
 import { getSiteContentById } from "@/service/site-content.service";
 
 export const metadata = {
-  title: "Membership Registration | Rabbi Association",
+  title: "Membership Registration",
   description: "Join our global network of educational professionals.",
 };
 

@@ -11,9 +11,12 @@ import { CrowdfundingPreview } from "@/components/sections/crowdfunding-preview"
 import { CtaBand } from "@/components/sections/cta-band";
 
 export const metadata = {
-  title: "Rabbi Association | Education | Empowerment | Equal Opportunities",
+  title: {
+    absolute: "Rabbi Association | Education & Empowerment",
+  },
   description:
-    "Rabbi Association is committed to making life better through education.",
+    "Rabbi Association is committed to strengthening education through professional consultancy, institutional development, and sustainable initiatives.",
+  keywords: ["Educational Consultancy", "School Setup", "Teacher Training", "NGO", "Rabbi Association"],
 };
 
 export default function HomePage() {

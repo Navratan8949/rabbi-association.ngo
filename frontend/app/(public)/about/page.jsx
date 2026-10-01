@@ -6,7 +6,7 @@ import { getSiteContentById } from "@/service/site-content.service";
 import Image from "next/image";
 
 export const metadata = {
-  title: "About Us | Rabbi Association",
+  title: "About Us",
   description:
     "Connecting Rabbi Association across India and promoting the scholarly, intellectual and humanitarian values of Rabbi Association.",
 };
@@ -159,14 +159,14 @@ export default async function Page() {
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
         <div className="mx-auto max-w-7xl px-4 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
+            <div className="flex flex-col items-center text-center">
               <h2 className="text-sm font-bold uppercase tracking-widest text-accent mb-3">
                 Who We Serve
               </h2>
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Our Partners
               </h3>
-              <p className="text-lg text-white/80 font-medium mb-10 leading-relaxed max-w-xl">
+              <p className="text-lg text-white/80 font-medium mb-10 leading-relaxed max-w-xl mx-auto">
                 We work collaboratively with various stakeholders in the
                 education sector to build stronger institutions and communities.
               </p>

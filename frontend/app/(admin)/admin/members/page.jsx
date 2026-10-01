@@ -428,24 +428,18 @@ export default function Page() {
                   <p className="text-[10px] font-bold uppercase text-slate-500 mb-2">
                     Profile Photo
                   </p>
-                  {selectedMember.profileImage?.url ? (
                     <a
-                      href={selectedMember.profileImage.url}
+                      href={selectedMember.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
                       target="_blank"
                       rel="noreferrer"
                       className="block rounded-xl border border-border/60 overflow-hidden hover:opacity-80 transition-opacity"
                     >
                       <img
-                        src={selectedMember.profileImage.url}
+                        src={selectedMember.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
                         alt="Profile"
                         className="w-full h-24 object-cover"
                       />
                     </a>
-                  ) : (
-                    <div className="h-24 rounded-xl bg-slate-100 flex items-center justify-center text-xs text-slate-400">
-                      No Image
-                    </div>
-                  )}
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase text-slate-500 mb-2">

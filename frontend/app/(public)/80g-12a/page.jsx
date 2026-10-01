@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { getSiteContentById } from "@/service/site-content.service";
 
 export const metadata = {
-  title: "12A / 80G Information | Rabbi Association",
+  title: "12A / 80G Information",
   description:
     "Learn about the tax benefits of donating to Rabbi Association under Section 80G.",
 };
@@ -14,12 +14,18 @@ export const metadata = {
 export default async function TaxInfoPage() {
   let contentHtml = null;
   let pageTitle = "12A & 80G Information";
+  let bankDetails = null;
 
   try {
     const res = await getSiteContentById("tax_exemptions");
     if (res?.success && res?.content) {
       if (res.content.content) contentHtml = res.content.content;
       if (res.content.title) pageTitle = res.content.title;
+    }
+    
+    const bankRes = await getSiteContentById("donate_details");
+    if (bankRes?.success && bankRes?.content?.content) {
+      bankDetails = JSON.parse(bankRes.content.content);
     }
   } catch (error) {
     // Content not found or error fetching. Fallback will be used.
@@ -134,34 +140,42 @@ export default async function TaxInfoPage() {
                 Account Details
               </h3>
               <div className="space-y-6 relative z-10 font-medium">
-                <div>
-                  <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
-                    Account Name
-                  </p>
-                  <p className="text-lg">Rabbi Association</p>
-                </div>
-                <div>
-                  <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
-                    Bank Name
-                  </p>
-                  <p className="text-lg">State Bank of India (Example)</p>
-                </div>
-                <div>
-                  <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
-                    Account Number
-                  </p>
-                  <p className="text-lg font-mono">XXXX-XXXX-XXXX-1234</p>
-                </div>
-                <div>
-                  <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
-                    IFSC Code
-                  </p>
-                  <p className="text-lg font-mono">SBIN000XXXX</p>
-                </div>
+                {bankDetails && (bankDetails.bankName || bankDetails.accountName) ? (
+                  <>
+                    <div>
+                      <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
+                        Account Name
+                      </p>
+                      <p className="text-lg">{bankDetails.accountName || "N/A"}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
+                        Bank Name
+                      </p>
+                      <p className="text-lg">{bankDetails.bankName || "N/A"}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
+                        Account Number
+                      </p>
+                      <p className="text-lg font-mono">{bankDetails.accountNumber || "N/A"}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/60 text-sm mb-1 uppercase tracking-wider font-bold">
+                        IFSC Code
+                      </p>
+                      <p className="text-lg font-mono">{bankDetails.ifscCode || "N/A"}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div>
+                    <p className="text-white/80">Bank details will be updated shortly.</p>
+                  </div>
+                )}
                 <div className="pt-6 border-t border-white/20">
                   <p className="text-white/80 text-sm italic">
                     Note: Please email the transaction reference to
-                    rabbi.association16@gmail.com along with your PAN details to
+                    info@rabbi.co.in along with your PAN details to
                     receive your 80G receipt.
                   </p>
                 </div>

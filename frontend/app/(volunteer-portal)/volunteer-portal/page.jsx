@@ -67,13 +67,7 @@ export default function Page() {
       </div>
     );
 
-  const initials =
-    user.fullName
-      ?.split(" ")
-      .map((n) => n[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase() || "U";
+
   const isApproved = volunteer?.status === "approved";
   const isPending = volunteer?.status === "pending";
   const isRejected = volunteer?.status === "rejected";
@@ -318,15 +312,11 @@ export default function Page() {
             <div className="px-6 pb-6 relative">
               <div className="absolute -top-12 left-6 rounded-[1.25rem] bg-white p-1.5 shadow-md">
                 <div className="flex size-20 items-center justify-center overflow-hidden rounded-[1rem] bg-navy text-2xl font-bold text-white shrink-0">
-                  {volunteer?.profileImage?.url ? (
-                    <img
-                      src={volunteer.profileImage.url}
-                      alt="Profile"
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    initials
-                  )}
+                  <img
+                    src={volunteer?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`}
+                    alt="Profile"
+                    className="h-full w-full object-cover"
+                  />
                 </div>
               </div>
 

@@ -63,13 +63,7 @@ export function IdCard({ member, user, verificationUrl, type = "Member" }) {
             <div className="relative mb-3 shrink-0 z-10 mt-2">
               <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-accent/80 via-accent to-accent/80 shadow-md"></div>
               <div className="relative size-[110px] overflow-hidden rounded-full border-4 border-white bg-white shadow-inner">
-                {member.profileImage?.url || user.profileImage?.url ? (
-                  <img src={member.profileImage?.url || user.profileImage?.url} alt="Profile" className="h-full w-full object-cover" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-5xl font-bold text-[#0a369d]/30 bg-slate-100">
-                    {user.fullName?.[0] || "?"}
-                  </div>
-                )}
+                <img src={member.profileImage?.url || user.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="h-full w-full object-cover" />
               </div>
             </div>
 

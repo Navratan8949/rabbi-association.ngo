@@ -14,4 +14,7 @@ router.get("/me", isAuthenticated, getMe);
 router.put("/profile", isAuthenticated, updateProfile);
 router.put("/password", isAuthenticated, updatePassword);
 
+router.post("/forgot-password", require("../controllers/auth.controller").forgotPassword);
+router.post("/reset-password", require("../controllers/auth.controller").resetPassword);
+
 module.exports = router;

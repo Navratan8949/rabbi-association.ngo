@@ -76,27 +76,11 @@ export function LatestUpdates() {
         {/* Left Column: Latest News & Updates (Col 7) */}
         <div className="lg:col-span-7 flex flex-col justify-between min-w-0">
           <div>
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-2">
-                <span className="flex size-8 items-center justify-center rounded-lg bg-accent/15 text-accent font-bold">
-                  <Newspaper className="size-4" />
-                </span>
-                <h2 className="text-2xl font-bold text-navy">Latest Updates</h2>
-              </div>
-
-              <Button
-                asChild
-                variant="ghost"
-                size="sm"
-                className="font-bold text-navy hover:text-accent hover:bg-navy/5"
-              >
-                <Link
-                  href="/news"
-                  className="inline-flex items-center gap-1 text-xs"
-                >
-                  View All Updates <ArrowRight className="size-3.5" />
-                </Link>
-              </Button>
+            <div className="flex flex-col items-center justify-center text-center gap-2 mb-8">
+              <span className="flex size-10 items-center justify-center rounded-lg bg-accent/15 text-accent font-bold mb-1">
+                <Newspaper className="size-5" />
+              </span>
+              <h2 className="text-2xl font-bold text-navy">Latest Updates</h2>
             </div>
 
             <div className="space-y-3">
@@ -143,17 +127,32 @@ export function LatestUpdates() {
                 ))
               )}
             </div>
+            
+            <div className="mt-8 flex justify-center">
+              <Button
+                asChild
+                variant="outline"
+                className="font-bold text-navy border-navy/20 shrink-0"
+              >
+                <Link
+                  href="/news"
+                  className="inline-flex items-center"
+                >
+                  View All Updates <ArrowRight className="ml-2 size-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Right Column: Quick Services & Next Event (Col 5) */}
         <div className="lg:col-span-5 flex flex-col justify-between min-w-0">
           <div className="min-w-0">
-            <div className="flex items-center gap-2 mb-6 min-w-0">
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-navy/10 text-navy font-bold">
-                <Sparkles className="size-4 text-accent" />
+            <div className="flex flex-col items-center justify-center text-center gap-2 mb-8 min-w-0">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-navy/10 text-navy font-bold mb-1">
+                <Sparkles className="size-5 text-accent" />
               </span>
-              <h2 className="text-xl sm:text-2xl font-bold text-navy truncate">
+              <h2 className="text-[22px] leading-tight sm:text-2xl font-bold text-navy">
                 Rabbi Association Resources
               </h2>
             </div>
@@ -163,7 +162,7 @@ export function LatestUpdates() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group flex items-center gap-4 sm:gap-5 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all duration-300 hover:border-accent hover:-translate-y-1 hover:shadow-md text-slate-800 min-w-0"
+                  className="group flex items-start gap-4 sm:gap-5 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all duration-300 hover:border-accent hover:-translate-y-1 hover:shadow-md text-slate-800 min-w-0"
                 >
                   <div
                     className={`flex size-12 sm:size-14 shrink-0 items-center justify-center rounded-xl border ${item.color} group-hover:scale-105 transition-transform bg-slate-50`}
@@ -171,12 +170,12 @@ export function LatestUpdates() {
                     <item.icon className="size-5 sm:size-6" />
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-navy text-base sm:text-[17px] group-hover:text-accent transition-colors flex items-center justify-between gap-2 min-w-0">
-                      <span className="truncate block">{item.title}</span>
-                      <ChevronRight className="size-5 text-slate-400 group-hover:text-accent group-hover:translate-x-1 transition-all shrink-0" />
+                  <div className="flex-1 min-w-0 pt-0.5">
+                    <h3 className="font-semibold text-navy text-base sm:text-[17px] group-hover:text-accent transition-colors flex items-start justify-between gap-2 min-w-0">
+                      <span className="block leading-tight">{item.title}</span>
+                      <ChevronRight className="size-5 mt-0.5 text-slate-400 group-hover:text-accent group-hover:translate-x-1 transition-all shrink-0" />
                     </h3>
-                    <p className="mt-1 text-xs sm:text-sm text-slate-600 font-medium truncate">
+                    <p className="mt-1.5 text-xs sm:text-sm text-slate-600 font-medium leading-snug">
                       {item.desc}
                     </p>
                   </div>

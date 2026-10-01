@@ -66,9 +66,18 @@ export default function SignupPage() {
     <AuthShell title="Create account" subtitle="Fill out your details to join Rabbi Association." image="/smiling-school-children-india-education.png"
       footer={<>Already registered? <Link href="/login" className="font-semibold text-navy hover:underline">Login</Link></>}>
       <form onSubmit={onSubmit} className="grid gap-3.5">
-        <div className="grid gap-2">
-          <Label>Profile Image (Optional)</Label>
-          <Input type="file" accept="image/*" className="h-10 rounded-xl bg-transparent" onChange={(e) => setProfileImage(e.target.files[0])} />
+        <div className="grid gap-4 flex flex-col items-center sm:flex-row mb-2">
+          <div className="relative size-20 overflow-hidden rounded-full border-2 border-slate-200 bg-slate-100 shrink-0">
+            {profileImage ? (
+              <img src={URL.createObjectURL(profileImage)} alt="Preview" className="size-full object-cover" />
+            ) : (
+              <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(form.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Placeholder" className="size-full object-cover" />
+            )}
+          </div>
+          <div className="flex-1 grid gap-2 w-full">
+            <Label>Profile Image (Optional)</Label>
+            <Input type="file" accept="image/*" className="h-10 rounded-xl bg-transparent" onChange={(e) => setProfileImage(e.target.files[0])} />
+          </div>
         </div>
         <div className="grid gap-2"><Label>Full name *</Label><Input className="h-10 rounded-xl" value={form.fullName} onChange={(e) => set("fullName", e.target.value)} required /></div>
         <div className="grid gap-3.5 sm:grid-cols-2">

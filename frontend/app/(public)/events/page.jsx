@@ -3,7 +3,7 @@ import { CardsGrid } from "@/components/pages/cards-grid"
 import { getEvents } from "@/service/event.service"
 
 export const metadata = {
-  title: "Events & Forums | Rabbi Association",
+  title: "Events & Forums",
   description: "Conferences, seminars, and intellectual gatherings."
 }
 

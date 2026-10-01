@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
       return
     }
     // Also check token in localStorage to see if we should fetch profile
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+    const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null
     if (token && !isAuthenticated) {
       dispatch(fetchUser())
     }
@@ -61,7 +61,18 @@ export default function AdminLoginPage() {
       footer={<>Member? <Link href="/login" className="font-semibold text-navy hover:underline">Member login</Link></>}>
       <form onSubmit={onSubmit} className="grid gap-4">
         <div className="grid gap-2"><Label>Email</Label><Input type="email" className="h-11 rounded-xl" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required /></div>
-        <div className="grid gap-2"><Label>Password</Label><Input type="password" className="h-11 rounded-xl" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required /></div>
+        <div className="grid gap-2">
+          <div className="flex items-center justify-between">
+            <Label>Password</Label>
+            <Link
+              href="/forgot-password"
+              className="text-xs font-semibold text-[#051e57] hover:text-amber-500 hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <Input type="password" className="h-11 rounded-xl" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+        </div>
         <Button type="submit" disabled={loading} className="mt-2 h-11 rounded-xl bg-navy font-semibold text-white hover:bg-navy/90">{loading ? "Signing in…" : "Login as Admin"}</Button>
       </form>
     </AuthShell>

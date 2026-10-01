@@ -7,7 +7,7 @@ const crypto = require("crypto");
 const pdf = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
-const nodemailer = require("nodemailer");
+const { getTransporter } = require("../utils/sendMail");
 const { uploadLocalFile } = require("../utils/fileUpload");
 const { getSiteName, getSiteLogoDetails } = require("../utils/siteSettings");
 const { generateReceiptPDF } = require("../utils/generatePDF");
@@ -18,14 +18,7 @@ const razorpayInstance = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// Configure Nodemailer
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USER || "test@gmail.com",
-        pass: process.env.EMAIL_PASS || "testpassword",
-    },
-});
+
 
 const generateReceiptNumber = () => {
     return "RA-REC-" + Date.now().toString().slice(-6);
@@ -156,7 +149,27 @@ exports.verifyPayment = async (req, res) => {
             };
 
             try {
+                const { transporter, settings } = await getTransporter();
+                const adminEmail = process.env.ADMIN_EMAIL || "admin@rabbi.co.in";
+                mailOptions.from = `"${settings.fromName}" <${settings.fromEmail || settings.user}>`;
+                
+                // Send to donor
                 await transporter.sendMail(mailOptions);
+                
+                // Send to admin
+                await transporter.sendMail({
+                    from: `"${settings.fromName}" <${settings.fromEmail || settings.user}>`,
+                    to: adminEmail,
+                    subject: `New Online Donation Received - INR ${donation.amount}`,
+                    html: `
+                        <h3>New Donation Alert</h3>
+                        <p>A new online donation has been successfully received.</p>
+                        <p><strong>Donor Name:</strong> ${donorName}</p>
+                        <p><strong>Donor Email:</strong> ${donorEmail}</p>
+                        <p><strong>Amount:</strong> INR ${donation.amount}</p>
+                        <p><strong>Receipt:</strong> ${donation.receiptNumber}</p>
+                    `
+                });
             } catch (emailError) {
                 console.error("Error sending email:", emailError);
             }
@@ -317,7 +330,27 @@ exports.verifyManualDonation = async (req, res) => {
                                <p>${siteName}</p>`,
                         attachments: [{ filename: `Receipt-${donation.receiptNumber}.pdf`, path: pdfPath }],
                     };
+                    const { transporter, settings } = await getTransporter();
+                    const adminEmail = process.env.ADMIN_EMAIL || "admin@rabbi.co.in";
+                    mailOptions.from = `"${settings.fromName}" <${settings.fromEmail || settings.user}>`;
+                    
+                    // Send to donor
                     await transporter.sendMail(mailOptions);
+                    
+                    // Send to admin
+                    await transporter.sendMail({
+                        from: `"${settings.fromName}" <${settings.fromEmail || settings.user}>`,
+                        to: adminEmail,
+                        subject: `Manual Donation Verified - INR ${donation.amount}`,
+                        html: `
+                            <h3>Manual Donation Verified</h3>
+                            <p>An offline manual donation has been verified by the administration.</p>
+                            <p><strong>Donor Name:</strong> ${donorName}</p>
+                            <p><strong>Donor Email:</strong> ${donorEmail}</p>
+                            <p><strong>Amount:</strong> INR ${donation.amount}</p>
+                            <p><strong>Receipt:</strong> ${donation.receiptNumber}</p>
+                        `
+                    });
                 } catch (emailError) {
                     console.error("Error sending email or PDF:", emailError);
                 }
@@ -343,5 +376,25 @@ exports.getDonationById = async (req, res) => {
         res.status(200).json({ success: true, donation });
     } catch (error) {
         res.status(500).json({ success: false, message: "Invalid donation ID or server error" });
+    }
+};
+
+exports.updateDonation = async (req, res) => {
+    try {
+        const donation = await Donation.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (!donation) return res.status(404).json({ success: false, message: "Donation not found" });
+        res.status(200).json({ success: true, message: "Donation updated", donation });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+exports.deleteDonation = async (req, res) => {
+    try {
+        const donation = await Donation.findByIdAndDelete(req.params.id);
+        if (!donation) return res.status(404).json({ success: false, message: "Donation not found" });
+        res.status(200).json({ success: true, message: "Donation deleted" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 };

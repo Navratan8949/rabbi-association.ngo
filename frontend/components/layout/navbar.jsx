@@ -129,10 +129,11 @@ function TopBar() {
   const handleLogout = async () => {
     try {
       await api.get("/auth/logout")
+    } catch (err) {
+      console.error("Logout error", err)
+    } finally {
       dispatch(clearUser())
       toast.success("Logged out successfully")
-    } catch (err) {
-      toast.error("Error logging out")
     }
   }
 
@@ -250,10 +251,11 @@ export function Navbar() {
   const handleLogout = async () => {
     try {
       await api.get("/auth/logout")
+    } catch (err) {
+      console.error("Logout error", err)
+    } finally {
       dispatch(clearUser())
       toast.success("Logged out successfully")
-    } catch (err) {
-      toast.error("Error logging out")
     }
   }
 

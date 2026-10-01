@@ -6,7 +6,7 @@ export const SITE = {
     "Rabbi Association is an education consultancy and institutional development organisation committed to advancing quality education, human empowerment, institutional excellence, and sustainable social development.",
   founded: 2012,
   website: "rabbi.co.in",
-  email: "rabbi.association16@gmail.com",
+  email: "info@rabbi.co.in",
   phones: ["+91 91938 27321"],
   whatsapp: "+919193827321",
   address: "St. Michael's Mission, Mathura (Uttar Pradesh)",

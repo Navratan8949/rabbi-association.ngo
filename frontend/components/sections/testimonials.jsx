@@ -39,17 +39,41 @@ export function Testimonials() {
   return (
     <section className="bg-slate-50 py-16 md:py-20 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4">
-        {/* Header Area with Top-Right Buttons */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <SectionHeading
-          align="left"
-          eyebrow="Voices of Change"
-          title="Stories from our community"
-          description="Real words from the people whose lives have been touched by your generosity."
-          className="mx-0"
-          inverted={false}
-        />
-        <div className="flex items-center gap-3">
+        {/* Header Area Centered */}
+        <div className="flex flex-col items-center justify-center text-center">
+          <SectionHeading
+            align="center"
+            eyebrow="Voices of Change"
+            title="Stories from our community"
+            description="Real words from the people whose lives have been touched by your generosity."
+            className="mx-auto"
+            inverted={false}
+          />
+        </div>
+
+        <div className="relative mt-8">
+          {/* Carousel Container */}
+          <div
+            ref={scrollRef}
+            className="mx-auto w-fit max-w-full flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 pt-4 scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {testimonials.length > 0 ? (
+              testimonials.map((t) => (
+                <div key={t._id} className="w-[320px] md:w-[380px] shrink-0 snap-center">
+                  <TestimonialCard item={t} />
+                </div>
+              ))
+            ) : (
+              <div className="w-full text-center py-12 text-slate-500 font-medium">
+                No testimonials available at the moment.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Buttons Below Cards */}
+        <div className="mt-6 flex items-center justify-center gap-4">
           <Button variant="outline" size="icon" className="rounded-full shadow-sm h-12 w-12 border-slate-200 bg-white text-navy hover:bg-accent hover:text-white hover:border-accent transition-colors" onClick={() => scroll("left")}>
             <ChevronLeft className="h-6 w-6" />
           </Button>
@@ -57,36 +81,14 @@ export function Testimonials() {
             <ChevronRight className="h-6 w-6" />
           </Button>
         </div>
-      </div>
 
-      <div className="relative mt-12">
-        {/* Carousel Container */}
-        <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 pt-4 scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {testimonials.length > 0 ? (
-            testimonials.map((t) => (
-              <div key={t._id} className="w-[320px] md:w-[380px] shrink-0 snap-start">
-                <TestimonialCard item={t} />
-              </div>
-            ))
-          ) : (
-            <div className="w-full text-center py-12 text-slate-500 font-medium">
-              No testimonials available at the moment.
-            </div>
-          )}
+        <div className="mt-8 flex justify-center">
+          <Button asChild size="lg" variant="outline" className="rounded-full border-slate-200 bg-white text-navy font-bold hover:bg-accent hover:text-white hover:border-accent transition-colors shadow-sm">
+            <Link href="/testimonials">
+              View All Testimonials <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </Button>
         </div>
-      </div>
-
-      <div className="mt-8 flex justify-center">
-        <Button asChild size="lg" variant="outline" className="rounded-full border-slate-200 bg-white text-navy font-bold hover:bg-accent hover:text-white hover:border-accent transition-colors shadow-sm">
-          <Link href="/testimonials">
-            View All Testimonials <ArrowRight className="ml-2 size-4" />
-          </Link>
-        </Button>
-      </div>
       </div>
     </section>
   )

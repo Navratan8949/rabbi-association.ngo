@@ -185,7 +185,7 @@ export default function Page() {
                 {/* Decorative corner element */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-bl-[100px] -z-0"></div>
 
-                <div className="relative z-10 mb-10">
+                <div className="relative z-10 mb-10 text-center flex flex-col items-center">
                   <h2 className="text-3xl sm:text-4xl font-bold text-navy">
                     Send us a Message
                   </h2>

@@ -32,19 +32,14 @@ export function UpcomingEvents() {
   return (
     <section className="bg-secondary/40 py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+        <div className="flex flex-col items-center justify-center text-center gap-6">
           <SectionHeading
-            align="left"
+            align="center"
             eyebrow="Get Involved"
             title="Events & Forums"
             description="Discover our latest conferences, academic sessions, and intellectual forums."
+            className="mx-auto"
           />
-          <Button asChild variant="outline" className="shrink-0 border-navy/20">
-            <Link href="/events">
-              All Events
-              <ArrowRight className="ml-2 size-4" />
-            </Link>
-          </Button>
         </div>
         
         {loading ? (
@@ -56,13 +51,23 @@ export function UpcomingEvents() {
             <p className="text-muted-foreground font-medium">No events scheduled at the moment.</p>
           </div>
         ) : (
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {events.map((e, i) => (
-              <Reveal key={e._id} delay={i * 0.1}>
-                <EventCard event={e} />
-              </Reveal>
-            ))}
-          </div>
+          <>
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {events.map((e, i) => (
+                <Reveal key={e._id} delay={i * 0.1}>
+                  <EventCard event={e} />
+                </Reveal>
+              ))}
+            </div>
+            <div className="mt-10 flex justify-center">
+              <Button asChild variant="outline" className="shrink-0 border-navy/20 font-bold">
+                <Link href="/events">
+                  All Events
+                  <ArrowRight className="ml-2 size-4" />
+                </Link>
+              </Button>
+            </div>
+          </>
         )}
       </div>
     </section>

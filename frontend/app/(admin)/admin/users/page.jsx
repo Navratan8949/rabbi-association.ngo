@@ -15,14 +15,13 @@ export default function Page() {
       description="View all normal users who have signed up on the website but have not applied for NGO membership yet."
       endpoint="/users/public"
       schema={userSchema}
-      primaryAction={false}
+      primaryAction={null}
       columns={[
         { key: "fullName", label: "Full Name" },
         { key: "email", label: "Email" },
         { key: "mobile", label: "Mobile" },
         { key: "isActive", label: "Status", render: (r) => <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${r.isActive ? 'bg-blue-50 text-blue-700' : 'bg-rose-50 text-rose-700'}`}>{r.isActive ? "Active" : "Disabled"}</span> },
-        { key: "createdAt", label: "Joined", render: (r) => new Date(r.createdAt).toLocaleDateString() },
-        { key: "actions", label: "Actions", render: () => <span className="text-xs font-semibold text-muted-foreground">Read Only</span> }
+        { key: "createdAt", label: "Joined", render: (r) => new Date(r.createdAt).toLocaleDateString() }
       ]}
     />
   )

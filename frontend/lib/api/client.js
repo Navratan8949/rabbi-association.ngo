@@ -4,8 +4,8 @@ const TOKEN_KEY = "rht_token"
 export class ApiError extends Error {
   constructor(message, status, payload) { super(message); this.status = status; this.payload = payload }
 }
-export function getToken() { if (typeof window === "undefined") return null; return window.localStorage.getItem(TOKEN_KEY) }
-export function setToken(token) { if (typeof window === "undefined") return; if (token) window.localStorage.setItem(TOKEN_KEY, token); else window.localStorage.removeItem(TOKEN_KEY) }
+export function getToken() { if (typeof window === "undefined") return null; return window.sessionStorage.getItem(TOKEN_KEY) }
+export function setToken(token) { if (typeof window === "undefined") return; if (token) window.sessionStorage.setItem(TOKEN_KEY, token); else window.sessionStorage.removeItem(TOKEN_KEY) }
 export async function apiFetch(path, options = {}) {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS)

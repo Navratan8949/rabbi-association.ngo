@@ -3,7 +3,7 @@ import { Search, ClipboardList, PenTool, Rocket, ShieldCheck, Sparkles } from "l
 import { Reveal } from "@/components/shared/reveal";
 
 export const metadata = {
-  title: "Our Approach | Rabbi Association",
+  title: "Our Approach",
   description: "From Vision to Impact: We follow a structured and collaborative approach designed to create practical and sustainable results.",
 };
 

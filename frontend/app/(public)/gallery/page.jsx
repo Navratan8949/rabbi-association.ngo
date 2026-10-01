@@ -6,7 +6,7 @@ import Image from "next/image";
 import { getGalleryItems } from "@/service/gallery.service";
 
 export const metadata = {
-  title: "Photo & Video Gallery | Rabbi Association",
+  title: "Photo & Video Gallery",
   description: "Browse photos and videos of our educational initiatives, school setups, and community development programs.",
 };
 

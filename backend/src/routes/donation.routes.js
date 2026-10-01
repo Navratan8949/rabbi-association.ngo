@@ -21,5 +21,7 @@ router.get("/:id", getDonationById);
 // Admin route
 router.get("/", isAuthenticated, authorizeRoles(["admin"]), getAllDonations);
 router.put("/:id/verify", isAuthenticated, authorizeRoles(["admin"]), verifyManualDonation);
+router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), require("../controllers/donation.controller").updateDonation);
+router.delete("/:id", isAuthenticated, authorizeRoles(["admin"]), require("../controllers/donation.controller").deleteDonation);
 
 module.exports = router;

@@ -84,7 +84,7 @@ function LinkedinIcon(props) {
 }
 
 export const metadata = {
-  title: "Team Members | Rabbi Association",
+  title: "Team Members",
   description:
     "Meet the dedicated team behind Rabbi Association's mission to make life better through education.",
 };

@@ -1,28 +1,28 @@
-import Image from "next/image"
+import Image from "next/image";
 
 export function PageHero({ eyebrow, title, description, image }) {
   // Sanitize missing mock images from old template
-  const isMockImage = typeof image === 'string' && (
-    image.includes("hero-") || 
-    image.includes("community-") || 
-    image.includes("women-") || 
-    image.includes("rural-")
-  );
-  
+  const isMockImage =
+    typeof image === "string" &&
+    (image.includes("hero-") ||
+      image.includes("community-") ||
+      image.includes("women-") ||
+      image.includes("rural-"));
+
   // Fallback beautiful educational image if none is provided or if it's a mock
-  const bgImage = (!image || isMockImage) ? "/rabbi-context/focus_3.jpg" : image;
+  const bgImage = !image || isMockImage ? "/rabbi-context/focus_3.jpg" : image;
 
   return (
     <section className="relative overflow-hidden pt-28 pb-24 md:pt-36 md:pb-32 flex items-center justify-center min-h-[400px]">
       {/* Background Image with Parallax */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed scale-105"
         style={{ backgroundImage: `url(${bgImage})` }}
       />
-      
+
       {/* Premium Dark Overlay */}
       <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[1px]" />
-      
+
       {/* Subtle Gradient for depth */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/80" />
 
@@ -33,20 +33,20 @@ export function PageHero({ eyebrow, title, description, image }) {
             {eyebrow}
           </span>
         )}
-        
+
         <h1 className="text-4xl font-bold leading-[1.15] tracking-tight text-white md:text-5xl lg:text-[3.5rem] text-balance drop-shadow-xl">
           {title}
         </h1>
-        
+
         {description && (
           <p className="mt-6 mx-auto max-w-2xl text-lg leading-relaxed text-slate-300 font-medium text-pretty drop-shadow-lg">
             {description}
           </p>
         )}
       </div>
-      
+
       {/* Premium subtle bottom border */}
       <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
     </section>
-  )
+  );
 }

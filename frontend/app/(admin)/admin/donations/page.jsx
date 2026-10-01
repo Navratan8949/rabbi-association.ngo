@@ -178,9 +178,10 @@ export default function Page() {
         endpoint="/donations"
         schema={schema}
         columns={columns}
+        primaryAction={null}
         customActions={actionButtons}
-        hideDelete={true}
-        hideEdit={true}
+        
+        
         crudRef={crudRef}
       />
 

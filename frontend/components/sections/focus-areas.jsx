@@ -75,11 +75,15 @@ export function FocusAreas() {
     <section className="relative bg-secondary py-24 md:py-32 overflow-hidden border-t border-border">
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-12">
         <Reveal>
-          <SectionHeading
-            eyebrow="What We Do"
-            title="Our Educational Solutions"
-            description="Professional guidance and support from vision to impact for educational institutions."
-          />
+          <div className="flex flex-col items-center justify-center text-center">
+            <SectionHeading
+              align="center"
+              eyebrow="What We Do"
+              title="Our Educational Solutions"
+              description="Professional guidance and support from vision to impact for educational institutions."
+              className="mx-auto"
+            />
+          </div>
         </Reveal>
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

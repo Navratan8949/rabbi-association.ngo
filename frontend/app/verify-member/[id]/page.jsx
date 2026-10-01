@@ -90,17 +90,11 @@ export default function VerifyMemberPage() {
 
             {/* Member Details */}
             <div className="text-center pt-2">
-              {member.profileImage ? (
                 <img
-                  src={member.profileImage}
+                  src={member.profileImage?.url || member.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.fullName || "User")}&background=051e57&color=fff&size=256`}
                   alt={member.fullName}
                   className="size-28 mx-auto rounded-2xl object-cover border-2 border-blue-400/40 shadow-xl shadow-slate-950/80"
                 />
-              ) : (
-                <div className="size-28 mx-auto rounded-2xl bg-slate-800 border-2 border-blue-400/40 flex items-center justify-center font-bold text-3xl text-blue-400 shadow-xl">
-                  {member.fullName?.charAt(0)}
-                </div>
-              )}
 
               <h2 className="text-2xl font-bold text-white mt-4">{member.fullName}</h2>
               <p className="text-xs font-mono font-semibold text-blue-400 mt-1">ID: {member.memberId}</p>

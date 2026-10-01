@@ -1,9 +1,9 @@
-import Image from "next/image"
-import { Quote, Star } from "lucide-react"
+import Image from "next/image";
+import { Quote, Star } from "lucide-react";
 
 export function TestimonialCard({ item }) {
   return (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white text-foreground p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-[12px] border border-border bg-white text-foreground p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md">
       <div className="absolute right-5 top-5 text-slate-50">
         <Quote className="size-16" />
       </div>
@@ -39,5 +39,5 @@ export function TestimonialCard({ item }) {
         </span>
       </div>
     </div>
-  )
+  );
 }

@@ -91,7 +91,15 @@ export default function MemberLoginPage() {
           />
         </div>
         <div className="grid gap-2">
-          <Label>Password</Label>
+          <div className="flex items-center justify-between">
+            <Label>Password</Label>
+            <Link
+              href="/forgot-password"
+              className="text-xs font-semibold text-[#051e57] hover:text-amber-500 hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
           <Input
             type="password"
             className="h-11 rounded-xl"

@@ -3,7 +3,7 @@ import { School, ClipboardList, Users, BookOpen, Presentation, Megaphone, Settin
 import { Reveal } from "@/components/shared/reveal";
 
 export const metadata = {
-  title: "What We Do | Rabbi Association",
+  title: "What We Do",
   description: "Our Educational Solutions: From new school setup to academic excellence and institutional development.",
 };
 

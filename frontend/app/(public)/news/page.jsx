@@ -5,7 +5,7 @@ import { PageHero } from "@/components/pages/page-hero"
 import { getNews } from "@/service/news.service"
 
 export const metadata = {
-  title: "News & Updates | Rabbi Association",
+  title: "News & Updates",
   description: "Stay updated with the latest news, announcements, and articles from Rabbi Association."
 }
 

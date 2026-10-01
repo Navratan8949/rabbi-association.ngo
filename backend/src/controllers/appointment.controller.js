@@ -19,13 +19,11 @@ exports.createAppointmentLetter = async (req, res) => {
       host: req.get("host"),
     });
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Appointment letter generated successfully",
-        appointmentLetter: populatedLetter,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Appointment letter generated successfully",
+      appointmentLetter: populatedLetter,
+    });
   } catch (error) {
     if (error.message === "Member not found") {
       return res
@@ -64,6 +62,40 @@ exports.getMyAppointmentLetters = async (req, res) => {
       "-createdAt",
     );
     res.status(200).json({ success: true, count: letters.length, letters });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.updateAppointmentLetter = async (req, res) => {
+  try {
+    const letter = await AppointmentLetter.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true },
+    );
+    if (!letter)
+      return res
+        .status(404)
+        .json({ success: false, message: "Appointment letter not found" });
+    res
+      .status(200)
+      .json({ success: true, message: "Appointment letter updated", letter });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.deleteAppointmentLetter = async (req, res) => {
+  try {
+    const letter = await AppointmentLetter.findByIdAndDelete(req.params.id);
+    if (!letter)
+      return res
+        .status(404)
+        .json({ success: false, message: "Appointment letter not found" });
+    res
+      .status(200)
+      .json({ success: true, message: "Appointment letter deleted" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

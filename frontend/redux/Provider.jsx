@@ -13,7 +13,7 @@ function AppInitializer({ children }) {
     dispatch(fetchSiteContent())
 
     // Fetch user if token exists
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+    const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null
     if (token) {
       dispatch(fetchUser())
     }

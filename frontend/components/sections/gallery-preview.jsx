@@ -25,19 +25,14 @@ export function GalleryPreview() {
   return (
     <section className="relative bg-background py-16 md:py-20 z-10">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+        <div className="flex flex-col items-center justify-center text-center gap-6">
           <SectionHeading
-            align="left"
+            align="center"
             eyebrow="Gallery"
             title="Moments from the field"
             description="A visual record of our work, events, and gatherings."
+            className="mx-auto"
           />
-          <Button asChild variant="outline" className="shrink-0 border-navy/20">
-            <Link href="/gallery">
-              Photo Gallery
-              <ArrowRight className="ml-2 size-4" />
-            </Link>
-          </Button>
         </div>
         <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
           {gallery.map((item) => (
@@ -64,6 +59,14 @@ export function GalleryPreview() {
               </div>
             </Link>
           ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <Button asChild variant="outline" className="shrink-0 border-navy/20 font-bold">
+            <Link href="/gallery">
+              Photo Gallery
+              <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

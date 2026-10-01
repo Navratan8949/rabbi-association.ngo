@@ -36,12 +36,12 @@ export default function EventsAdminPage() {
       schema={eventSchema}
       customActions={(item) => (
         <>
-          <Button asChild variant="outline" size="sm" className="h-7 px-3 bg-navy/5 text-navy hover:bg-navy hover:text-white border-navy/20 rounded-lg ml-2">
+          <Button asChild variant="outline" size="sm" className="h-7 px-3 bg-navy/5 text-navy hover:bg-navy hover:text-white border-navy/20 rounded-lg">
             <Link href={`/events/${item._id}`} target="_blank">
               <Eye className="size-3.5 mr-1.5" /> View
             </Link>
           </Button>
-          <Button asChild variant="outline" size="sm" className="h-7 px-3 bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white border-amber-200 rounded-lg ml-2">
+          <Button asChild variant="outline" size="sm" className="h-7 px-3 bg-amber-50 text-amber-700 hover:bg-amber-600 hover:text-white border-amber-200 rounded-lg">
             <Link href={`/admin/events/${item._id}/registrations`}>
               <Users className="size-3.5 mr-1.5" /> Registrations
             </Link>

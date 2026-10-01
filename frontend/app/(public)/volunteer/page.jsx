@@ -4,7 +4,7 @@ import { HandHeart, Users, GraduationCap, CheckCircle2 } from "lucide-react";
 import { getSiteContentById } from "@/service/site-content.service";
 
 export const metadata = {
-  title: "Volunteer with Us | Rabbi Association",
+  title: "Volunteer with Us",
   description: "Join our volunteer network to make a lasting impact in education.",
 };
 
@@ -88,19 +88,15 @@ export default async function VolunteerPage() {
                 </div>
               </div>
 
-              {/* Stats */}
+              {/* Inspiring Message */}
               {!contentData?.content && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-navy p-6 rounded-3xl text-center text-white">
-                    <Users className="size-8 mx-auto text-accent mb-3" />
-                    <div className="text-3xl font-bold mb-1">500+</div>
-                    <div className="text-white/80 text-sm font-medium">Active Volunteers</div>
-                  </div>
-                  <div className="bg-white p-6 rounded-3xl text-center border border-slate-100 shadow-sm">
-                    <GraduationCap className="size-8 mx-auto text-navy mb-3" />
-                    <div className="text-3xl font-bold text-navy mb-1">10k+</div>
-                    <div className="text-slate-500 text-sm font-medium">Lives Impacted</div>
-                  </div>
+                <div className="bg-navy p-6 sm:p-8 rounded-3xl text-center text-white shadow-lg relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
+                  <Users className="size-10 mx-auto text-accent mb-4 relative z-10" />
+                  <h3 className="text-xl sm:text-2xl font-bold mb-2 relative z-10">Be the Change</h3>
+                  <p className="text-white/80 text-sm font-medium leading-relaxed relative z-10">
+                    Your time and skills have the power to transform lives. Join hands with us to build a brighter, more equitable future for everyone.
+                  </p>
                 </div>
               )}
 

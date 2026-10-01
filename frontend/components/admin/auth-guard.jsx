@@ -19,7 +19,7 @@ export function AdminAuthGuard({ children }) {
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
+    const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : null
 
     // If there's no token at all, redirect immediately
     if (!token) {

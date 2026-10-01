@@ -2,7 +2,7 @@ import { PageHero } from "@/components/pages/page-hero"
 import { FounderMessageSection } from "@/components/sections/founder-message"
 import { getSiteContentById } from "@/service/site-content.service";
 
-export const metadata = { title: "Founder & Trustee Profile | Rabbi Association" }
+export const metadata = { title: "Founder & Trustee Profile" }
 
 export default async function Page() {
   let founderData = null;

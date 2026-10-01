@@ -33,11 +33,7 @@ export default function Page() {
       render: (r) => (
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 border border-blue-100 overflow-hidden">
-            {r.profileImage?.url ? (
-              <img src={r.profileImage.url} alt={r.fullName} className="h-full w-full object-cover" />
-            ) : (
-              <HandHeart className="size-5 text-blue-500" />
-            )}
+            <img src={r.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(r.fullName || "User")}&background=051e57&color=fff&size=256`} alt={r.fullName} className="h-full w-full object-cover" />
           </div>
           <div>
             <div className="font-bold text-navy text-sm">{r.user?.fullName || r.fullName}</div>
@@ -129,7 +125,7 @@ export default function Page() {
             onClick={() => setViewItem(item)} 
             variant="outline" 
             size="sm" 
-            className="h-7 px-3 bg-navy/5 text-navy hover:bg-navy hover:text-white border-navy/20 rounded-lg ml-2"
+            className="h-7 px-3 bg-navy/5 text-navy hover:bg-navy hover:text-white border-navy/20 rounded-lg"
           >
             <Eye className="size-3.5 mr-1.5" /> View
           </Button>
@@ -163,11 +159,7 @@ export default function Page() {
                 <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                   <div className="flex items-center gap-4">
                     <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200 overflow-hidden shrink-0">
-                      {viewItem.profileImage?.url ? (
-                        <img src={viewItem.profileImage.url} alt="Profile" className="h-full w-full object-cover" />
-                      ) : (
-                        <User className="size-7 text-slate-400" />
-                      )}
+                      <img src={viewItem.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(viewItem.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="h-full w-full object-cover" />
                     </div>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Applicant Info</p>

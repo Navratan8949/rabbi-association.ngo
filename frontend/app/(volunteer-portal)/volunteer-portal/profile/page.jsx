@@ -88,12 +88,7 @@ export default function Page() {
       </div>
     );
 
-  const initials =
-    user.fullName
-      ?.split(" ")
-      .map((n) => n[0])
-      .join("")
-      .substring(0, 2)
+
   const isApproved = member?.status === "approved";
 
   const handleEditSubmit = async (e) => {
@@ -325,15 +320,11 @@ export default function Page() {
           <div className="flex flex-col sm:flex-row sm:items-end gap-6 -mt-16 mb-6">
             <div className="relative rounded-3xl bg-white p-2 shadow-lg w-fit">
               <div className="flex size-32 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 text-4xl font-bold text-navy shrink-0">
-                {(member?.profileImage?.url || user?.profileImage?.url) ? (
-                  <img
-                    src={member?.profileImage?.url || user?.profileImage?.url}
-                    alt="Profile"
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  initials
-                )}
+                <img
+                  src={member?.profileImage?.url || user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
               </div>
               {isApproved && (
                 <div className="absolute -bottom-2 -right-2 flex size-8 items-center justify-center rounded-full bg-blue-500 text-white shadow-sm ring-4 ring-white">

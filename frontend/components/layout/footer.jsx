@@ -49,7 +49,11 @@ import { useSelector } from "react-redux";
 export function Footer() {
   const pathname = usePathname();
   const { data: siteContent } = useSelector((state) => state.siteContent) || {};
-  if (pathname?.startsWith("/admin") || pathname === "/member" || pathname?.startsWith("/member/"))
+  if (
+    pathname?.startsWith("/admin") ||
+    pathname === "/member" ||
+    pathname?.startsWith("/member/")
+  )
     return null;
 
   let site = { ...SITE };
@@ -90,17 +94,20 @@ export function Footer() {
     <footer className="relative overflow-hidden bg-slate-950 text-slate-300">
       {/* Premium glowing top border */}
       <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
-      
+
       {/* Massive subtle watermark */}
-      <GraduationCap className="pointer-events-none absolute -bottom-32 -right-32 size-[500px] text-slate-800/30 -rotate-12" strokeWidth={0.5} />
+      <GraduationCap
+        className="pointer-events-none absolute -bottom-32 -right-32 size-[500px] text-slate-800/30 -rotate-12"
+        strokeWidth={0.5}
+      />
 
       <div className="relative mx-auto max-w-7xl px-4 py-16">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-12 lg:grid-cols-3">
           <div className="lg:col-span-1">
             <div className="inline-flex rounded-xl bg-white p-3 shadow-lg shadow-black/20 border border-slate-800">
               <Logo />
             </div>
-            <p className="mt-6 text-sm leading-relaxed text-slate-400">
+            <p className="mt-6 text-sm leading-relaxed text-slate-400 line-clamp-3 md:line-clamp-none">
               {site.description}
             </p>
             <div className="mt-6 flex items-center gap-2.5">
@@ -134,52 +141,54 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
-              Quick Links
-            </h3>
-            <ul className="mt-6 space-y-3">
-              {FOOTER_QUICK_LINKS.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
-                  >
-                    <ChevronRight className="mr-0.5 size-4 text-amber-500 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0 group-hover:mr-2" />
-                    <span className="transition-transform group-hover:translate-x-1">{l.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <div className="grid grid-cols-2 lg:grid-cols-1 gap-8 lg:gap-10 lg:col-span-1 lg:pl-10">
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
+                Quick Links
+              </h3>
+              <ul className="mt-5 space-y-3">
+                {FOOTER_QUICK_LINKS.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
+                Resources
+              </h3>
+              <ul className="mt-5 space-y-3">
+                {FOOTER_RESOURCE_LINKS.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
-              Resources
-            </h3>
-            <ul className="mt-6 space-y-3">
-              {FOOTER_RESOURCE_LINKS.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
-                  >
-                    <ChevronRight className="mr-0.5 size-4 text-amber-500 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0 group-hover:mr-2" />
-                    <span className="transition-transform group-hover:translate-x-1">{l.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
+          <div className="lg:col-span-1">
             <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
               Reach Us
             </h3>
             <ul className="mt-6 space-y-4 text-sm text-slate-400 font-medium">
               <li className="flex gap-3 group">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
-                <span className="leading-relaxed transition-colors group-hover:text-slate-300">{site.address}</span>
+                <span className="leading-relaxed transition-colors group-hover:text-slate-300">
+                  {site.address}
+                </span>
               </li>
               <li className="flex gap-3 group">
                 <Phone className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
@@ -197,7 +206,10 @@ export function Footer() {
               </li>
               <li className="flex gap-3 group">
                 <Mail className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
-                <a href={`mailto:${site.email}`} className="transition-colors hover:text-white">
+                <a
+                  href={`mailto:${site.email}`}
+                  className="transition-colors hover:text-white"
+                >
                   {site.email}
                 </a>
               </li>
@@ -221,31 +233,29 @@ export function Footer() {
             Led by the Holy Spirit — the Advocate
           </p>
           <div className="flex flex-col items-center justify-center gap-4 text-xs md:flex-row font-medium">
-            <p>
-              © 2026 {site.name}. All Rights Reserved.
-            </p>
+            <p>© 2026 {site.name}. All Rights Reserved.</p>
             <div className="flex gap-4">
-            <Link
-              href="/privacy-policy"
-              className="hover:text-amber-500 transition"
-            >
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="hover:text-amber-500 transition">
-              Terms & Conditions
-            </Link>
+              <Link
+                href="/privacy-policy"
+                className="hover:text-amber-500 transition"
+              >
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-amber-500 transition">
+                Terms & Conditions
+              </Link>
+            </div>
+            <p>Registered Charitable Trust · 80G &amp; 12A Certified</p>
           </div>
-          <p>Registered Charitable Trust · 80G &amp; 12A Certified</p>
+          <div className="flex justify-center items-center pb-6 pt-2">
+            <p className="text-sm font-semibold text-slate-500 tracking-wide">
+              Designed by{" "}
+              <span className="font-black text-white tracking-wider">
+                ZDC Tech Global Solutions
+              </span>
+            </p>
+          </div>
         </div>
-        <div className="flex justify-center items-center pb-6 pt-2">
-          <p className="text-sm font-semibold text-slate-500 tracking-wide">
-            Designed by{" "}
-            <span className="font-black text-white tracking-wider">
-              ZDC Tech Global Solutions
-            </span>
-          </p>
-        </div>
-      </div>
       </div>
     </footer>
   );

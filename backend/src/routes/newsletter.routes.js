@@ -9,6 +9,7 @@ router.post("/subscribe", subscribe);
 
 // Admin — view all subscribers
 router.get("/", isAuthenticated, authorizeRoles(["admin"]), getAllSubscribers);
+router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), require("../controllers/newsletter.controller").updateSubscriber);
 router.delete("/:id", isAuthenticated, authorizeRoles(["admin"]), deleteSubscriber);
 
 // Admin — send mass email

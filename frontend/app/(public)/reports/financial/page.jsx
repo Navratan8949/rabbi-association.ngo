@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { getReports } from "@/service/report.service";
 
 export const metadata = {
-  title: "Financial Transparency | Rabbi Association",
+  title: "Financial Transparency",
   description: "View our financial statements and audit reports. We believe in complete transparency.",
 };
 

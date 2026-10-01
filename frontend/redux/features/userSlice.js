@@ -34,7 +34,7 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
       state.status = "succeeded";
       if (action.payload.token && typeof window !== "undefined") {
-        localStorage.setItem("token", action.payload.token);
+        sessionStorage.setItem("token", action.payload.token);
       }
     },
     clearUser: (state) => {
@@ -42,7 +42,7 @@ const userSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       if (typeof window !== "undefined") {
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
       }
     },
   },
@@ -62,7 +62,7 @@ const userSlice = createSlice({
         state.isAuthenticated = false;
         state.user = null;
         if (typeof window !== "undefined") {
-            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
         }
       });
   },

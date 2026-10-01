@@ -12,6 +12,7 @@ router.get("/me", isAuthenticated, getMyComplaints);
 // Admin / Manager routes
 router.get("/", isAuthenticated, authorizeRoles(["admin"]), getAllComplaints);
 router.get("/:id", isAuthenticated, authorizeRoles(["admin"]), getComplaintById);
-router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), resolveComplaint);
+router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), require("../controllers/complaint.controller").updateComplaint);
+router.delete("/:id", isAuthenticated, authorizeRoles(["admin"]), require("../controllers/complaint.controller").deleteComplaint);
 
 module.exports = router;

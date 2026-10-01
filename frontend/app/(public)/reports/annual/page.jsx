@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { getReports } from "@/service/report.service";
 
 export const metadata = {
-  title: "Annual Reports | Rabbi Association",
+  title: "Annual Reports",
   description: "Download our annual reports and explore our yearly impact.",
 };
 

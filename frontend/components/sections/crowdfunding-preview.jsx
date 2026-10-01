@@ -27,8 +27,8 @@ export function CrowdfundingPreview() {
   return (
     <section className="bg-slate-50 py-20 border-t border-border/60">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
-          <div className="max-w-2xl">
+        <div className="mb-10 flex flex-col items-center justify-center text-center gap-6">
+          <div className="max-w-2xl flex flex-col items-center">
             <div className="inline-flex items-center gap-2 rounded-sm border border-border bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 shadow-sm">
               <HeartHandshake className="size-4 text-accent" />
               Support Our Cause
@@ -40,17 +40,20 @@ export function CrowdfundingPreview() {
               Join hands with us to make a lasting impact. Your contributions help us provide better education, healthcare, and welfare to those in need.
             </p>
           </div>
+        </div>
+
+        {/* Use CardsGrid but without the padding padding wrappers */}
+        <div className="-mx-4 md:-mx-0 -my-12 md:-my-16">
+          <CardsGrid items={campaigns} type="campaign" />
+        </div>
+        
+        <div className="mt-20 flex justify-center">
           <Button asChild size="lg" className="h-12 rounded-full bg-navy px-8 font-bold text-white shadow-lg hover:bg-navy/90 hover:shadow-xl transition-all">
             <Link href="/crowdfunding">
               View All Campaigns
               <ArrowRight className="ml-2 size-4" />
             </Link>
           </Button>
-        </div>
-
-        {/* Use CardsGrid but without the padding padding wrappers */}
-        <div className="-mx-4 md:-mx-0 -my-12 md:-my-16">
-          <CardsGrid items={campaigns} type="campaign" />
         </div>
       </div>
     </section>

@@ -120,8 +120,8 @@ export default function Page() {
       columns={columns}
       primaryAction={null} // Cannot create subscribers from admin panel
       headerActions={headerActions}
-      hideDelete={false} // Admins can delete subscribers
-      hideEdit={true} // Subscribers cannot be edited
+       
+       
     />
   )
 }

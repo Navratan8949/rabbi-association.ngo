@@ -58,7 +58,7 @@ export default function Page() {
       endpoint="/appointments"
       schema={appointmentSchema}
       columns={columns}
-      disableActions={() => true} // Appointment letters are immutable
+       
     />
   )
 }

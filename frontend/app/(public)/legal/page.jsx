@@ -4,7 +4,7 @@ import { Shield, FileText, CheckCircle2, Building, Scale } from "lucide-react";
 import { getSiteContentById } from "@/service/site-content.service";
 
 export const metadata = {
-  title: "Registration & Legal Details | Rabbi Association",
+  title: "Registration & Legal Details",
   description:
     "Legal documentation, 12A, 80G, and CSR registration details for Rabbi Association.",
 };

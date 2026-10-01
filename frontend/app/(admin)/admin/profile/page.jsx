@@ -48,13 +48,6 @@ export default function ProfilePage() {
 
   if (!user) return null
 
-  // Get initials for avatar
-  const initials = user.fullName
-    ?.split(" ")
-    .map((n) => n[0])
-    .join("")
-    .substring(0, 2)
-    .toUpperCase() || "AD"
 
   const roleDisplay = user.role
     ?.split("_")
@@ -109,11 +102,7 @@ export default function ProfilePage() {
         <div className="lg:col-span-1 space-y-8">
           <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm flex flex-col items-center text-center">
             <div className="flex size-24 items-center justify-center rounded-full bg-navy text-3xl font-bold text-white shadow-sm overflow-hidden mb-4">
-              {user?.profileImage?.url ? (
-                <img src={user.profileImage.url} alt="Profile" className="size-full object-cover" />
-              ) : (
-                initials
-              )}
+              <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
             </div>
             <h2 className="text-xl font-bold text-navy">{user.fullName || "Admin User"}</h2>
             <p className="text-sm font-medium text-muted-foreground mt-1">{roleDisplay}</p>

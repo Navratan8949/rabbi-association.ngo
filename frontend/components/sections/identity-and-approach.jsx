@@ -29,11 +29,14 @@ export function IdentityAndApproach() {
           {/* Left Side: Our Approach */}
           <Reveal>
             <div className="bg-slate-50 p-10 rounded-3xl border border-slate-100 h-full shadow-sm">
-              <SectionHeading 
-                title="Our Approach"
-                description="The core principles that guide our educational initiatives and institutional development."
-                className="mb-8"
-              />
+              <div className="flex flex-col items-center text-center">
+                <SectionHeading 
+                  align="center"
+                  title="Our Approach"
+                  description="The core principles that guide our educational initiatives and institutional development."
+                  className="mb-8 mx-auto"
+                />
+              </div>
               
               <div className="space-y-6 mt-8">
                 {approaches.map((item, i) => (

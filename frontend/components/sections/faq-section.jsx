@@ -59,54 +59,43 @@ export function FaqSection() {
         <div className="absolute right-0 bottom-0 -z-10 h-full w-full bg-[radial-gradient(ellipse_at_bottom_right,rgba(25,76,143,0.05),transparent_50%)]"></div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
-            {/* Left Column - Sticky Heading */}
-            <div className="lg:sticky lg:top-16 lg:h-max">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-navy shadow-sm">
-                <HelpCircle className="size-4 text-accent" />
-                Have Questions?
-              </div>
-              <h2 className="text-3xl font-bold text-navy sm:text-4xl lg:text-5xl lg:leading-tight">
-                Frequently Asked{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy to-accent">
-                  Questions
-                </span>
-              </h2>
-              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                Find answers to common questions about our organization,
-                donations, tax exemptions, and how you can get involved.
-              </p>
-              {/* <div className="mt-8 rounded-2xl border border-border/60 bg-white p-6 shadow-sm">
-              <p className="font-semibold text-foreground">Still have questions?</p>
-              <p className="mt-1 text-sm text-muted-foreground">We're here to help you understand our mission better.</p>
-              <Button asChild className="mt-4 w-full rounded-xl bg-navy font-bold hover:bg-navy/90 text-white">
-                <Link href="/contact">Contact Support</Link>
-              </Button>
-            </div> */}
+          <div className="flex flex-col items-center text-center mb-12">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-navy shadow-sm">
+              <HelpCircle className="size-4 text-accent" />
+              Have Questions?
             </div>
+            <h2 className="text-3xl font-bold text-navy sm:text-4xl lg:text-5xl lg:leading-tight">
+              Frequently Asked{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy to-accent">
+                Questions
+              </span>
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground max-w-2xl">
+              Find answers to common questions about our organization,
+              donations, tax exemptions, and how you can get involved.
+            </p>
+          </div>
 
-            {/* Right Column - Accordion */}
-            <div className="rounded-3xl border border-border/50 bg-white p-6 shadow-xl shadow-navy/5 sm:p-8">
-              <Accordion type="single" className="w-full" defaultValue="item-0">
-                {faqs.map((faq, index) => (
-                  <AccordionItem
-                    key={index}
-                    value={`item-${index}`}
-                    className="border-b-border/40 py-2 last:border-0"
-                  >
-                    <AccordionTrigger className="text-left text-[15px] font-bold text-navy hover:text-accent transition-colors py-4">
-                      {faq.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-[15px] leading-relaxed text-muted-foreground pb-4">
-                      <div
-                        className="prose prose-sm max-w-none text-muted-foreground"
-                        dangerouslySetInnerHTML={{ __html: faq.a }}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
+          <div className="mx-auto max-w-4xl rounded-3xl border border-border/50 bg-white p-6 shadow-xl shadow-navy/5 sm:p-8">
+            <Accordion type="single" className="w-full" defaultValue="item-0">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="border-b-border/40 py-2 last:border-0"
+                >
+                  <AccordionTrigger className="text-left text-[15px] font-bold text-navy hover:text-accent transition-colors py-4">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-[15px] leading-relaxed text-muted-foreground pb-4">
+                    <div
+                      className="prose prose-sm max-w-none text-muted-foreground"
+                      dangerouslySetInnerHTML={{ __html: faq.a }}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </div>
       </div>

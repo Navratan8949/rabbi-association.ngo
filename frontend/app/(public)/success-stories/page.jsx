@@ -3,7 +3,7 @@ import { Star, Quote, Heart } from "lucide-react";
 import { getTestimonials } from "@/service/testimonial.service";
 
 export const metadata = {
-  title: "Success Stories | Rabbi Association",
+  title: "Success Stories",
   description:
     "Read inspiring success stories and testimonials from individuals and communities whose lives have been transformed.",
 };

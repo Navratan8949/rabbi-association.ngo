@@ -139,6 +139,28 @@ exports.register = async (req, res) => {
 
     const token = generateToken(user._id);
 
+    // Send admin notification
+    try {
+      const { getTransporter } = require("../utils/sendMail");
+      const { transporter, settings } = await getTransporter();
+      const adminEmail = process.env.ADMIN_EMAIL || "admin@rabbi.co.in";
+      await transporter.sendMail({
+          from: `"${settings.fromName}" <${settings.fromEmail || settings.user}>`,
+          to: adminEmail,
+          subject: `New User Registration: ${fullName}`,
+          html: `
+              <h3>New User Registration Alert</h3>
+              <p>A new user has just registered on your website.</p>
+              <p><strong>Name:</strong> ${fullName}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Mobile:</strong> ${mobile}</p>
+              <p><strong>Role:</strong> ${assignedRole}</p>
+          `
+      });
+    } catch (emailErr) {
+      console.error("Failed to send admin notification for new user:", emailErr);
+    }
+
     res.status(201).json({
       success: true,
       token,
@@ -208,7 +230,6 @@ exports.memberLogin = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -281,7 +302,6 @@ exports.adminLogin = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -382,6 +402,68 @@ exports.updatePassword = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const crypto = require("crypto");
+const { SendVerificationCode } = require("../utils/sendMail");
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "There is no user with that email" });
+    }
+
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    user.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 mins
+
+    await user.save({ validateBeforeSave: false });
+
+    const resetUrl = `${req.protocol}://${req.get("host").replace("5000", "3000")}/reset-password?token=${resetToken}`;
+    
+    const message = `You are receiving this email because you (or someone else) requested a password reset. Please make a request to: \n\n ${resetUrl}`;
+    const htmlMessage = `<p>You are receiving this email because you (or someone else) requested a password reset.</p><p>Please click the link below to reset your password:</p><a href="${resetUrl}">Reset Password</a>`;
+
+    try {
+      await SendVerificationCode(user.email, htmlMessage, "Password Reset Request", message);
+      res.status(200).json({ success: true, message: "Email sent" });
+    } catch (err) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+      return res.status(500).json({ success: false, message: "Email could not be sent" });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const resetPasswordToken = crypto.createHash("sha256").update(req.body.token).digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Invalid or expired token" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(req.body.password, salt);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    res.status(200).json({ success: true, message: "Password updated successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

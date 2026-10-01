@@ -38,6 +38,17 @@ exports.deleteSubscriber = async (req, res) => {
     }
 };
 
+// Admin — Update
+exports.updateSubscriber = async (req, res) => {
+    try {
+        const sub = await Newsletter.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!sub) return res.status(404).json({ success: false, message: "Subscriber not found" });
+        res.status(200).json({ success: true, message: "Subscriber updated", sub });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 // Admin — Send mass email to all subscribers
 exports.sendMassNewsletter = async (req, res) => {
     try {

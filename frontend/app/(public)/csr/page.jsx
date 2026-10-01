@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { getSiteContentById } from "@/service/site-content.service";
 
 export const metadata = {
-  title: "CSR Partnership | Rabbi Association",
+  title: "CSR Partnership",
   description: "Partner with Rabbi Association for meaningful Corporate Social Responsibility (CSR) initiatives.",
 };
 

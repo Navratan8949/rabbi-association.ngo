@@ -59,14 +59,16 @@ export function FounderMessageSection({ data }) {
           </Reveal>
 
           {/* Text Side */}
-          <div className="relative">
+          <div className="relative text-center md:text-left">
             <Reveal>
-              <div className="mb-6 flex size-14 items-center justify-center rounded-2xl bg-accent/10 text-accent ring-1 ring-accent/20">
-                <Quote className="size-6 fill-current" />
+              <div className="flex flex-col items-center md:items-start text-center md:text-left mb-6">
+                <div className="mb-6 flex size-14 items-center justify-center rounded-2xl bg-accent/10 text-accent ring-1 ring-accent/20">
+                  <Quote className="size-6 fill-current" />
+                </div>
+                <h2 className="text-3xl font-bold tracking-tight text-navy md:text-4xl lg:text-5xl">
+                  {title}
+                </h2>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-navy md:text-4xl lg:text-5xl mb-6">
-                {title}
-              </h2>
             </Reveal>
 
             <Reveal delay={0.1}>

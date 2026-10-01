@@ -3,12 +3,12 @@ const SiteContent = require("../models/SiteContent");
 
 async function getTransporter() {
     let settings = {
-        host: process.env.SMTP_HOST || "smtp.gmail.com",
-        port: process.env.SMTP_PORT || 587,
-        user: process.env.SMTP_USER || "navratan0443@gmail.com",
-        pass: process.env.SMTP_PASS || "vddi lgvz ieby hlmk",
+        host: process.env.SMTP_HOST || "smtp.hostinger.com",
+        port: process.env.SMTP_PORT || 465,
+        user: process.env.SMTP_USER || "info@rabbi.co.in",
+        pass: process.env.SMTP_PASS || "",
         fromName: "Rabbi Association",
-        fromEmail: "navratan0443@gmail.com"
+        fromEmail: "info@rabbi.co.in"
     };
 
     try {
@@ -35,6 +35,8 @@ async function getTransporter() {
 
     return { transporter, settings };
 }
+
+exports.getTransporter = getTransporter;
 
 exports.SendVerificationCode = async (email, html, subject, text) => {
     try {

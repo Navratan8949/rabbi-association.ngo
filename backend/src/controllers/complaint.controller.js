@@ -66,9 +66,9 @@ exports.getComplaintById = async (req, res) => {
     }
 };
 
-exports.resolveComplaint = async (req, res) => {
+exports.updateComplaint = async (req, res) => {
     try {
-        const { status, reply } = req.body;
+        const { status, reply, subject, message } = req.body;
         const complaint = await Complaint.findById(req.params.id).populate({
             path: "member",
             populate: { path: "user", select: "fullName email" }
@@ -78,6 +78,8 @@ exports.resolveComplaint = async (req, res) => {
 
         complaint.status = status || complaint.status;
         complaint.reply = reply || complaint.reply;
+        complaint.subject = subject || complaint.subject;
+        complaint.message = message || complaint.message;
         
         if (status === "resolved" || status === "closed") {
             complaint.resolvedBy = req.user.id;
@@ -104,6 +106,16 @@ exports.resolveComplaint = async (req, res) => {
         }
 
         res.status(200).json({ success: true, message: "Complaint updated successfully", complaint });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+exports.deleteComplaint = async (req, res) => {
+    try {
+        const complaint = await Complaint.findByIdAndDelete(req.params.id);
+        if (!complaint) return res.status(404).json({ success: false, message: "Complaint not found" });
+        res.status(200).json({ success: true, message: "Complaint deleted" });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

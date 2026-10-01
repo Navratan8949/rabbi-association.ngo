@@ -113,10 +113,12 @@ export function Hero() {
               Est. 2026 · Registered NGO
             </div>
 
-            <h1 className="font-bold leading-tight tracking-tight text-5xl md:text-6xl lg:text-7xl text-white mb-6">
-              {activeSlide.title} <br />
-              <span className="text-accent">{activeSlide.highlight}</span>
+            <h1 className="font-bold leading-tight tracking-tight text-5xl md:text-6xl lg:text-7xl text-white mb-2">
+              {activeSlide.title}
             </h1>
+            <h2 className="font-bold leading-tight tracking-tight text-3xl md:text-4xl lg:text-5xl text-accent mb-6">
+              {activeSlide.highlight}
+            </h2>
 
             <p className="text-lg md:text-xl leading-relaxed text-white/90 max-w-2xl mx-auto font-medium mb-10">
               {activeSlide.desc}

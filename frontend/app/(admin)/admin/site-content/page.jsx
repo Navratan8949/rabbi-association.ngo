@@ -154,7 +154,7 @@ export default function SiteContentAdminPage() {
 
       // 2. Hero Slider
       if (siteContent.home_hero?.content) {
-        try { setHeroSlides(JSON.parse(siteContent.home_hero.content)) } catch (e) { }
+        try { setHeroSlides(JSON.parse(siteContent.home_hero.content).map(item => ({ ...item, _id: item._id || crypto.randomUUID() }))) } catch (e) { }
       }
 
       // 3. About Preview (Home)
@@ -173,23 +173,27 @@ export default function SiteContentAdminPage() {
 
       // 4. About Main
       if (siteContent.about_main?.content) {
-        try { setAboutMain(JSON.parse(siteContent.about_main.content)) } catch (e) { }
+        try { 
+          const parsed = JSON.parse(siteContent.about_main.content)
+          parsed.sections = (parsed.sections || []).map(s => s.length === 2 ? [...s, crypto.randomUUID()] : s)
+          setAboutMain(parsed) 
+        } catch (e) { }
       }
 
       // 5. Focus Areas
       if (siteContent.focus_areas?.content) {
-        try { setFocusAreas(JSON.parse(siteContent.focus_areas.content)) } catch (e) { }
+        try { setFocusAreas(JSON.parse(siteContent.focus_areas.content).map(item => ({ ...item, _id: item._id || crypto.randomUUID() }))) } catch (e) { }
       }
 
       // 6. Impact Stats
       if (siteContent.impact_stats?.content) {
-        try { setImpactStats(JSON.parse(siteContent.impact_stats.content)) } catch (e) { }
+        try { setImpactStats(JSON.parse(siteContent.impact_stats.content).map(item => ({ ...item, _id: item._id || crypto.randomUUID() }))) } catch (e) { }
       }
 
 
       // 8. FAQs
       if (siteContent.faqs?.content) {
-        try { setFaqs(JSON.parse(siteContent.faqs.content)) } catch (e) { }
+        try { setFaqs(JSON.parse(siteContent.faqs.content).map(item => ({ ...item, _id: item._id || crypto.randomUUID() }))) } catch (e) { }
       }
 
       // 9. Legal Pages
@@ -211,6 +215,7 @@ export default function SiteContentAdminPage() {
             delete parsed.phone
           }
           if (!parsed.phones) parsed.phones = []
+          parsed.phones = parsed.phones.map(p => ({ ...p, _id: p._id || crypto.randomUUID() }))
           setContactInfo(parsed)
         } catch (e) { }
       }
@@ -495,7 +500,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={HelpCircle} title="Frequently Asked Questions" description="Questions and answers shown on the FAQ page" />
             <div className="p-6 space-y-4 bg-white">
               {faqs.map((faq, index) => (
-                <ItemCard key={index} label={`Question ${index + 1}`} onDelete={() => setFaqs(faqs.filter((_, i) => i !== index))}>
+                <ItemCard key={faq._id || index} label={`Question ${index + 1}`} onDelete={() => setFaqs(faqs.filter((_, i) => i !== index))}>
                   <FieldGroup label="Question">
                     <Input value={faq.q} onChange={(e) => { const newFaqs = [...faqs]; newFaqs[index].q = e.target.value; setFaqs(newFaqs) }} placeholder="Enter the question..." className="border-primary/20" />
                   </FieldGroup>
@@ -505,7 +510,7 @@ export default function SiteContentAdminPage() {
                 </ItemCard>
               ))}
               <div className="flex flex-wrap gap-3 pt-2">
-                <AddBtn onClick={() => setFaqs([...faqs, { q: "", a: "" }])}>Add New Question</AddBtn>
+                <AddBtn onClick={() => setFaqs([...faqs, { q: "", a: "", _id: crypto.randomUUID() }])}>Add New Question</AddBtn>
                 <SaveBtn onClick={() => saveContent("faqs", "FAQs", faqs)} disabled={isSaving}>Save All FAQs</SaveBtn>
               </div>
             </div>
@@ -521,7 +526,7 @@ export default function SiteContentAdminPage() {
                 <FieldGroup label="📞 Phone Numbers">
                   <div className="space-y-3">
                     {contactInfo.phones?.map((phone, idx) => (
-                      <div key={idx} className="rounded-xl border border-primary/10 bg-blue-50/30 p-4 space-y-3">
+                      <div key={phone._id || idx} className="rounded-xl border border-primary/10 bg-blue-50/30 p-4 space-y-3">
                         <div className="flex gap-2 items-center">
                           <Input className="flex-1 border-primary/20" value={phone.number} onChange={(e) => {
                             const newPhones = [...contactInfo.phones]
@@ -547,7 +552,7 @@ export default function SiteContentAdminPage() {
                         </div>
                       </div>
                     ))}
-                    <AddBtn onClick={() => setContactInfo({ ...contactInfo, phones: [...(contactInfo.phones || []), { number: "", showInNavbar: true, showInFooter: true, showInContact: true }] })}>Add Phone Number</AddBtn>
+                    <AddBtn onClick={() => setContactInfo({ ...contactInfo, phones: [...(contactInfo.phones || []), { number: "", showInNavbar: true, showInFooter: true, showInContact: true, _id: crypto.randomUUID() }] })}>Add Phone Number</AddBtn>
                   </div>
                 </FieldGroup>
               </div>
@@ -608,7 +613,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={Layers} title="Hero Slider (Homepage)" description="The large banner slides shown at the top of the homepage" />
             <div className="p-6 space-y-4 bg-white">
               {heroSlides.map((slide, index) => (
-                <ItemCard key={index} label={`Slide ${index + 1}`} onDelete={() => setHeroSlides(heroSlides.filter((_, i) => i !== index))}>
+                <ItemCard key={slide._id || index} label={`Slide ${index + 1}`} onDelete={() => setHeroSlides(heroSlides.filter((_, i) => i !== index))}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FieldGroup label="Normal Title"><Input value={slide.title} onChange={(e) => { const newS = [...heroSlides]; newS[index].title = e.target.value; setHeroSlides(newS) }} className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="✨ Highlighted Title" hint="This title shows in gold/accent color"><Input value={slide.highlight} onChange={(e) => { const newS = [...heroSlides]; newS[index].highlight = e.target.value; setHeroSlides(newS) }} className="border-primary/20" /></FieldGroup>
@@ -624,7 +629,7 @@ export default function SiteContentAdminPage() {
                 </ItemCard>
               ))}
               <div className="flex flex-wrap gap-3 pt-2">
-                <AddBtn onClick={() => setHeroSlides([...heroSlides, { title: "", highlight: "", desc: "", image: "" }])}>Add New Slide</AddBtn>
+                <AddBtn onClick={() => setHeroSlides([...heroSlides, { title: "", highlight: "", desc: "", image: "", _id: crypto.randomUUID() }])}>Add New Slide</AddBtn>
                 <SaveBtn onClick={() => saveContent("home_hero", "Hero Slider", heroSlides)} disabled={isSaving}>Save Hero Slider</SaveBtn>
               </div>
             </div>
@@ -680,13 +685,13 @@ export default function SiteContentAdminPage() {
               <div className="border-t border-primary/10 pt-6 space-y-4">
                 <p className="text-sm font-bold text-primary">📝 Content Sections</p>
                 {aboutMain.sections.map((section, idx) => (
-                  <ItemCard key={idx} label={`Section ${idx + 1}`} onDelete={() => setAboutMain({ ...aboutMain, sections: aboutMain.sections.filter((_, i) => i !== idx) })}>
+                  <ItemCard key={section[2] || idx} label={`Section ${idx + 1}`} onDelete={() => setAboutMain({ ...aboutMain, sections: aboutMain.sections.filter((_, i) => i !== idx) })}>
                     <FieldGroup label="Heading"><Input value={section[0]} onChange={(e) => { const newS = [...aboutMain.sections]; newS[idx][0] = e.target.value; setAboutMain({ ...aboutMain, sections: newS }) }} placeholder="Enter section heading..." className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="Paragraph"><RichTextEditor value={section[1]} onChange={(val) => { const newS = [...aboutMain.sections]; newS[idx][1] = val; setAboutMain({ ...aboutMain, sections: newS }) }} /></FieldGroup>
                   </ItemCard>
                 ))}
                 <div className="flex flex-wrap gap-3">
-                  <AddBtn onClick={() => setAboutMain({ ...aboutMain, sections: [...aboutMain.sections, ["", ""]] })}>Add Section</AddBtn>
+                  <AddBtn onClick={() => setAboutMain({ ...aboutMain, sections: [...aboutMain.sections, ["", "", crypto.randomUUID()]] })}>Add Section</AddBtn>
                   <SaveBtn onClick={() => saveContent("about_main", "About Us (Main Page)", aboutMain)} disabled={isSaving}>Save About Page</SaveBtn>
                 </div>
               </div>
@@ -700,7 +705,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={Target} title="Focus Areas" description="The 6 program cards shown on the homepage" />
             <div className="p-6 space-y-4 bg-white">
               {focusAreas.map((area, index) => (
-                <ItemCard key={index} label={`Area ${index + 1}: ${area.title || 'Untitled'}`} onDelete={() => setFocusAreas(focusAreas.filter((_, i) => i !== index))}>
+                <ItemCard key={area._id || index} label={`Area ${index + 1}: ${area.title || 'Untitled'}`} onDelete={() => setFocusAreas(focusAreas.filter((_, i) => i !== index))}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FieldGroup label="Title"><Input value={area.title} onChange={(e) => { const newA = [...focusAreas]; newA[index].title = e.target.value; setFocusAreas(newA) }} placeholder="e.g. Education" className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="Icon" hint="Choose from the icon list"><IconPicker value={area.icon} onChange={(val) => { const newA = [...focusAreas]; newA[index].icon = val; setFocusAreas(newA) }} /></FieldGroup>
@@ -716,7 +721,7 @@ export default function SiteContentAdminPage() {
                 </ItemCard>
               ))}
               <div className="flex flex-wrap gap-3 pt-2">
-                <AddBtn onClick={() => setFocusAreas([...focusAreas, { title: "", desc: "", image: "", icon: "" }])}>Add Focus Area</AddBtn>
+                <AddBtn onClick={() => setFocusAreas([...focusAreas, { title: "", desc: "", image: "", icon: "", _id: crypto.randomUUID() }])}>Add Focus Area</AddBtn>
                 <SaveBtn onClick={() => saveContent("focus_areas", "Focus Areas", focusAreas)} disabled={isSaving}>Save Focus Areas</SaveBtn>
               </div>
             </div>
@@ -729,7 +734,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={BarChart3} title="Impact Stats" description="Numbers shown on the homepage (e.g. 5000+ Lives Impacted)" />
             <div className="p-6 space-y-4 bg-white">
               {impactStats.map((stat, index) => (
-                <ItemCard key={index} label={`Stat ${index + 1}: ${stat.label || 'Untitled'}`} onDelete={() => setImpactStats(impactStats.filter((_, i) => i !== index))}>
+                <ItemCard key={stat._id || index} label={`Stat ${index + 1}: ${stat.label || 'Untitled'}`} onDelete={() => setImpactStats(impactStats.filter((_, i) => i !== index))}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <FieldGroup label="Number / Value" hint="e.g. 5000+"><Input value={stat.value} onChange={(e) => { const newS = [...impactStats]; newS[index].value = e.target.value; setImpactStats(newS) }} placeholder="5000+" className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="Label" hint="e.g. Lives Impacted"><Input value={stat.label} onChange={(e) => { const newS = [...impactStats]; newS[index].label = e.target.value; setImpactStats(newS) }} placeholder="Lives Impacted" className="border-primary/20" /></FieldGroup>
@@ -738,7 +743,7 @@ export default function SiteContentAdminPage() {
                 </ItemCard>
               ))}
               <div className="flex flex-wrap gap-3 pt-2">
-                <AddBtn onClick={() => setImpactStats([...impactStats, { value: "", label: "", icon: "" }])}>Add Stat</AddBtn>
+                <AddBtn onClick={() => setImpactStats([...impactStats, { value: "", label: "", icon: "", _id: crypto.randomUUID() }])}>Add Stat</AddBtn>
                 <SaveBtn onClick={() => saveContent("impact_stats", "Impact Stats", impactStats)} disabled={isSaving}>Save Impact Stats</SaveBtn>
               </div>
             </div>

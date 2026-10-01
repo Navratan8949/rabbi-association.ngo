@@ -18,7 +18,7 @@ api.interceptors.request.use(
   (config) => {
     // Run only in browser
     if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token"); // adjust key if needed
+      const token = sessionStorage.getItem("token"); // adjust key if needed
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

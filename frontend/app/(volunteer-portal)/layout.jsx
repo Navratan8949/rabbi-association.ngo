@@ -58,7 +58,7 @@ export default function VolunteerLayout({ children }) {
 
   useEffect(() => {
     const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+      typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
     if (!token) {
       router.replace("/login");
       return;
@@ -266,8 +266,8 @@ export default function VolunteerLayout({ children }) {
                   My Account
                 </p>
               </div>
-              <div className="flex size-11 items-center justify-center rounded-full bg-navy text-sm font-bold text-white shadow-sm ring-2 ring-transparent group-hover:ring-accent/30 transition-all">
-                {user?.fullName?.[0]?.toUpperCase() || "M"}
+              <div className="flex size-11 items-center justify-center rounded-full bg-navy text-sm font-bold text-white shadow-sm ring-2 ring-transparent group-hover:ring-accent/30 transition-all overflow-hidden">
+                <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
               </div>
             </Link>
           </div>
@@ -294,9 +294,9 @@ export default function VolunteerLayout({ children }) {
             <GoogleTranslate variant="light" />
             <Link
               href="/volunteer-portal/profile"
-              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-navy text-xs font-bold text-white shadow-sm"
+              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-navy text-xs font-bold text-white shadow-sm overflow-hidden"
             >
-              {user?.fullName?.[0]?.toUpperCase() || "M"}
+              <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
             </Link>
           </div>
         </header>

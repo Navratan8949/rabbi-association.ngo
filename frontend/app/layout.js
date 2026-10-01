@@ -53,7 +53,7 @@ export async function generateMetadata() {
     metadataBase: new URL(siteUrl),
     title: {
       default: seoTitle,
-      template: `%s | ${seoTitle.split('-')[0].trim() || 'Website'}`,
+      template: `%s | ${seoTitle.split(/[-|]/)[0].trim() || 'RABBI ASSOCIATION'}`,
     },
     description: seoDesc,
     keywords: seoKeywords,
@@ -65,9 +65,7 @@ export async function generateMetadata() {
       address: false,
       telephone: false,
     },
-    alternates: {
-      canonical: "/",
-    },
+
     icons: {
       icon: favicon,
       shortcut: favicon,
