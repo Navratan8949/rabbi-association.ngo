@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import { useDispatch, useSelector } from "react-redux"
 import { setUser, selectIsAuthenticated, fetchUser, selectUser } from "@/redux/features/userSlice"
 import { useEffect } from "react"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -19,6 +20,7 @@ export default function AdminLoginPage() {
   const isAuthenticated = useSelector(selectIsAuthenticated)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({ email: "", password: "" })
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     // If the user is already authenticated in Redux, redirect based on role
@@ -71,7 +73,18 @@ export default function AdminLoginPage() {
               Forgot password?
             </Link>
           </div>
-          <Input type="password" className="h-11 rounded-xl" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+          <div className="relative">
+            <Input type={showPassword ? "text" : "password"} className="h-11 rounded-xl pr-11" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-navy transition-colors"
+              tabIndex={-1}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            </button>
+          </div>
         </div>
         <Button type="submit" disabled={loading} className="mt-2 h-11 rounded-xl bg-navy font-semibold text-white hover:bg-navy/90">{loading ? "Signing in…" : "Login as Admin"}</Button>
       </form>

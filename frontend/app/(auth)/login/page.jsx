@@ -10,6 +10,7 @@ import { memberLogin } from "@/service/auth.service";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, fetchUser, selectUser } from "@/redux/features/userSlice";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function MemberLoginPage() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function MemberLoginPage() {
   const user = useSelector(selectUser);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ emailOrMobile: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -100,13 +102,24 @@ export default function MemberLoginPage() {
               Forgot password?
             </Link>
           </div>
-          <Input
-            type="password"
-            className="h-11 rounded-xl"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            required
-          />
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              className="h-11 rounded-xl pr-11"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-navy transition-colors"
+              tabIndex={-1}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            </button>
+          </div>
         </div>
         <Button
           type="submit"
