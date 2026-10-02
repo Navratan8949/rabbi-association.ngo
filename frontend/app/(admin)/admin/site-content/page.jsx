@@ -500,7 +500,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={HelpCircle} title="Frequently Asked Questions" description="Questions and answers shown on the FAQ page" />
             <div className="p-6 space-y-4 bg-white">
               {faqs.map((faq, index) => (
-                <ItemCard key={faq._id || index} label={`Question ${index + 1}`} onDelete={() => setFaqs(faqs.filter((_, i) => i !== index))}>
+                <ItemCard key={faq._id || index} label={`Question ${index + 1}`} onDelete={() => { const newArr = faqs.filter((_, i) => i !== index); setFaqs(newArr); saveContent("faqs", "FAQs", newArr); }}>
                   <FieldGroup label="Question">
                     <Input value={faq.q} onChange={(e) => { const newFaqs = [...faqs]; newFaqs[index].q = e.target.value; setFaqs(newFaqs) }} placeholder="Enter the question..." className="border-primary/20" />
                   </FieldGroup>
@@ -534,9 +534,11 @@ export default function SiteContentAdminPage() {
                             setContactInfo({ ...contactInfo, phones: newPhones })
                           }} placeholder="+91 XXXXXXXXXX" />
                           <button onClick={() => {
-                            const newPhones = [...contactInfo.phones]
-                            newPhones.splice(idx, 1)
-                            setContactInfo({ ...contactInfo, phones: newPhones })
+                              const newPhones = [...contactInfo.phones]
+                              newPhones.splice(idx, 1)
+                              const newContactInfo = { ...contactInfo, phones: newPhones }
+                              setContactInfo(newContactInfo)
+                              saveContent("contact_info", "Contact Info", newContactInfo)
                           }} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 transition">
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -613,7 +615,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={Layers} title="Hero Slider (Homepage)" description="The large banner slides shown at the top of the homepage" />
             <div className="p-6 space-y-4 bg-white">
               {heroSlides.map((slide, index) => (
-                <ItemCard key={slide._id || index} label={`Slide ${index + 1}`} onDelete={() => setHeroSlides(heroSlides.filter((_, i) => i !== index))}>
+                <ItemCard key={slide._id || index} label={`Slide ${index + 1}`} onDelete={() => { const newArr = heroSlides.filter((_, i) => i !== index); setHeroSlides(newArr); saveContent("home_hero", "Hero Slider", newArr); }}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FieldGroup label="Normal Title"><Input value={slide.title} onChange={(e) => { const newS = [...heroSlides]; newS[index].title = e.target.value; setHeroSlides(newS) }} className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="✨ Highlighted Title" hint="This title shows in gold/accent color"><Input value={slide.highlight} onChange={(e) => { const newS = [...heroSlides]; newS[index].highlight = e.target.value; setHeroSlides(newS) }} className="border-primary/20" /></FieldGroup>
@@ -685,7 +687,7 @@ export default function SiteContentAdminPage() {
               <div className="border-t border-primary/10 pt-6 space-y-4">
                 <p className="text-sm font-bold text-primary">📝 Content Sections</p>
                 {aboutMain.sections.map((section, idx) => (
-                  <ItemCard key={section[2] || idx} label={`Section ${idx + 1}`} onDelete={() => setAboutMain({ ...aboutMain, sections: aboutMain.sections.filter((_, i) => i !== idx) })}>
+                  <ItemCard key={section[2] || idx} label={`Section ${idx + 1}`} onDelete={() => { const newArr = aboutMain.sections.filter((_, i) => i !== idx); const newAbout = { ...aboutMain, sections: newArr }; setAboutMain(newAbout); saveContent("about_main", "About Us (Main Page)", newAbout); }}>
                     <FieldGroup label="Heading"><Input value={section[0]} onChange={(e) => { const newS = [...aboutMain.sections]; newS[idx][0] = e.target.value; setAboutMain({ ...aboutMain, sections: newS }) }} placeholder="Enter section heading..." className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="Paragraph"><RichTextEditor value={section[1]} onChange={(val) => { const newS = [...aboutMain.sections]; newS[idx][1] = val; setAboutMain({ ...aboutMain, sections: newS }) }} /></FieldGroup>
                   </ItemCard>
@@ -705,7 +707,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={Target} title="Focus Areas" description="The 6 program cards shown on the homepage" />
             <div className="p-6 space-y-4 bg-white">
               {focusAreas.map((area, index) => (
-                <ItemCard key={area._id || index} label={`Area ${index + 1}: ${area.title || 'Untitled'}`} onDelete={() => setFocusAreas(focusAreas.filter((_, i) => i !== index))}>
+                <ItemCard key={area._id || index} label={`Area ${index + 1}: ${area.title || 'Untitled'}`} onDelete={() => { const newArr = focusAreas.filter((_, i) => i !== index); setFocusAreas(newArr); saveContent("focus_areas", "Focus Areas", newArr); }}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FieldGroup label="Title"><Input value={area.title} onChange={(e) => { const newA = [...focusAreas]; newA[index].title = e.target.value; setFocusAreas(newA) }} placeholder="e.g. Education" className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="Icon" hint="Choose from the icon list"><IconPicker value={area.icon} onChange={(val) => { const newA = [...focusAreas]; newA[index].icon = val; setFocusAreas(newA) }} /></FieldGroup>
@@ -734,7 +736,7 @@ export default function SiteContentAdminPage() {
             <GreenCardHeader icon={BarChart3} title="Impact Stats" description="Numbers shown on the homepage (e.g. 5000+ Lives Impacted)" />
             <div className="p-6 space-y-4 bg-white">
               {impactStats.map((stat, index) => (
-                <ItemCard key={stat._id || index} label={`Stat ${index + 1}: ${stat.label || 'Untitled'}`} onDelete={() => setImpactStats(impactStats.filter((_, i) => i !== index))}>
+                <ItemCard key={stat._id || index} label={`Stat ${index + 1}: ${stat.label || 'Untitled'}`} onDelete={() => { const newArr = impactStats.filter((_, i) => i !== index); setImpactStats(newArr); saveContent("impact_stats", "Impact Stats", newArr); }}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <FieldGroup label="Number / Value" hint="e.g. 5000+"><Input value={stat.value} onChange={(e) => { const newS = [...impactStats]; newS[index].value = e.target.value; setImpactStats(newS) }} placeholder="5000+" className="border-primary/20" /></FieldGroup>
                     <FieldGroup label="Label" hint="e.g. Lives Impacted"><Input value={stat.label} onChange={(e) => { const newS = [...impactStats]; newS[index].label = e.target.value; setImpactStats(newS) }} placeholder="Lives Impacted" className="border-primary/20" /></FieldGroup>
