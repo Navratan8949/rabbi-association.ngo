@@ -64,9 +64,9 @@ export function ImpactStats() {
                     </span>
                   )}
 
-                  <p className="text-sm font-medium text-muted-foreground">
+                  <div className="text-sm font-medium text-muted-foreground text-center">
                     {stat.label}
-                  </p>
+                  </div>
                 </div>
               </Reveal>
             );

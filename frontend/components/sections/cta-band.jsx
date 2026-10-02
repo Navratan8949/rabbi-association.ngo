@@ -41,17 +41,17 @@ export function CtaBand() {
               Let's Build It Together.
             </span>
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-300 md:text-xl drop-shadow-lg">
+          <div className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-300 md:text-xl drop-shadow-lg">
             Whether you are planning to establish a new school, strengthen an
             existing institution, develop academic systems, improve
             administration, build your team, or create a new educational
             initiative, Rabbi Association is ready to explore the possibilities
             with you.
-          </p>
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-slate-400 font-semibold md:text-lg tracking-wide uppercase drop-shadow-md">
+          </div>
+          <div className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-slate-400 font-semibold md:text-lg tracking-wide uppercase drop-shadow-md">
             Better Institutions. Stronger Educators. Empowered Learners.
             Transformed Communities.
-          </p>
+          </div>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Button
               asChild

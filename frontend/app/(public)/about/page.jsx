@@ -4,6 +4,8 @@ import { FocusAreas } from "@/components/sections/focus-areas";
 import { CtaBand } from "@/components/sections/cta-band";
 import { getSiteContentById } from "@/service/site-content.service";
 import Image from "next/image";
+import { Reveal } from "@/components/shared/reveal";
+import { Target } from "lucide-react";
 
 export const metadata = {
   title: "About Us",
@@ -14,7 +16,7 @@ export const metadata = {
 export default async function Page() {
   let contentHtml = null;
   let title = "Rabbi Association";
-  let image = "/placeholder.svg";
+  let image = "/rabbi-context/about_us_classroom.jpg";
 
   try {
     const res = await getSiteContentById("about_us");
@@ -37,60 +39,104 @@ export default async function Page() {
         image={image}
       />
 
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="prose prose-lg prose-slate prose-a:text-primary max-w-none">
-              {contentHtml ? (
-                <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-              ) : (
-                <>
-                  <h2 className="text-sm font-bold uppercase tracking-widest text-accent mb-2">
+      <section className="relative py-24 bg-white overflow-hidden">
+        {/* Subtle Background pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none" />
+        
+        <div className="mx-auto max-w-7xl px-4 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left Content Area */}
+            <div className="order-2 lg:order-1">
+              <Reveal>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-2 w-2 rounded-full bg-accent" />
+                  <h2 className="text-sm font-bold uppercase tracking-widest text-accent text-left">
                     Education with Purpose. Excellence with Values.
                   </h2>
-                  <h3 className="text-3xl font-bold text-navy mb-6">
-                    Rabbi Association
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
-                    Rabbi Association is an education consultancy and
-                    institutional development organisation committed to
-                    advancing quality education, human empowerment,
-                    institutional excellence, and sustainable social
-                    development.
-                  </p>
-                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
-                    Founded on 5 September 2026, Rabbi Association was
-                    established with a vision to make a meaningful contribution
-                    to individuals, educational institutions, and communities
-                    through professional expertise guided by strong human,
-                    ethical, and social values.
-                  </p>
-                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
-                    We believe that education is more than the transmission of
-                    knowledge. True education forms the mind, shapes character,
-                    strengthens values, develops leadership, and inspires people
-                    to serve humanity.
-                  </p>
-                  <p className="text-slate-600 leading-relaxed font-medium mb-4">
-                    Our inspiration comes from the life and teachings of Christ
-                    the Rabbi—our Teacher, Model, and Guide, and from the legacy
-                    of our beloved father, Late Shri Chandra Pal Singh, a
-                    dedicated teacher whose life reflected a deep commitment to
-                    education and service.
-                  </p>
-                  <p className="text-slate-600 leading-relaxed font-medium mb-6">
-                    At Rabbi Association, we seek to combine professional
-                    excellence with compassion, integrity, responsibility, and
-                    service—helping institutions and individuals realise their
-                    potential and create lasting positive impact.
-                  </p>
-                </>
-              )}
+                </div>
+                
+                <h3 className="text-4xl md:text-5xl font-extrabold text-navy mb-8 leading-[1.15] text-left">
+                  Transforming Lives Through <span className="text-accent">Education</span>
+                </h3>
+              </Reveal>
+
+              <Reveal delay={0.1}>
+                <div className="prose prose-lg prose-slate prose-a:text-primary max-w-none text-justify border-l-0 pl-0 md:border-l-4 md:border-accent/20 md:pl-6">
+                  {contentHtml ? (
+                    <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+                  ) : (
+                    <>
+                      <p className="text-slate-600 leading-relaxed font-medium mb-5">
+                        Rabbi Association is an education consultancy and
+                        institutional development organisation committed to
+                        advancing quality education, human empowerment,
+                        institutional excellence, and sustainable social
+                        development.
+                      </p>
+                      <p className="text-slate-600 leading-relaxed font-medium mb-5">
+                        Founded on 5 September 2026, Rabbi Association was
+                        established with a vision to make a meaningful contribution
+                        to individuals, educational institutions, and communities
+                        through professional expertise guided by strong human,
+                        ethical, and social values.
+                      </p>
+                      <p className="text-slate-600 leading-relaxed font-medium mb-5">
+                        We believe that education is more than the transmission of
+                        knowledge. True education forms the mind, shapes character,
+                        strengthens values, develops leadership, and inspires people
+                        to serve humanity.
+                      </p>
+                      <p className="text-slate-600 leading-relaxed font-medium mb-5">
+                        Our inspiration comes from the life and teachings of Christ
+                        the Rabbi—our Teacher, Model, and Guide, and from the legacy
+                        of our beloved father, Late Shri Chandra Pal Singh, a
+                        dedicated teacher whose life reflected a deep commitment to
+                        education and service.
+                      </p>
+                      <p className="text-slate-600 leading-relaxed font-medium">
+                        At Rabbi Association, we seek to combine professional
+                        excellence with compassion, integrity, responsibility, and
+                        service—helping institutions and individuals realise their
+                        potential and create lasting positive impact.
+                      </p>
+                    </>
+                  )}
+                </div>
+              </Reveal>
             </div>
 
-            <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-square lg:aspect-auto lg:h-[600px]">
-              <Image src={image} alt="About Us" fill className="object-cover" />
+            {/* Right Image Area - Premium Design */}
+            <div className="order-1 lg:order-2">
+              <Reveal delay={0.2} className="relative">
+                {/* Decorative Box Behind */}
+                <div className="absolute -inset-4 bg-accent/10 rounded-[2.5rem] transform rotate-3 scale-105 transition-transform duration-500 hover:rotate-6 hidden md:block" />
+                
+                {/* Main Image Container */}
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-auto lg:h-[650px] border-8 border-white group">
+                  <Image 
+                    src={image} 
+                    alt="About Us" 
+                    fill 
+                    priority
+                    className="object-cover transition-transform duration-700 group-hover:scale-105" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
+                </div>
+                
+                {/* Floating Badge */}
+                <div className="absolute -bottom-4 -left-2 md:-bottom-6 md:-left-10 bg-white p-3 md:p-5 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-4 border border-slate-100 z-20">
+                  <div className="h-8 w-8 md:h-12 md:w-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                    <Target className="h-4 w-4 md:h-6 md:w-6 text-accent" />
+                  </div>
+                  <div className="pr-2 md:pr-4">
+                    <div className="text-lg md:text-2xl font-black text-navy leading-none mb-0.5 md:mb-1">2026</div>
+                    <div className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500 leading-none">Established</div>
+                  </div>
+                </div>
+              </Reveal>
             </div>
+
           </div>
         </div>
       </section>

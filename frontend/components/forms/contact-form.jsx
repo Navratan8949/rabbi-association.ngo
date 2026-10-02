@@ -86,7 +86,7 @@ export function ContactForm() {
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="relative">
           <input
-            type="tel"
+            type="number"
             id="mobile"
             value={formData.mobile}
             onChange={handleChange}

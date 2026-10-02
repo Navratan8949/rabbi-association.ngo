@@ -35,7 +35,7 @@ export async function FeaturedProjects() {
         </div>
         <div className="mt-12 rounded-2xl border border-dashed border-border/80 bg-card p-12 text-center shadow-sm">
           <h3 className="text-xl font-semibold text-navy">No featured projects</h3>
-          <p className="mt-2 text-muted-foreground">We will highlight our ongoing initiatives here soon.</p>
+          <div className="mt-2 text-muted-foreground text-center">We will highlight our ongoing initiatives here soon.</div>
         </div>
       </section>
     )

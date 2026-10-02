@@ -410,40 +410,40 @@ export function Navbar() {
                     })}
                   </Accordion>
 
-                  <div className="mt-6 space-y-3 border-t border-border/70 pt-6">
-                    <Button asChild className="h-12 w-full rounded-xl bg-primary font-bold text-white shadow-md hover:bg-primary/95">
+                  <div className="mt-6 flex flex-col gap-4 border-t border-border/70 pt-6">
+                    <Button asChild className="h-14 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 font-bold text-slate-950 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all">
                       <Link href="/donate">
-                        <Heart className="mr-2 size-5 text-white" />
+                        <Heart className="mr-2 size-5" />
                         Make a Donation
                       </Link>
                     </Button>
                     
-                    <div className="grid grid-cols-2 gap-3 pt-2">
+                    <div className="grid grid-cols-2 gap-3">
                       {user ? (
                         <>
-                          <Button asChild variant="outline" className="h-11 rounded-xl font-bold border-border shadow-sm text-foreground hover:bg-secondary">
+                          <Button asChild variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-slate-200 bg-white shadow-sm hover:border-amber-400 hover:bg-amber-50 transition-all text-slate-700 hover:text-amber-700">
                             <Link href={user.role === "admin" ? '/admin' : user.role === "volunteer" ? '/volunteer-portal' : '/member'}>
-                              <LayoutDashboard className="mr-2 size-4" />
-                              Portal
+                              <LayoutDashboard className="size-5" />
+                              <span className="text-[11px] font-bold uppercase tracking-wider">Portal</span>
                             </Link>
                           </Button>
-                          <Button onClick={handleLogout} variant="ghost" className="h-11 rounded-xl text-rose-600 bg-rose-50 hover:bg-rose-100 hover:text-rose-700 font-bold">
-                            <LogOut className="mr-2 size-4" />
-                            Logout
+                          <Button onClick={handleLogout} variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-rose-100 bg-rose-50 shadow-sm hover:border-rose-300 hover:bg-rose-100 transition-all text-rose-600">
+                            <LogOut className="size-5" />
+                            <span className="text-[11px] font-bold uppercase tracking-wider">Logout</span>
                           </Button>
                         </>
                       ) : (
                         <>
-                          <Button asChild variant="outline" className="h-11 rounded-xl font-bold border-border shadow-sm text-foreground hover:bg-secondary">
+                          <Button asChild variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-slate-200 bg-white shadow-sm hover:border-amber-400 hover:bg-amber-50 transition-all text-slate-700 hover:text-amber-700 text-center px-1">
                             <Link href="/login">
-                              <User className="mr-2 size-4 text-primary" />
-                              Member / Volunteer Login
+                              <User className="size-5" />
+                              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider leading-tight">Member<br/>Login</span>
                             </Link>
                           </Button>
-                          <Button asChild variant="outline" className="h-11 rounded-xl font-bold border-border shadow-sm text-foreground hover:bg-secondary">
+                          <Button asChild variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-slate-200 bg-white shadow-sm hover:border-amber-400 hover:bg-amber-50 transition-all text-slate-700 hover:text-amber-700 text-center px-1">
                             <Link href="/admin-login">
-                              <Lock className="mr-2 size-4 text-primary" />
-                              Admin Login
+                              <Lock className="size-5" />
+                              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider leading-tight">Admin<br/>Login</span>
                             </Link>
                           </Button>
                         </>

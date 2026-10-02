@@ -102,7 +102,7 @@ export function Footer() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 py-16">
-        <div className="grid gap-12 lg:grid-cols-3">
+        <div className="grid gap-12 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <div className="inline-flex rounded-xl bg-white p-3 shadow-lg shadow-black/20 border border-slate-800">
               <Logo />
@@ -141,7 +141,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-8 lg:gap-10 lg:col-span-1 lg:pl-10">
+          <div className="grid grid-cols-2 gap-8 lg:gap-10 lg:col-span-2 lg:pl-10">
             <div>
               <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
                 Quick Links
@@ -226,12 +226,12 @@ export function Footer() {
 
       <div className="relative border-t border-slate-800">
         <div className="mx-auto max-w-7xl px-4 py-8 text-center text-slate-500">
-          <p className="text-sm sm:text-base italic mb-1 font-medium text-slate-400">
+          <div className="text-sm sm:text-base italic mb-1 font-medium text-slate-400 text-center">
             Christ the Rabbi — Our Teacher, Model & Guide
-          </p>
-          <p className="text-sm sm:text-base italic mb-6 font-medium text-slate-400">
+          </div>
+          <div className="text-sm sm:text-base italic mb-6 font-medium text-slate-400 text-center">
             Led by the Holy Spirit — the Advocate
-          </p>
+          </div>
           <div className="flex flex-col items-center justify-center gap-4 text-xs md:flex-row font-medium">
             <p>© 2026 {site.name}. All Rights Reserved.</p>
             <div className="flex gap-4">

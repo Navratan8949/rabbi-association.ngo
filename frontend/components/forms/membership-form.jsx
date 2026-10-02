@@ -89,13 +89,13 @@ export function MembershipFormClient() {
         </p>
         <div className="flex justify-center gap-4">
           <Link
-            href="/auth/login"
+            href="/login"
             className="inline-flex h-12 items-center justify-center rounded-xl bg-navy px-8 text-sm font-bold text-white transition-all hover:bg-navy/90 hover:scale-105"
           >
             Log In Now
           </Link>
           <Link
-            href="/auth/signup"
+            href="/signup"
             className="inline-flex h-12 items-center justify-center rounded-xl border border-border bg-white px-8 text-sm font-bold text-navy transition-all hover:bg-slate-50 hover:scale-105"
           >
             Create Account

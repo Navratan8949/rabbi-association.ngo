@@ -25,21 +25,23 @@ export function AuthShell({ title, subtitle, children, footer, image = "/hero-co
           <div className="absolute inset-0 bg-gradient-to-br from-[#051e57]/95 via-[#051e57]/80 to-amber-900/60" />
           
           <div className="relative z-10 flex h-full flex-col justify-between">
-            <div className="inline-flex rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10 w-fit shadow-xl shadow-black/10">
-              <Logo variant="light" />
-            </div>
-            
-            <div className="mt-12">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-amber-400">
-                <Sparkles className="size-3.5" />
-                Empowering Minds
+            <div>
+              <div className="inline-flex rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10 w-fit shadow-xl shadow-black/10">
+                <Logo variant="light" />
               </div>
-              <h2 className="text-4xl lg:text-[2.6rem] leading-[1.15] font-black tracking-tight text-white mb-6 drop-shadow-sm">
-                Connected by <span className="text-amber-400">{siteName}</span>.<br /> United for Service.
-              </h2>
-              <p className="text-lg font-medium leading-relaxed text-white/80 max-w-md">
-                Join our community of professionals and educators committed to advancing quality education and human empowerment.
-              </p>
+              
+              <div className="mt-12">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-amber-400">
+                  <Sparkles className="size-3.5" />
+                  Empowering Minds
+                </div>
+                <h2 className="text-4xl lg:text-[2.6rem] leading-[1.15] font-black tracking-tight text-white mb-6 drop-shadow-sm">
+                  Connected by <span className="text-amber-400">{siteName}</span>.<br /> United for Service.
+                </h2>
+                <p className="text-lg font-medium leading-relaxed text-white/80 max-w-md">
+                  Join our community of professionals and educators committed to advancing quality education and human empowerment.
+                </p>
+              </div>
             </div>
 
             <div className="mt-16 flex max-w-sm items-center gap-4 bg-white/5 px-6 py-4 rounded-2xl border border-white/10 backdrop-blur-sm">

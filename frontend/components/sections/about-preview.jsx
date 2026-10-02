@@ -100,8 +100,8 @@ export function AboutPreview() {
           {/* Clean Mission & Vision Blocks */}
           <div className="mt-10 grid gap-8 sm:grid-cols-2 pt-10 border-t border-gray-100">
             <Reveal delay={0.1}>
-              <div className="pl-5 border-l-4 border-accent">
-                <div className="flex items-center gap-2 text-slate-900 font-bold text-lg mb-3">
+              <div className="pl-0 sm:pl-5 border-l-0 sm:border-l-4 border-accent text-center flex flex-col items-center">
+                <div className="flex items-center justify-center gap-2 text-slate-900 font-bold text-lg mb-3">
                   <Target className="w-5 h-5 text-accent" />
                   Our Mission
                 </div>
@@ -112,8 +112,8 @@ export function AboutPreview() {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="pl-5 border-l-4 border-accent">
-                <div className="flex items-center gap-2 text-slate-900 font-bold text-lg mb-3">
+              <div className="pl-0 sm:pl-5 border-l-0 sm:border-l-4 border-accent text-center flex flex-col items-center">
+                <div className="flex items-center justify-center gap-2 text-slate-900 font-bold text-lg mb-3">
                   <Eye className="w-5 h-5 text-accent" />
                   Our Vision
                 </div>

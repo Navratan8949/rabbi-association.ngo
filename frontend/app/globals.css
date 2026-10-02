@@ -131,6 +131,7 @@
 
   p {
     text-wrap: pretty;
+    text-align: justify !important;
   }
 
   /* OBLITERATE GOOGLE TRANSLATE UI */
@@ -353,3 +354,6 @@
   pointer-events: none;
   will-change: opacity, transform;
 }
+
+
+
