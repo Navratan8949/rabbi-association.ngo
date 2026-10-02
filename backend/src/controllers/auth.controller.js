@@ -425,7 +425,7 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save({ validateBeforeSave: false });
 
-    const resetUrl = `${req.protocol}://${req.get("host").replace("5000", "3000")}/reset-password?token=${resetToken}`;
+    const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
     
     const message = `You are receiving this email because you (or someone else) requested a password reset. Please make a request to: \n\n ${resetUrl}`;
     const htmlMessage = `<p>You are receiving this email because you (or someone else) requested a password reset.</p><p>Please click the link below to reset your password:</p><a href="${resetUrl}">Reset Password</a>`;
