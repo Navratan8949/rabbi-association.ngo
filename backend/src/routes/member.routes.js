@@ -29,10 +29,20 @@ router.put("/me", isAuthenticated, upload.single("profileImage"), require("../co
 
 // Admin / Manager / Coordinator routes
 router.get("/", isAuthenticated, authorizeRoles(["admin"]), getAllMembers);
-router.post("/", isAuthenticated, authorizeRoles(["admin"]), createMemberDirectly);
+router.post("/", isAuthenticated, authorizeRoles(["admin"]), upload.fields([
+    { name: "profileImage", maxCount: 1 },
+    { name: "idProof", maxCount: 1 },
+    { name: "otherDoc", maxCount: 1 },
+    { name: "paymentScreenshot", maxCount: 1 }
+]), createMemberDirectly);
 router.put("/:id/approve", isAuthenticated, authorizeRoles(["admin"]), approveMember);
 router.put("/:id/reject", isAuthenticated, authorizeRoles(["admin"]), rejectMember);
-router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), updateMemberAdmin);
+router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), upload.fields([
+    { name: "profileImage", maxCount: 1 },
+    { name: "idProof", maxCount: 1 },
+    { name: "otherDoc", maxCount: 1 },
+    { name: "paymentScreenshot", maxCount: 1 }
+]), updateMemberAdmin);
 router.delete("/:id", isAuthenticated, authorizeRoles(["admin"]), deleteMemberAdmin);
 
 module.exports = router;

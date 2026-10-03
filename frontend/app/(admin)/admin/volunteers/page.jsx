@@ -24,6 +24,7 @@ export default function Page() {
     { name: "address", label: "Address", type: "text" },
     { name: "state", label: "State", type: "text" },
     { name: "district", label: "District", type: "text" },
+    { name: "profileImage", label: "Profile Photo", type: "file" },
   ]
 
   const columns = [

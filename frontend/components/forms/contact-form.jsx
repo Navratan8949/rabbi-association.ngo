@@ -38,7 +38,7 @@ export function ContactForm() {
     }
   }
 
-  const inputClasses = "w-full rounded-2xl border border-border/60 bg-slate-50/50 px-5 py-4 text-base text-navy placeholder:text-muted-foreground/70 transition-all hover:bg-slate-50 focus:border-accent focus:bg-white focus:outline-none focus:ring-4 focus:ring-accent/10 disabled:opacity-50"
+  const inputClasses = "w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-navy placeholder:text-slate-500 transition-all hover:bg-slate-100 hover:border-slate-300 focus:border-accent focus:bg-white focus:outline-none focus:ring-4 focus:ring-accent/20 disabled:opacity-50"
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>

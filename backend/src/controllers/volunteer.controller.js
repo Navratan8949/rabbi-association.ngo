@@ -195,6 +195,11 @@ exports.createVolunteerDirectly = async (req, res) => {
             message
         } = req.body;
 
+        let profileImage = null;
+        if (req.files && req.files.profileImage) {
+            profileImage = await uploadLocalFile(req.files.profileImage[0].path);
+        }
+
         if (!fullName || !email || !phone) {
             return res.status(400).json({ success: false, message: "Please provide Full Name, Email, and Phone" });
         }
@@ -212,6 +217,7 @@ exports.createVolunteerDirectly = async (req, res) => {
                 mobile: phone,
                 password: hashedPassword,
                 role: "volunteer",
+                profileImage
             });
         } else {
             if (user.role === "member") {
@@ -219,6 +225,12 @@ exports.createVolunteerDirectly = async (req, res) => {
             }
             if (user.email !== email || user.mobile !== phone) {
                 return res.status(400).json({ success: false, message: `User found but Email or Phone doesn't match completely. Existing Email: ${user.email}, Phone: ${user.mobile}` });
+            }
+            if (profileImage) {
+                if (user.profileImage && user.profileImage.public_id) {
+                    await deleteLocalFile(user.profileImage.public_id);
+                }
+                user.profileImage = profileImage;
             }
             user.role = "volunteer";
             await user.save();

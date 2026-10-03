@@ -75,15 +75,15 @@ export default function AdminLoginPage() {
           </div>
           <div className="relative">
             <Input type={showPassword ? "text" : "password"} className="h-11 rounded-xl pr-11" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-            <button
-              type="button"
+            <div
+              role="button"
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-navy transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-navy transition-colors flex items-center justify-center p-1"
               tabIndex={-1}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-            </button>
+            </div>
           </div>
         </div>
         <Button type="submit" disabled={loading} className="mt-2 h-11 rounded-xl bg-navy font-semibold text-white hover:bg-navy/90">{loading ? "Signing in…" : "Login as Admin"}</Button>

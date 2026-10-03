@@ -79,7 +79,7 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-background">
       {/* Premium Hero Section */}
-      <section className="relative pt-32 pb-48 overflow-hidden flex flex-col justify-center min-h-[500px]">
+      <section className="relative pt-32 pb-20 overflow-hidden flex flex-col justify-center min-h-[400px]">
         {/* Background Image with Parallax */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed scale-105"
@@ -112,9 +112,9 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Overlapping Content Section */}
-      <section className="relative z-20 mx-auto max-w-7xl px-4 -mt-32 pb-24">
-        <div className="grid gap-8 lg:grid-cols-3 lg:gap-10">
+      <section className="relative z-20 bg-slate-50 pt-16 pb-24 border-b border-slate-100">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid gap-8 lg:grid-cols-3 lg:gap-10">
           {/* Left Column: Contact Cards */}
           <div className="space-y-6 lg:col-span-1">
             <Reveal delay={0.1}>
@@ -239,6 +239,7 @@ export default function Page() {
                 </div>
               </div>
             </Reveal>
+          </div>
           </div>
         </div>
       </section>

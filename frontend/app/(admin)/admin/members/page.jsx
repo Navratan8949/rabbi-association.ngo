@@ -150,16 +150,32 @@ export default function Page() {
           profileImage: item.profileImage || item.user?.profileImage || null,
         })}
         columns={[
-          { key: "memberId", label: "Member ID" },
           {
-            key: "name",
-            label: "Name",
-            render: (r) => r.user?.fullName || "N/A",
-          },
-          {
-            key: "email",
-            label: "Email",
-            render: (r) => r.user?.email || "N/A",
+            key: "memberDetails",
+            label: "Member Details",
+            render: (r) => {
+              const name = r.user?.fullName || r.fullName || "User";
+              const email = r.user?.email || r.email;
+              const imgUrl = r.profileImage?.url || r.user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=051e57&color=fff&size=256`;
+              return (
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 border border-blue-100 overflow-hidden">
+                    <img src={imgUrl} alt={name} className="h-full w-full object-cover" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-navy text-sm">{name}</div>
+                    <div className="text-[11px] font-medium text-slate-500 mt-0.5 flex flex-col gap-0.5">
+                      {r.memberId && (
+                        <span className="font-mono font-bold text-blue-600 bg-blue-50 border border-blue-100 px-1 py-0.5 rounded w-fit text-[10px]">
+                          ID: {r.memberId}
+                        </span>
+                      )}
+                      {email && <span>{email}</span>}
+                    </div>
+                  </div>
+                </div>
+              );
+            },
           },
           {
             key: "roleApplied",

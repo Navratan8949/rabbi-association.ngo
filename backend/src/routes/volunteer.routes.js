@@ -36,7 +36,7 @@ router.use(authorizeRoles(["admin"]));
 
 router.route("/")
     .get(getAllVolunteers)
-    .post(createVolunteerDirectly);
+    .post(upload.fields([{ name: "profileImage", maxCount: 1 }]), createVolunteerDirectly);
 
 router.put("/:id/approve", approveVolunteer);
 router.put("/:id/reject", rejectVolunteer);

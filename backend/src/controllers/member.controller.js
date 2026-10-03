@@ -483,6 +483,19 @@ exports.createMemberDirectly = async (req, res) => {
         });
     }
 
+    const { uploadLocalFile, deleteLocalFile } = require("../utils/fileUpload");
+    let profileImage = null;
+    let idProof = null;
+    let otherDoc = null;
+    let paymentScreenshot = null;
+
+    if (req.files) {
+      if (req.files.profileImage) profileImage = await uploadLocalFile(req.files.profileImage[0].path);
+      if (req.files.idProof) idProof = await uploadLocalFile(req.files.idProof[0].path);
+      if (req.files.otherDoc) otherDoc = await uploadLocalFile(req.files.otherDoc[0].path);
+      if (req.files.paymentScreenshot) paymentScreenshot = await uploadLocalFile(req.files.paymentScreenshot[0].path);
+    }
+
     // 1. Check if user exists
     let user = await User.findOne({ $or: [{ email }, { mobile }] });
     if (!user) {
@@ -503,6 +516,7 @@ exports.createMemberDirectly = async (req, res) => {
         mobile,
         password: hashedPassword,
         role: "member",
+        profileImage,
       });
     } else {
       if (user.role === "volunteer") {
@@ -510,6 +524,12 @@ exports.createMemberDirectly = async (req, res) => {
       }
       if (user.email !== email || user.mobile !== mobile) {
         return res.status(400).json({ success: false, message: `User found but Email or Phone doesn't match completely. Existing Email: ${user.email}, Phone: ${user.mobile}` });
+      }
+      if (profileImage) {
+        if (user.profileImage && user.profileImage.public_id) {
+          await deleteLocalFile(user.profileImage.public_id);
+        }
+        user.profileImage = profileImage;
       }
       user.role = "member";
       await user.save();
@@ -529,18 +549,18 @@ exports.createMemberDirectly = async (req, res) => {
     const member = await Member.create({
       user: user._id,
       memberId,
-      arabicName: arabicName || "",
-      fathersName: fathersName || "",
-      whatsappNumber: whatsappNumber || "",
+      guardianName: guardianName || "",
+      guardianMobile: guardianMobile || "",
       bloodGroup: bloodGroup || "",
-      faculty: faculty || "",
-      degree: degree || "",
-      specialization: specialization || "",
-      graduationYear: graduationYear || "",
-      
-      currentInstitution: currentInstitution || "",
-      city: city || "",
-      postalCode: postalCode || "",
+      profession: profession || "",
+      aadharNo: aadharNo || "",
+      idProofType: idProofType || "",
+      roleApplied: roleApplied || "",
+      paymentAmount: paymentAmount ? Number(paymentAmount) : 0,
+      transactionId: transactionId || "",
+      idProof,
+      otherDoc,
+      paymentScreenshot,
       createdBy: req.user.id,
       membershipStatus: "approved",
     });
@@ -695,6 +715,22 @@ exports.updateMemberAdmin = async (req, res) => {
       ...(transactionId !== undefined && { transactionId }),
     };
 
+    const { uploadLocalFile, deleteLocalFile } = require("../utils/fileUpload");
+    if (req.files) {
+      if (req.files.idProof) {
+        if (member.idProof && member.idProof.public_id) await deleteLocalFile(member.idProof.public_id);
+        memberUpdate.idProof = await uploadLocalFile(req.files.idProof[0].path);
+      }
+      if (req.files.otherDoc) {
+        if (member.otherDoc && member.otherDoc.public_id) await deleteLocalFile(member.otherDoc.public_id);
+        memberUpdate.otherDoc = await uploadLocalFile(req.files.otherDoc[0].path);
+      }
+      if (req.files.paymentScreenshot) {
+        if (member.paymentScreenshot && member.paymentScreenshot.public_id) await deleteLocalFile(member.paymentScreenshot.public_id);
+        memberUpdate.paymentScreenshot = await uploadLocalFile(req.files.paymentScreenshot[0].path);
+      }
+    }
+
     if (Object.keys(memberUpdate).length > 0) {
       await Member.findByIdAndUpdate(id, memberUpdate);
     }
@@ -708,6 +744,13 @@ exports.updateMemberAdmin = async (req, res) => {
       ...(dob !== undefined && { dob }),
       ...(address !== undefined && { address }),
     };
+
+    if (req.files && req.files.profileImage) {
+      if (member.user && member.user.profileImage && member.user.profileImage.public_id) {
+        await deleteLocalFile(member.user.profileImage.public_id);
+      }
+      userUpdate.profileImage = await uploadLocalFile(req.files.profileImage[0].path);
+    }
 
     if (password) {
       const bcrypt = require("bcryptjs");
