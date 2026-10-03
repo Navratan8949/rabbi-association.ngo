@@ -219,9 +219,9 @@ export default function MemberLayout({ children }) {
     )?.label || "Dashboard";
 
   return (
-    <div className="flex min-h-dvh bg-[#f8fafc]">
+    <div className="flex min-h-dvh bg-[#f8fafc] md:pl-[280px]">
       {/* Desktop Sidebar */}
-      <aside className="sticky top-0 self-start hidden h-screen shrink-0 md:flex border-r border-border/40">
+      <aside className="fixed left-0 top-0 hidden h-screen w-[280px] shrink-0 md:flex border-r border-border/40 z-30">
         {navContent}
       </aside>
 
