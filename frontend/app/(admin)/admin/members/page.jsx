@@ -29,8 +29,6 @@ const memberSchema = [
     required: true,
     placeholder: "Create a password for this user",
   },
-  { name: "guardianName", label: "Guardian Name (S/O, W/O, D/O)", type: "text" },
-  { name: "guardianMobile", label: "Guardian Mobile Number", type: "text" },
   {
     name: "bloodGroup",
     label: "Blood Group",
@@ -97,6 +95,7 @@ const memberSchema = [
   { name: "district", label: "District", type: "text" },
   { name: "profileImage", label: "Profile Photo", type: "file" },
   { name: "idProof", label: "ID Proof Document", type: "file" },
+  { name: "otherDoc", label: "Other Document", type: "file" },
   { name: "paymentScreenshot", label: "Payment Screenshot", type: "file" }
 ];
 
@@ -363,14 +362,6 @@ export default function Page() {
                   <p className="font-semibold text-slate-800">{selectedMember.bloodGroup || "N/A"}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold uppercase text-slate-500">Guardian's Name</p>
-                  <p className="font-semibold text-slate-800">{selectedMember.guardianName || "N/A"}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase text-slate-500">Guardian's Mobile</p>
-                  <p className="font-semibold text-slate-800">{selectedMember.guardianMobile || "N/A"}</p>
-                </div>
-                <div>
                   <p className="text-[10px] font-bold uppercase text-slate-500">Profession / Occupation</p>
                   <p className="font-semibold text-slate-800">{selectedMember.profession || "N/A"}</p>
                 </div>
@@ -445,13 +436,13 @@ export default function Page() {
                     Profile Photo
                   </p>
                     <a
-                      href={selectedMember.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
+                      href={selectedMember.user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
                       target="_blank"
                       rel="noreferrer"
                       className="block rounded-xl border border-border/60 overflow-hidden hover:opacity-80 transition-opacity"
                     >
                       <img
-                        src={selectedMember.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
+                        src={selectedMember.user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
                         alt="Profile"
                         className="w-full h-24 object-cover"
                       />

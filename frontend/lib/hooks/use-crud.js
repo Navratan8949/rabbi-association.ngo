@@ -47,9 +47,9 @@ export function useCrud(endpoint) {
       let newItem = res.data?.data || res.data
       if (newItem && typeof newItem === 'object' && !newItem._id && !newItem.id) {
         const objVal = Object.values(newItem).find(val => val && typeof val === 'object' && (val._id || val.id))
-        if (objVal) newItem = objVal
+      if (objVal) newItem = objVal
       }
-      setData(prev => [newItem, ...prev])
+      await fetchAll()
       return { success: true, data: newItem }
     } catch (err) {
       return { success: false, error: err.response?.data?.message || err.message || "Failed to create" }
@@ -65,7 +65,7 @@ export function useCrud(endpoint) {
         const objVal = Object.values(updatedItem).find(val => val && typeof val === 'object' && (val._id || val.id))
         if (objVal) updatedItem = objVal
       }
-      setData(prev => prev.map(item => (item._id === id || item.id === id) ? { ...item, ...updatedItem } : item))
+      await fetchAll()
       return { success: true, data: updatedItem }
     } catch (err) {
       return { success: false, error: err.response?.data?.message || err.message || "Failed to update" }

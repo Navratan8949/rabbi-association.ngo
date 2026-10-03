@@ -462,8 +462,6 @@ exports.createMemberDirectly = async (req, res) => {
       email,
       mobile,
       password,
-      guardianName,
-      guardianMobile,
       bloodGroup,
       profession,
       aadharNo,
@@ -471,6 +469,11 @@ exports.createMemberDirectly = async (req, res) => {
       roleApplied,
       paymentAmount,
       transactionId,
+      state,
+      district,
+      dob,
+      address,
+      gender,
     } = req.body;
     const bcrypt = require("bcryptjs");
 
@@ -517,6 +520,11 @@ exports.createMemberDirectly = async (req, res) => {
         password: hashedPassword,
         role: "member",
         profileImage,
+        state,
+        district,
+        dob,
+        address,
+        gender,
       });
     } else {
       if (user.role === "volunteer") {
@@ -531,6 +539,11 @@ exports.createMemberDirectly = async (req, res) => {
         }
         user.profileImage = profileImage;
       }
+      if (state) user.state = state;
+      if (district) user.district = district;
+      if (dob) user.dob = dob;
+      if (address) user.address = address;
+      if (gender) user.gender = gender;
       user.role = "member";
       await user.save();
     }
@@ -549,8 +562,6 @@ exports.createMemberDirectly = async (req, res) => {
     const member = await Member.create({
       user: user._id,
       memberId,
-      guardianName: guardianName || "",
-      guardianMobile: guardianMobile || "",
       bloodGroup: bloodGroup || "",
       profession: profession || "",
       aadharNo: aadharNo || "",
@@ -688,8 +699,6 @@ exports.updateMemberAdmin = async (req, res) => {
       email,
       mobile,
       password,
-      guardianName,
-      guardianMobile,
       bloodGroup,
       profession,
       aadharNo,
@@ -704,8 +713,6 @@ exports.updateMemberAdmin = async (req, res) => {
     } = req.body;
 
     const memberUpdate = {
-      ...(guardianName !== undefined && { guardianName }),
-      ...(guardianMobile !== undefined && { guardianMobile }),
       ...(bloodGroup !== undefined && { bloodGroup }),
       ...(profession !== undefined && { profession }),
       ...(aadharNo !== undefined && { aadharNo }),
