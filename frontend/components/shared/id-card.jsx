@@ -124,29 +124,31 @@ export function IdCard({ member, user, verificationUrl, type = "Member" }) {
                 <QRCodeSVG value={verificationUrl} size={100} className="h-full w-full" fgColor="#0a369d" />
               </div>
               
-              {/* Association Stamp / Seal */}
-              <div className="flex flex-col items-center justify-center shrink-0 -mb-0.5 mx-1">
-                <img 
-                  src={stampUrl || "/association-stamp.svg"} 
-                  alt="Association Stamp" 
-                  className="size-[62px] object-contain transform -rotate-6 select-none pointer-events-none drop-shadow-sm mix-blend-multiply opacity-90 print:mix-blend-normal print:opacity-100"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/association-stamp.svg";
-                  }}
-                />
-              </div>
+              {/* Issuing Authority & Official Stamp (Signed & Sealed) */}
+              <div className="relative text-right shrink-0 flex flex-col items-end">
+                {/* Official Association Stamp overlapping the signature */}
+                <div className="absolute -left-8 -top-4 pointer-events-none select-none z-0">
+                  <img 
+                    src={stampUrl || "/association-stamp.svg"} 
+                    alt="Association Stamp" 
+                    className="size-[68px] object-contain transform -rotate-12 mix-blend-multiply opacity-85 print:mix-blend-normal print:opacity-95 drop-shadow-sm"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/association-stamp.svg";
+                    }}
+                  />
+                </div>
 
-              {/* Issuing Authority / Signature */}
-              <div className="text-right shrink-0">
-                {/* Signature */}
-                {signatureUrl ? (
-                  <img src={signatureUrl} alt="Signature" className="h-10 ml-auto object-contain -mb-1" />
-                ) : (
-                  <div className="font-[Signature] text-2xl text-[#0a369d]/90 leading-none -mb-1.5 transform -rotate-3">Authorized</div>
-                )}
-                <div className="h-px w-20 bg-gradient-to-r from-transparent via-[#0a369d]/30 to-[#0a369d]/30 ml-auto my-1"></div>
-                <p className="text-[7px] font-bold uppercase tracking-wider text-slate-500">Issuing Authority</p>
+                {/* Signature & Issuing Authority Text */}
+                <div className="relative z-10 flex flex-col items-end">
+                  {signatureUrl ? (
+                    <img src={signatureUrl} alt="Signature" className="h-10 ml-auto object-contain -mb-1" />
+                  ) : (
+                    <div className="font-[Signature] text-2xl text-[#0a369d]/90 leading-none -mb-1.5 transform -rotate-3">Authorized</div>
+                  )}
+                  <div className="h-px w-24 bg-gradient-to-r from-transparent via-[#0a369d]/40 to-[#0a369d]/40 ml-auto my-1"></div>
+                  <p className="text-[7.5px] font-black uppercase tracking-wider text-slate-600">Issuing Authority</p>
+                </div>
               </div>
             </div>
             
