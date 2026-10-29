@@ -88,11 +88,15 @@ export function CrudModal({ isOpen, onClose, onSubmit, title, schema, initialDat
               if (hasFile) {
                 payload = new FormData();
                 Object.keys(cleanPayload).forEach(key => {
-                  if (cleanPayload[key] !== undefined && cleanPayload[key] !== null && cleanPayload[key] !== '') {
+                  if (cleanPayload[key] !== undefined && cleanPayload[key] !== null) {
                     // Do not append existing image objects to FormData as they become "[object Object]"
                     // Backend will keep existing image if no new file is provided.
                     if (typeof cleanPayload[key] === 'object' && cleanPayload[key].url && !(cleanPayload[key] instanceof File) && !(cleanPayload[key] instanceof Blob)) {
                       return; // Skip existing image object
+                    }
+                    if (typeof cleanPayload[key] === 'object' && !(cleanPayload[key] instanceof File) && !(cleanPayload[key] instanceof Blob)) {
+                      payload.append(key, JSON.stringify(cleanPayload[key]));
+                      return;
                     }
                     payload.append(key, cleanPayload[key]);
                   }
@@ -197,13 +201,13 @@ export function CrudModal({ isOpen, onClose, onSubmit, title, schema, initialDat
                   <input
                     type={field.type || "text"}
                     required={field.name === "password" && initialData ? false : field.required}
-                    value={formData[field.name] || ""}
+                    value={formData[field.name] !== undefined && formData[field.name] !== null ? formData[field.name] : ""}
                     onChange={(e) => {
                       handleChange(field.name, e.target.value)
                       if (field.onChange) field.onChange(e.target.value, setFormData, formData)
                     }}
-                    disabled={field.name === "email" && !!initialData}
-                    className={`w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-navy shadow-sm focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all ${field.name === "email" && !!initialData ? "bg-slate-100 text-slate-400 cursor-not-allowed" : "bg-white"}`}
+                    disabled={field.disabled || (field.disableOnEdit && !!initialData)}
+                    className={`w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-navy shadow-sm focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all ${field.disabled || (field.disableOnEdit && !!initialData) ? "bg-slate-100 text-slate-400 cursor-not-allowed" : "bg-white"}`}
                     placeholder={field.placeholder}
                   />
                 )}

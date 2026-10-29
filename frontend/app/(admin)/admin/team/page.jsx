@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Eye, XCircle, User, Mail, Phone, Link as LinkIcon, BadgeCheck, UsersRound } from "lucide-react"
 
 const TEAM_SCHEMA = [
-  { name: "name", label: "Name", type: "text", required: true },
-  { name: "designation", label: "Designation", type: "text", required: true },
+  { name: "name", label: "Full Name", type: "text", required: true },
+  { name: "designation", label: "Designation / Role", type: "text", required: true },
   { name: "description", label: "Description (Optional)", type: "textarea" },
-  { name: "email", label: "Email (Optional)", type: "email" },
-  { name: "phone", label: "Phone (Optional)", type: "text" },
-  { name: "website", label: "Website / Social Link (Optional)", type: "text" },
+  { name: "email", label: "Email Address (Optional)", type: "email", placeholder: "e.g. info@rabbi.co.in" },
+  { name: "phone", label: "Mobile / Phone Number (Optional)", type: "text", placeholder: "e.g. 9193827321" },
+  { name: "website", label: "Website / Social Link (Optional)", type: "text", placeholder: "e.g. rabbi.co.in" },
   { name: "photo", label: "Photo (Optional)", type: "file" },
   { name: "order", label: "Display Order", type: "number" },
   { 
@@ -58,12 +58,12 @@ const COLUMNS = [
             <Mail className="size-3" /> {r.email}
           </div>
         )}
-        {r.phone && (
+        {(r.phone || r.mobile) && (
           <div className="text-[11px] font-medium text-slate-600 flex items-center gap-1.5">
-            <Phone className="size-3" /> {r.phone}
+            <Phone className="size-3" /> {r.phone || r.mobile}
           </div>
         )}
-        {!r.email && !r.phone && <span className="text-xs text-slate-400 font-medium">N/A</span>}
+        {!r.email && !r.phone && !r.mobile && <span className="text-xs text-slate-400 font-medium">N/A</span>}
       </div>
     )
   },
@@ -82,6 +82,12 @@ export default function Page() {
         endpoint="/team"
         schema={TEAM_SCHEMA}
         columns={COLUMNS}
+        mapEditData={(item) => ({
+          ...item,
+          phone: item.phone || item.mobile || "",
+          mobile: item.mobile || item.phone || "",
+          email: item.email || ""
+        })}
         customActions={(item) => (
           <Button 
             onClick={() => setViewItem(item)} 
@@ -160,14 +166,14 @@ export default function Page() {
                         </div>
                       )}
 
-                      {viewItem.phone && (
+                      {(viewItem.phone || viewItem.mobile) && (
                         <div className="flex items-center gap-3">
                           <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
                             <Phone className="size-4 text-slate-600" />
                           </div>
                           <div>
-                            <p className="text-[10px] font-bold text-slate-500 uppercase">Phone Number</p>
-                            <a href={`tel:${viewItem.phone}`} className="text-sm font-semibold text-navy hover:text-blue-600">{viewItem.phone}</a>
+                            <p className="text-[10px] font-bold text-slate-500 uppercase">Phone / Mobile Number</p>
+                            <a href={`tel:${viewItem.phone || viewItem.mobile}`} className="text-sm font-semibold text-navy hover:text-blue-600">{viewItem.phone || viewItem.mobile}</a>
                           </div>
                         </div>
                       )}

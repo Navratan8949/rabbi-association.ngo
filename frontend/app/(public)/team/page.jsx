@@ -162,7 +162,7 @@ export default async function TeamPage() {
                       src={member.photo?.url || member.image}
                       alt={member.name}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-contain transition-transform duration-500"
                     />
                   ) : (
                     <span className="text-slate-400 font-medium">No Image</span>
@@ -234,7 +234,7 @@ export default async function TeamPage() {
                   )}
 
                   {/* Contact Info */}
-                  {(member.email || member.phone || member.website) && (
+                  {(member.email || member.phone || member.mobile || member.website) && (
                     <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-2 items-center text-sm text-slate-500 font-medium">
                       {member.email && (
                         <a
@@ -247,13 +247,13 @@ export default async function TeamPage() {
                           </span>
                         </a>
                       )}
-                      {member.phone && (
+                      {(member.phone || member.mobile) && (
                         <a
-                          href={`tel:${member.phone.replace(/\s/g, "")}`}
+                          href={`tel:${(member.phone || member.mobile).replace(/\s/g, "")}`}
                           className="flex items-center gap-2 hover:text-primary transition-colors"
                         >
                           <Phone className="size-3.5" />
-                          {member.phone}
+                          {member.phone || member.mobile}
                         </a>
                       )}
                       {member.website && (

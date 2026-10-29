@@ -40,6 +40,7 @@ app.use("/api/v1/testimonials", require("./routes/testimonial.routes"));
 app.use("/api/v1/contact", require("./routes/contact.routes"));
 app.use("/api/v1/downloads", require("./routes/download.routes"));
 app.use("/api/v1/team", require("./routes/team.routes"));
+app.use("/api/v1/trustees", require("./routes/trustee.routes"));
 app.use("/api/v1/awards", require("./routes/award.routes"));
 app.use("/api/v1/site-content", require("./routes/siteContent.routes"));
 app.use("/api/v1/newsletter", require("./routes/newsletter.routes"));

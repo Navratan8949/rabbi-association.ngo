@@ -91,9 +91,10 @@ export default function VerifyMemberPage() {
             {/* Member Details */}
             <div className="text-center pt-2">
                 <img
-                  src={member.profileImage?.url || member.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.fullName || "User")}&background=051e57&color=fff&size=256`}
+                  src={member.profileImage?.url || (typeof member.profileImage === 'string' ? member.profileImage : null) || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.fullName || "User")}&background=051e57&color=fff&size=256`}
                   alt={member.fullName}
                   className="size-28 mx-auto rounded-2xl object-cover border-2 border-blue-400/40 shadow-xl shadow-slate-950/80"
+                  onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
                 />
 
               <h2 className="text-2xl font-bold text-white mt-4">{member.fullName}</h2>

@@ -270,7 +270,12 @@ export default function MemberLayout({ children }) {
                 </p>
               </div>
               <div className="flex size-11 items-center justify-center rounded-full bg-navy text-sm font-bold text-white shadow-sm ring-2 ring-transparent group-hover:ring-accent/30 transition-all overflow-hidden">
-                <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
+                <img 
+                  src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} 
+                  alt="Profile" 
+                  className="size-full object-cover" 
+                  onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+                />
               </div>
             </Link>
           </div>
@@ -299,7 +304,12 @@ export default function MemberLayout({ children }) {
               href="/member/profile"
               className="flex size-9 shrink-0 items-center justify-center rounded-full bg-navy text-xs font-bold text-white shadow-sm overflow-hidden"
             >
-              <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
+              <img 
+                src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} 
+                alt="Profile" 
+                className="size-full object-cover" 
+                onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+              />
             </Link>
           </div>
         </header>

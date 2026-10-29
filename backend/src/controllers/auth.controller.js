@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { uploadLocalFile } = require("../utils/fileUpload");
+const { uploadLocalFile, deleteLocalFile } = require("../utils/fileUpload");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || "secret123", {
@@ -341,7 +341,7 @@ exports.logout = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { fullName, mobile, gender, dob, state, district, address } =
+    const { fullName, email, mobile, gender, dob, state, district, address } =
       req.body;
     const updateData = {};
     if (fullName !== undefined) updateData.fullName = fullName;
@@ -352,15 +352,50 @@ exports.updateProfile = async (req, res) => {
     if (district !== undefined) updateData.district = district;
     if (address !== undefined) updateData.address = address;
 
+    if (email !== undefined && email.trim() !== "") {
+      const newEmail = email.toLowerCase().trim();
+      const currentUser = await User.findById(req.user.id);
+      if (currentUser && currentUser.email !== newEmail) {
+        const existing = await User.findOne({ email: newEmail, _id: { $ne: req.user.id } });
+        if (existing) {
+          return res.status(400).json({ success: false, message: "Email is already taken by another account" });
+        }
+        updateData.email = newEmail;
+      }
+    }
+
+    if (req.file) {
+      const uploadResult = await uploadLocalFile(req.file.path);
+      if (uploadResult) {
+        const currentUser = await User.findById(req.user.id);
+        if (currentUser?.profileImage?.public_id) {
+          await deleteLocalFile(currentUser.profileImage.public_id);
+        }
+        updateData.profileImage = {
+          public_id: uploadResult.public_id,
+          url: uploadResult.url,
+        };
+      }
+    }
+
     const user = await User.findByIdAndUpdate(req.user.id, updateData, {
       new: true,
       runValidators: true,
     }).select("-password");
+
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
     }
+
+    if (updateData.profileImage) {
+      const Member = require("../models/Member");
+      const Volunteer = require("../models/Volunteer");
+      await Member.updateOne({ user: req.user.id }, { profileImage: updateData.profileImage });
+      await Volunteer.updateOne({ user: req.user.id }, { profileImage: updateData.profileImage });
+    }
+
     res
       .status(200)
       .json({ success: true, message: "Profile updated successfully", user });

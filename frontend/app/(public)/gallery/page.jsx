@@ -7,13 +7,14 @@ import { getGalleryItems } from "@/service/gallery.service";
 
 export const metadata = {
   title: "Photo & Video Gallery",
-  description: "Browse photos and videos of our educational initiatives, school setups, and community development programs.",
+  description:
+    "Browse photos and videos of our educational initiatives, school setups, and community development programs.",
 };
 
 export default async function GalleryPage() {
   let gallery = [];
   try {
-    const data = await getGalleryItems({ status: "active" }); 
+    const data = await getGalleryItems({ status: "active" });
     if (data?.success) {
       gallery = data.data || data.gallery || [];
     }
@@ -35,14 +36,16 @@ export default async function GalleryPage() {
 
       <div className="py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          
           {gallery.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {gallery.map((item, index) => (
-                <div key={item._id || index} className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-slate-200 shadow-sm border border-slate-100">
-                  {item.type === 'video' && item.videoUrl ? (
-                    <iframe 
-                      src={item.videoUrl} 
+                <div
+                  key={item._id || index}
+                  className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-slate-200 shadow-sm border border-slate-100"
+                >
+                  {item.type === "video" && item.videoUrl ? (
+                    <iframe
+                      src={item.videoUrl}
                       className="w-full h-full object-cover"
                       allowFullScreen
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -50,13 +53,15 @@ export default async function GalleryPage() {
                   ) : (
                     <>
                       <Image
-                        src={item.image?.url || item.url || "/placeholder-image.jpg"}
+                        src={item.image?.url || item.url || "/placeholder.svg"}
                         alt={item.title || "Gallery Image"}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none">
-                        <h3 className="text-white font-bold text-lg">{item.title || "Media Event"}</h3>
+                        <h3 className="text-white font-bold text-lg">
+                          {item.title || "Media Event"}
+                        </h3>
                       </div>
                     </>
                   )}
@@ -68,21 +73,26 @@ export default async function GalleryPage() {
               <div className="flex size-20 items-center justify-center rounded-full bg-accent/10 mb-6 mx-auto">
                 <ImageIcon className="size-10 text-accent" />
               </div>
-              <h2 className="text-3xl font-bold text-navy mb-4">Media Gallery</h2>
+              <h2 className="text-3xl font-bold text-navy mb-4">
+                Media Gallery
+              </h2>
               <p className="text-lg text-slate-600 font-medium leading-relaxed mb-8">
-                We are currently organizing our media library. Check back soon for high-quality photos and videos of our recent workshops, school setup projects, and community events.
+                We are currently organizing our media library. Check back soon
+                for high-quality photos and videos of our recent workshops,
+                school setup projects, and community events.
               </p>
-              
+
               <div className="pt-4">
-                <Button asChild size="lg" className="bg-navy text-white hover:bg-navy/90 rounded-full font-bold px-10">
-                  <Link href="/news">
-                    Read Our Latest News
-                  </Link>
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-navy text-white hover:bg-navy/90 rounded-full font-bold px-10"
+                >
+                  <Link href="/news">Read Our Latest News</Link>
                 </Button>
               </div>
             </div>
           )}
-
         </div>
       </div>
     </main>

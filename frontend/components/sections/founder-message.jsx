@@ -32,7 +32,9 @@ export function FounderMessageSection({ data }) {
     image = data.image.url;
   }
 
-  const initial = name ? name.charAt(0).toUpperCase() : "P";
+  const displayDesignation = designation
+    ? designation.replace(/,\s*/g, " | ")
+    : "";
 
   return (
     <section className="relative overflow-hidden bg-muted/30 py-16 md:py-20">
@@ -78,16 +80,11 @@ export function FounderMessageSection({ data }) {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="mt-8 flex items-center gap-4 border-t border-border pt-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-navy text-white">
-                  <span className="text-xl font-bold">{initial}</span>
-                </div>
-                <div>
-                  <p className="font-bold text-navy">{name}</p>
-                  <p className="text-sm text-muted-foreground max-w-[300px]">
-                    {designation}
-                  </p>
-                </div>
+              <div className="mt-8 border-t border-border pt-6">
+                <p className="font-bold text-navy text-lg">{name}</p>
+                <p className="text-sm font-medium text-muted-foreground mt-0.5">
+                  {displayDesignation}
+                </p>
               </div>
             </Reveal>
           </div>

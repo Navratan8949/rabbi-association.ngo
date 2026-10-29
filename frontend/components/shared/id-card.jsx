@@ -6,12 +6,14 @@ import { useSiteBranding } from "@/hooks/useSiteBranding"
 export function IdCard({ member, user, verificationUrl, type = "Member" }) {
   const isVolunteer = type === "Volunteer";
   const siteContent = useSelector(state => state.siteContent.data);
-  const { siteName, shortName, logo } = useSiteBranding();
-  let signatureUrl = null;
+  const { siteName, shortName, logo, signature: brandSignature, stamp: brandStamp } = useSiteBranding();
+  let signatureUrl = brandSignature;
+  let stampUrl = brandStamp;
   if (siteContent?.site_logo?.content) {
     try {
       const parsed = JSON.parse(siteContent.site_logo.content);
-      signatureUrl = parsed.signature;
+      if (parsed.signature) signatureUrl = parsed.signature;
+      if (parsed.stamp) stampUrl = parsed.stamp;
     } catch (e) {}
   }
 
@@ -63,7 +65,12 @@ export function IdCard({ member, user, verificationUrl, type = "Member" }) {
             <div className="relative mb-3 shrink-0 z-10 mt-2">
               <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-accent/80 via-accent to-accent/80 shadow-md"></div>
               <div className="relative size-[110px] overflow-hidden rounded-full border-4 border-white bg-white shadow-inner">
-                <img src={member.profileImage?.url || user.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="h-full w-full object-cover" />
+                <img 
+                  src={member.profileImage?.url || user.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} 
+                  alt="Profile" 
+                  className="h-full w-full object-cover"
+                  onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+                />
               </div>
             </div>
 
@@ -111,13 +118,27 @@ export function IdCard({ member, user, verificationUrl, type = "Member" }) {
             </div>
 
             {/* Card Footer */}
-            <div className="mt-auto w-full pt-4 flex items-end justify-between z-10">
+            <div className="mt-auto w-full pt-3 flex items-end justify-between z-10 relative">
               {/* Dynamic QR Code */}
               <div className="size-[55px] shrink-0 rounded-lg bg-white p-1 shadow-md border border-accent/30 ring-2 ring-white">
                 <QRCodeSVG value={verificationUrl} size={100} className="h-full w-full" fgColor="#0a369d" />
               </div>
               
-              <div className="text-right">
+              {/* Association Stamp / Seal */}
+              <div className="flex flex-col items-center justify-center shrink-0 -mb-0.5 mx-1">
+                <img 
+                  src={stampUrl || "/association-stamp.svg"} 
+                  alt="Association Stamp" 
+                  className="size-[62px] object-contain transform -rotate-6 select-none pointer-events-none drop-shadow-sm mix-blend-multiply opacity-90 print:mix-blend-normal print:opacity-100"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/association-stamp.svg";
+                  }}
+                />
+              </div>
+
+              {/* Issuing Authority / Signature */}
+              <div className="text-right shrink-0">
                 {/* Signature */}
                 {signatureUrl ? (
                   <img src={signatureUrl} alt="Signature" className="h-10 ml-auto object-contain -mb-1" />

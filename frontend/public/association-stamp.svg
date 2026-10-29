@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <!-- Upper arc: sweeps clockwise across top -->
+    <path id="stamp-upper-arc" d="M 16 60 A 44 44 0 0 1 104 60" fill="none" />
+    <!-- Lower arc: sweeps counter-clockwise across bottom -->
+    <path id="stamp-lower-arc" d="M 16 60 A 44 44 0 0 0 104 60" fill="none" />
+  </defs>
+
+  <!-- Outer Double Rings with Authentic Stamp Texture -->
+  <circle cx="60" cy="60" r="56" fill="none" stroke="#0a369d" stroke-width="2.5" opacity="0.9" />
+  <circle cx="60" cy="60" r="52.5" fill="none" stroke="#0a369d" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.85" />
+  <circle cx="60" cy="60" r="36" fill="none" stroke="#0a369d" stroke-width="1.8" opacity="0.9" />
+  <circle cx="60" cy="60" r="33.5" fill="none" stroke="#0a369d" stroke-width="0.75" opacity="0.75" />
+
+  <!-- Upper Curved Text -->
+  <text fill="#0a369d" font-size="7.5" font-family="'Arial Black', Arial, sans-serif" font-weight="900" letter-spacing="1.4" text-anchor="middle" opacity="0.92">
+    <textPath href="#stamp-upper-arc" xlink:href="#stamp-upper-arc" startOffset="50%">RABBI ASSOCIATION</textPath>
+  </text>
+
+  <!-- Lower Curved Text -->
+  <text fill="#0a369d" font-size="6.8" font-family="'Arial Black', Arial, sans-serif" font-weight="900" letter-spacing="1.2" text-anchor="middle" opacity="0.92">
+    <textPath href="#stamp-lower-arc" xlink:href="#stamp-lower-arc" startOffset="50%">★ GOVT. REGD. NGO ★</textPath>
+  </text>
+
+  <!-- Inner Center Seal Area -->
+  <circle cx="60" cy="60" r="30" fill="#0a369d" fill-opacity="0.04" />
+
+  <!-- Top Star -->
+  <g transform="translate(60, 43) scale(0.55)">
+    <polygon points="0,-10 3,-3 10,-3 4,2 6,9 0,5 -6,9 -4,2 -10,-3 -3,-3" fill="#0a369d" opacity="0.9" />
+  </g>
+
+  <!-- Center Text -->
+  <text x="60" y="59" text-anchor="middle" fill="#0a369d" font-family="'Arial Black', Arial, sans-serif" font-size="8.5" font-weight="900" letter-spacing="1" opacity="0.95">OFFICIAL</text>
+  <text x="60" y="69" text-anchor="middle" fill="#0a369d" font-family="'Arial Black', Arial, sans-serif" font-size="7" font-weight="800" letter-spacing="0.8" opacity="0.95">SEAL</text>
+  <text x="60" y="78" text-anchor="middle" fill="#0a369d" font-family="Arial, sans-serif" font-size="5.2" font-weight="bold" letter-spacing="0.5" opacity="0.85">ESTD. 2012</text>
+</svg>

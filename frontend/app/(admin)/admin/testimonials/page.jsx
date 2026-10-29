@@ -36,11 +36,21 @@ const COLUMNS = [
       <div className="flex items-center gap-3">
         {r.image?.url ? (
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border-2 border-slate-200 shadow-sm">
-            <Image src={r.image.url} alt="" fill className="object-cover" />
+            <img 
+              src={r.image.url} 
+              alt={r.name || "Author"} 
+              className="h-full w-full object-cover" 
+              onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+            />
           </div>
         ) : (
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 border-2 border-slate-200 text-slate-400">
-            <User className="size-6 opacity-70" />
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 border-2 border-slate-200 text-slate-400 overflow-hidden">
+            <img 
+              src={r.name ? `https://ui-avatars.com/api/?name=${encodeURIComponent(r.name)}&background=051e57&color=fff&size=256` : "/placeholder-user.svg"} 
+              alt={r.name || "Author"} 
+              className="h-full w-full object-cover"
+              onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+            />
           </div>
         )}
         <div>
@@ -126,11 +136,12 @@ export default function Page() {
                 <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                   <div className="flex items-center gap-4">
                     <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center border-2 border-slate-200 shrink-0 overflow-hidden relative">
-                      {viewItem.image?.url ? (
-                        <Image src={viewItem.image.url} alt={viewItem.name} fill className="object-cover" />
-                      ) : (
-                        <User className="size-8 text-slate-400" />
-                      )}
+                      <img 
+                        src={viewItem.image?.url || (viewItem.name ? `https://ui-avatars.com/api/?name=${encodeURIComponent(viewItem.name)}&background=051e57&color=fff&size=256` : "/placeholder-user.svg")} 
+                        alt={viewItem.name || "Author"} 
+                        className="h-full w-full object-cover" 
+                        onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+                      />
                     </div>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-0.5">Author</p>

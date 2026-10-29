@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { selectUser, fetchUser } from "@/redux/features/userSlice"
 import { toast } from "sonner"
 import api from "@/service/api"
-import { Loader2 } from "lucide-react"
+import { Loader2, Camera, X } from "lucide-react"
 
 export default function ProfilePage() {
   const dispatch = useDispatch()
@@ -14,9 +14,14 @@ export default function ProfilePage() {
   const [isSavingProfile, setIsSavingProfile] = useState(false)
   const [isSavingPassword, setIsSavingPassword] = useState(false)
 
+  // Profile Photo State
+  const [profileImageFile, setProfileImageFile] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
+
   // Profile Form State
   const [profileForm, setProfileForm] = useState({
     fullName: "",
+    email: "",
     mobile: "",
     gender: "",
     dob: "",
@@ -36,6 +41,7 @@ export default function ProfilePage() {
     if (user) {
       setProfileForm({
         fullName: user.fullName || "",
+        email: user.email || "",
         mobile: user.mobile || "",
         gender: user.gender || "",
         dob: user.dob ? new Date(user.dob).toISOString().split('T')[0] : "",
@@ -48,7 +54,6 @@ export default function ProfilePage() {
 
   if (!user) return null
 
-
   const roleDisplay = user.role
     ?.split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -58,9 +63,23 @@ export default function ProfilePage() {
     e.preventDefault()
     setIsSavingProfile(true)
     try {
-      await api.put("/auth/profile", profileForm)
-      toast.success("Profile updated successfully")
-      dispatch(fetchUser())
+      const formData = new FormData()
+      Object.keys(profileForm).forEach((key) => {
+        if (profileForm[key] !== undefined && profileForm[key] !== null) {
+          formData.append(key, profileForm[key])
+        }
+      })
+      if (profileImageFile) {
+        formData.append("profileImage", profileImageFile)
+      }
+
+      const res = await api.put("/auth/profile", formData)
+      if (res.data?.success) {
+        toast.success(res.data.message || "Profile updated successfully")
+        setProfileImageFile(null)
+        setImagePreview(null)
+        dispatch(fetchUser())
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update profile")
     } finally {
@@ -101,11 +120,68 @@ export default function ProfilePage() {
         {/* Left Column: Profile Card */}
         <div className="lg:col-span-1 space-y-8">
           <div className="rounded-2xl border border-border/60 bg-white p-6 shadow-sm flex flex-col items-center text-center">
-            <div className="flex size-24 items-center justify-center rounded-full bg-navy text-3xl font-bold text-white shadow-sm overflow-hidden mb-4">
-              <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
+            
+            {/* Avatar with Camera upload trigger */}
+            <div className="relative group mb-3">
+              <div className="flex size-24 items-center justify-center rounded-full bg-navy text-3xl font-bold text-white shadow-sm overflow-hidden border-2 border-border/50">
+                <img 
+                  src={imagePreview || user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`} 
+                  alt="Profile" 
+                  className="size-full object-cover" 
+                  onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+                />
+              </div>
+
+              <label 
+                htmlFor="admin-avatar-upload"
+                className="absolute bottom-0 right-0 flex size-8 cursor-pointer items-center justify-center rounded-full bg-accent text-accent-foreground shadow-md hover:scale-105 transition-all ring-2 ring-white"
+                title="Change Profile Photo"
+              >
+                <Camera className="size-4" />
+                <input 
+                  id="admin-avatar-upload"
+                  type="file" 
+                  accept="image/*"
+                  className="hidden" 
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      setProfileImageFile(file)
+                      setImagePreview(URL.createObjectURL(file))
+                    }
+                  }}
+                />
+              </label>
             </div>
+
+            {/* Indicator when new photo is selected */}
+            {profileImageFile ? (
+              <div className="mb-3 flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
+                <span>New photo ready to save</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setProfileImageFile(null)
+                    setImagePreview(null)
+                  }}
+                  className="rounded-full p-0.5 hover:bg-emerald-200/60 text-emerald-800 transition-colors"
+                  title="Remove selected photo"
+                >
+                  <X className="size-3" />
+                </button>
+              </div>
+            ) : (
+              <label
+                htmlFor="admin-avatar-upload"
+                className="mb-3 cursor-pointer text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                Change Photo
+              </label>
+            )}
+
             <h2 className="text-xl font-bold text-navy">{user.fullName || "Admin User"}</h2>
-            <p className="text-sm font-medium text-muted-foreground mt-1">{roleDisplay}</p>
+            <p className="text-sm font-medium text-muted-foreground mt-0.5">{roleDisplay}</p>
+            
             <div className="mt-4 w-full border-t border-border/60 pt-4 text-left space-y-2">
               <div>
                 <p className="text-[10px] font-bold uppercase text-slate-500">Email Address</p>
@@ -179,8 +255,19 @@ export default function ProfilePage() {
                     <label className="mb-1.5 block text-sm font-semibold text-foreground">Full Name</label>
                     <input 
                       type="text" 
+                      required
                       value={profileForm.fullName}
                       onChange={(e) => setProfileForm({...profileForm, fullName: e.target.value})}
+                      className="w-full rounded-xl border border-border/60 bg-secondary/30 px-4 py-3 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy" 
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1.5 block text-sm font-semibold text-foreground">Email Address</label>
+                    <input 
+                      type="email" 
+                      required
+                      value={profileForm.email}
+                      onChange={(e) => setProfileForm({...profileForm, email: e.target.value})}
                       className="w-full rounded-xl border border-border/60 bg-secondary/30 px-4 py-3 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy" 
                     />
                   </div>
@@ -188,6 +275,7 @@ export default function ProfilePage() {
                     <label className="mb-1.5 block text-sm font-semibold text-foreground">Mobile Number</label>
                     <input 
                       type="text" 
+                      required
                       value={profileForm.mobile}
                       onChange={(e) => setProfileForm({...profileForm, mobile: e.target.value})}
                       className="w-full rounded-xl border border-border/60 bg-secondary/30 px-4 py-3 text-sm focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy" 
@@ -251,7 +339,13 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div className="pt-4 flex justify-end">
+              <div className="pt-4 flex items-center justify-between">
+                {profileImageFile ? (
+                  <span className="text-xs font-semibold text-emerald-600">
+                    * Profile photo will be updated when you save.
+                  </span>
+                ) : <span />}
+
                 <button 
                   type="submit" 
                   disabled={isSavingProfile}

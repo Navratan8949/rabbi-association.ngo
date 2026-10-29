@@ -324,6 +324,7 @@ export default function Page() {
                   src={member?.profileImage?.url || user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=051e57&color=fff&size=256`}
                   alt="Profile"
                   className="h-full w-full object-cover"
+                  onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
                 />
               </div>
               {isApproved && (

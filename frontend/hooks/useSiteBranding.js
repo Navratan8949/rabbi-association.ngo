@@ -8,7 +8,9 @@ export function useSiteBranding() {
     siteName: SITE.name,
     shortName: SITE.shortName,
     logo: SITE.logo,
-    favicon: "/favicon.ico"
+    favicon: "/favicon.ico",
+    signature: null,
+    stamp: null
   }
 
   if (siteContent?.site_logo?.content) {
@@ -18,6 +20,8 @@ export function useSiteBranding() {
       if (parsed.shortName) branding.shortName = parsed.shortName
       if (parsed.logo) branding.logo = parsed.logo
       if (parsed.favicon) branding.favicon = parsed.favicon
+      if (parsed.signature) branding.signature = parsed.signature
+      if (parsed.stamp) branding.stamp = parsed.stamp
     } catch (e) {
       // ignore
     }

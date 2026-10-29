@@ -44,6 +44,7 @@ export const ADMIN_NAV = [
   { href: "/admin/complaints", label: "Complaints", icon: MessageSquare },
   { href: "/admin/contact", label: "Enquiries", icon: Mail },
   { href: "/admin/team", label: "Team", icon: UserCircle2 },
+  { href: "/admin/trustees", label: "Founders & Trustees", icon: ShieldCheck },
   { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
   { href: "/admin/awards", label: "Awards", icon: Award },
   { href: "/admin/reports", label: "Reports", icon: ClipboardList },

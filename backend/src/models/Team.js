@@ -37,6 +37,12 @@ const teamSchema = new mongoose.Schema(
             default: "",
         },
 
+        mobile: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+
         website: {
             type: String,
             trim: true,

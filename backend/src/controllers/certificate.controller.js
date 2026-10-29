@@ -4,6 +4,7 @@ const Volunteer = require("../models/Volunteer");
 const { generateCertificatePDF } = require("../utils/generatePDF");
 const { SendVerificationCode } = require("../utils/sendMail");
 const { getSiteName, getSiteLogoDetails } = require("../utils/siteSettings");
+const { uploadLocalFile, deleteLocalFile } = require("../utils/fileUpload");
 const path = require("path");
 const fs = require("fs");
 
@@ -15,12 +16,15 @@ exports.createCertificate = async (req, res) => {
         let userName = "Recipient";
         let isVolunteer = false;
 
-        if (member) {
-            targetDoc = await Member.findById(member).populate("user");
+        const memberId = member && member !== "" && member !== "null" && member !== "undefined" ? member : null;
+        const volunteerId = volunteer && volunteer !== "" && volunteer !== "null" && volunteer !== "undefined" ? volunteer : null;
+
+        if (memberId) {
+            targetDoc = await Member.findById(memberId).populate("user");
             if (!targetDoc) return res.status(404).json({ success: false, message: "Member not found" });
             userName = targetDoc.user ? targetDoc.user.fullName : "Member";
-        } else if (volunteer) {
-            targetDoc = await Volunteer.findById(volunteer).populate("user");
+        } else if (volunteerId) {
+            targetDoc = await Volunteer.findById(volunteerId).populate("user");
             if (!targetDoc) return res.status(404).json({ success: false, message: "Volunteer not found" });
             userName = targetDoc.user ? targetDoc.user.fullName : "Volunteer";
             isVolunteer = true;
@@ -28,16 +32,25 @@ exports.createCertificate = async (req, res) => {
             return res.status(400).json({ success: false, message: "Either member or volunteer ID must be provided" });
         }
 
-        const siteName = await getSiteName();
-        const siteLogoDetails = await getSiteLogoDetails();
+        const uploadedFile = (req.files && (req.files.pdf?.[0] || req.files.file?.[0])) || req.file;
 
         let pdf = { public_id: "", url: "" };
-        const pdfPath = await generateCertificatePDF({ certificateNo, title, description }, userName, siteName, siteLogoDetails);
-        
-        if (pdfPath) {
-            const fileName = path.basename(pdfPath);
-            const localUrl = `${req.protocol}://${req.get("host")}/public/certificates/${fileName}`;
-            pdf = { public_id: fileName, url: localUrl };
+
+        if (uploadedFile) {
+            const uploadResult = await uploadLocalFile(uploadedFile.path);
+            if (uploadResult) {
+                pdf = { public_id: uploadResult.public_id, url: uploadResult.url };
+            }
+        } else {
+            const siteName = await getSiteName();
+            const siteLogoDetails = await getSiteLogoDetails();
+            const pdfPath = await generateCertificatePDF({ certificateNo, title, description }, userName, siteName, siteLogoDetails);
+            
+            if (pdfPath) {
+                const fileName = path.basename(pdfPath);
+                const localUrl = `${req.protocol}://${req.get("host")}/public/certificates/${fileName}`;
+                pdf = { public_id: fileName, url: localUrl };
+            }
         }
 
         const certificate = await Certificate.create({
@@ -50,11 +63,7 @@ exports.createCertificate = async (req, res) => {
             pdf
         });
 
-        if (isVolunteer) {
-            targetDoc.certificate.push(certificate._id);
-        } else {
-            targetDoc.certificate.push(certificate._id);
-        }
+        targetDoc.certificate.push(certificate._id);
         await targetDoc.save();
 
         const populatedCertificate = await Certificate.findById(certificate._id)
@@ -64,11 +73,12 @@ exports.createCertificate = async (req, res) => {
         // Send Email Notification
         if (targetDoc.user && targetDoc.user.email) {
             const userEmail = targetDoc.user.email;
+            const siteName = await getSiteName();
             SendVerificationCode(
                 userEmail,
-                `<p>Dear ${userName},</p><p>We are delighted to inform you that you have been awarded a new certificate: "<strong>${title}</strong>".</p><p>Description: ${description}</p><p>You can view and download your certificate from your Portal.</p><p>Thank you for your continuous support!</p><p>Best Regards,<br/>${siteName} Team</p>`,
+                `<p>Dear ${userName},</p><p>We are delighted to inform you that you have been awarded a new certificate: "<strong>${title}</strong>".</p><p>Description: ${description || ""}</p><p>You can view and download your certificate from your Portal.</p><p>Thank you for your continuous support!</p><p>Best Regards,<br/>${siteName} Team</p>`,
                 `Congratulations! You have received a new Certificate - ${siteName}`,
-                `Dear ${userName},\n\nWe are delighted to inform you that you have been awarded a new certificate: "${title}".\n\nDescription: ${description}\n\nYou can view and download your certificate from your Portal.\n\nThank you for your continuous support!\n\nBest Regards,\n${siteName} Team`
+                `Dear ${userName},\n\nWe are delighted to inform you that you have been awarded a new certificate: "${title}".\n\nDescription: ${description || ""}\n\nYou can view and download your certificate from your Portal.\n\nThank you for your continuous support!\n\nBest Regards,\n${siteName} Team`
             );
         }
 
@@ -124,45 +134,55 @@ exports.updateCertificate = async (req, res) => {
         let userName = "Recipient";
         let isVolunteer = false;
 
-        const activeRef = member || volunteer || certificate.member || certificate.volunteer;
-        
-        if (member || certificate.member && !volunteer) {
-            targetDoc = await Member.findById(member || certificate.member).populate("user");
+        const memberId = member && member !== "" && member !== "null" && member !== "undefined" ? member : null;
+        const volunteerId = volunteer && volunteer !== "" && volunteer !== "null" && volunteer !== "undefined" ? volunteer : null;
+
+        if (memberId || (certificate.member && !volunteerId)) {
+            targetDoc = await Member.findById(memberId || certificate.member).populate("user");
             userName = targetDoc && targetDoc.user ? targetDoc.user.fullName : "Member";
-        } else if (volunteer || certificate.volunteer && !member) {
-            targetDoc = await Volunteer.findById(volunteer || certificate.volunteer).populate("user");
+        } else if (volunteerId || (certificate.volunteer && !memberId)) {
+            targetDoc = await Volunteer.findById(volunteerId || certificate.volunteer).populate("user");
             userName = targetDoc && targetDoc.user ? targetDoc.user.fullName : "Volunteer";
             isVolunteer = true;
         }
 
-        const siteName = await getSiteName();
-        const siteLogoDetails = await getSiteLogoDetails();
-        
+        const uploadedFile = (req.files && (req.files.pdf?.[0] || req.files.file?.[0])) || req.file;
+
         let pdf = certificate.pdf;
-        // Generate new PDF
-        const pdfPath = await generateCertificatePDF({ certificateNo, title, description }, userName, siteName, siteLogoDetails);
-        if (pdfPath) {
-            const fileName = path.basename(pdfPath);
-            const localUrl = `${req.protocol}://${req.get("host")}/public/certificates/${fileName}`;
-            
-            // Delete old PDF from local storage if exists
-            if (pdf && pdf.public_id) {
-                const oldPath = path.join(__dirname, "..", "..", "public", "certificates", pdf.public_id);
-                if (fs.existsSync(oldPath)) {
-                    fs.unlinkSync(oldPath);
+
+        if (uploadedFile) {
+            const uploadResult = await uploadLocalFile(uploadedFile.path);
+            if (uploadResult) {
+                // Delete previous file if exists
+                if (pdf && pdf.public_id) {
+                    await deleteLocalFile(pdf.public_id);
+                    const oldPath = path.join(__dirname, "..", "..", "public", "certificates", pdf.public_id);
+                    if (fs.existsSync(oldPath)) {
+                        fs.unlinkSync(oldPath);
+                    }
                 }
+                pdf = { public_id: uploadResult.public_id, url: uploadResult.url };
             }
-            pdf = { public_id: fileName, url: localUrl };
+        } else if (!pdf || !pdf.url) {
+            // Generate fallback PDF if none exists
+            const siteName = await getSiteName();
+            const siteLogoDetails = await getSiteLogoDetails();
+            const pdfPath = await generateCertificatePDF({ certificateNo: certificateNo || certificate.certificateNo, title: title || certificate.title, description: description !== undefined ? description : certificate.description }, userName, siteName, siteLogoDetails);
+            if (pdfPath) {
+                const fileName = path.basename(pdfPath);
+                const localUrl = `${req.protocol}://${req.get("host")}/public/certificates/${fileName}`;
+                pdf = { public_id: fileName, url: localUrl };
+            }
         }
 
         const updatedData = { 
             certificateNo, title, description, status, pdf,
         };
-        if (member) {
-            updatedData.member = member;
+        if (memberId) {
+            updatedData.member = memberId;
             updatedData.$unset = { volunteer: 1 };
-        } else if (volunteer) {
-            updatedData.volunteer = volunteer;
+        } else if (volunteerId) {
+            updatedData.volunteer = volunteerId;
             updatedData.$unset = { member: 1 };
         }
 
@@ -171,6 +191,17 @@ exports.updateCertificate = async (req, res) => {
             updatedData,
             { new: true }
         );
+
+        // Sync member/volunteer references if changed
+        if (memberId && String(certificate.member) !== String(memberId)) {
+            if (certificate.member) await Member.updateOne({ _id: certificate.member }, { $pull: { certificate: certificate._id } });
+            if (certificate.volunteer) await Volunteer.updateOne({ _id: certificate.volunteer }, { $pull: { certificate: certificate._id } });
+            await Member.updateOne({ _id: memberId }, { $addToSet: { certificate: certificate._id } });
+        } else if (volunteerId && String(certificate.volunteer) !== String(volunteerId)) {
+            if (certificate.member) await Member.updateOne({ _id: certificate.member }, { $pull: { certificate: certificate._id } });
+            if (certificate.volunteer) await Volunteer.updateOne({ _id: certificate.volunteer }, { $pull: { certificate: certificate._id } });
+            await Volunteer.updateOne({ _id: volunteerId }, { $addToSet: { certificate: certificate._id } });
+        }
 
         const populatedCertificate = await Certificate.findById(updatedCertificate._id)
             .populate({ path: "member", populate: { path: "user", select: "fullName email" } })
@@ -194,8 +225,9 @@ exports.deleteCertificate = async (req, res) => {
             await Volunteer.updateOne({ _id: certificate.volunteer }, { $pull: { certificate: certificate._id } });
         }
 
-        // Delete the local PDF file
+        // Delete the file from local storage
         if (certificate.pdf && certificate.pdf.public_id) {
+            await deleteLocalFile(certificate.pdf.public_id);
             const oldPath = path.join(__dirname, "..", "..", "public", "certificates", certificate.pdf.public_id);
             if (fs.existsSync(oldPath)) {
                 fs.unlinkSync(oldPath);

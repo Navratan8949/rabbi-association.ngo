@@ -11,7 +11,7 @@ router.post("/login/member", memberLogin);
 router.post("/login/admin", adminLogin);
 router.get("/logout", logout);
 router.get("/me", isAuthenticated, getMe);
-router.put("/profile", isAuthenticated, updateProfile);
+router.put("/profile", isAuthenticated, upload.single("profileImage"), updateProfile);
 router.put("/password", isAuthenticated, updatePassword);
 
 router.post("/forgot-password", require("../controllers/auth.controller").forgotPassword);

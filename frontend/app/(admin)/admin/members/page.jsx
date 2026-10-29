@@ -159,7 +159,12 @@ export default function Page() {
               return (
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 border border-blue-100 overflow-hidden">
-                    <img src={imgUrl} alt={name} className="h-full w-full object-cover" />
+                    <img 
+                      src={imgUrl} 
+                      alt={name} 
+                      className="h-full w-full object-cover" 
+                      onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+                    />
                   </div>
                   <div>
                     <div className="font-bold text-navy text-sm">{name}</div>
@@ -436,15 +441,16 @@ export default function Page() {
                     Profile Photo
                   </p>
                     <a
-                      href={selectedMember.user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
+                      href={selectedMember.profileImage?.url || selectedMember.user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
                       target="_blank"
                       rel="noreferrer"
                       className="block rounded-xl border border-border/60 overflow-hidden hover:opacity-80 transition-opacity"
                     >
                       <img
-                        src={selectedMember.user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
+                        src={selectedMember.profileImage?.url || selectedMember.user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.user?.fullName || "User")}&background=051e57&color=fff&size=256`}
                         alt="Profile"
                         className="w-full h-24 object-cover"
+                        onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
                       />
                     </a>
                 </div>

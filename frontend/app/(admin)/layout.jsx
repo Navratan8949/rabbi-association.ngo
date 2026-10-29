@@ -91,7 +91,12 @@ export default function AdminLayout({ children }) {
               <div className="h-6 w-px bg-navy/10 hidden sm:block"></div>
 
               <Link href="/admin/profile" className="flex size-9 overflow-hidden items-center justify-center rounded-full bg-slate-100 border-2 border-white shadow-md transition hover:ring-2 hover:ring-blue-500 hover:ring-offset-2 hover:ring-offset-[#f4f7f6]">
-                <img src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "Admin")}&background=051e57&color=fff&size=256`} alt="Profile" className="size-full object-cover" />
+                <img 
+                  src={user?.profileImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "Admin")}&background=051e57&color=fff&size=256`} 
+                  alt="Profile" 
+                  className="size-full object-cover" 
+                  onError={(e) => { e.currentTarget.src = "/placeholder-user.svg"; }}
+                />
               </Link>
 
               <button

@@ -73,7 +73,7 @@ export default function SiteContentAdminPage() {
   const [uploadingImage, setUploadingImage] = useState(null)
 
   // -- STATES --
-  const [siteLogo, setSiteLogo] = useState({ logo: "", favicon: "", signature: "", siteName: "", shortName: "" })
+  const [siteLogo, setSiteLogo] = useState({ logo: "", favicon: "", signature: "", stamp: "", siteName: "", shortName: "" })
   const [founderForm, setFounderForm] = useState({ title: "", name: "", designation: "", message: "", file: null, existingImage: "" })
   const [heroSlides, setHeroSlides] = useState([])
   const [aboutPreview, setAboutPreview] = useState({ title: "", content: "", mission: "", vision: "", image: "" })
@@ -365,6 +365,40 @@ export default function SiteContentAdminPage() {
                       saveContent("site_logo", "Site Logo", newData);
                     }, "signature")} className="border-primary/20 focus:border-primary" />
                     {uploadingImage === "signature" && <div className="flex items-center gap-2 text-primary text-sm"><Loader2 className="animate-spin h-4 w-4" /> Uploading...</div>}
+                  </FieldGroup>
+                </div>
+
+                <div className="rounded-xl border border-primary/10 bg-blue-50/30 p-5 space-y-3">
+                  <FieldGroup label="🛡️ Association Official Stamp / Seal" hint="Official round stamp of Rabbi Association (PNG/SVG with transparent background)">
+                    {siteLogo.stamp ? (
+                      <div className="flex items-center gap-3">
+                        <Image src={siteLogo.stamp} width={80} height={80} className="rounded-full border bg-white p-2 object-contain" alt="Association Stamp" />
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                          onClick={() => {
+                            const newData = { ...siteLogo, stamp: "" };
+                            setSiteLogo(newData);
+                            saveContent("site_logo", "Site Logo", newData);
+                          }}
+                        >
+                          Remove Stamp
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <img src="/association-stamp.svg" alt="Default Stamp" className="size-16 object-contain opacity-80" />
+                        <span>Using default association stamp. Upload a custom official stamp to replace it.</span>
+                      </div>
+                    )}
+                    <Input type="file" accept="image/*,.svg" onChange={(e) => handleFileUpload(e, (url) => {
+                      const newData = { ...siteLogo, stamp: url };
+                      setSiteLogo(newData);
+                      saveContent("site_logo", "Site Logo", newData);
+                    }, "stamp")} className="border-primary/20 focus:border-primary" />
+                    {uploadingImage === "stamp" && <div className="flex items-center gap-2 text-primary text-sm"><Loader2 className="animate-spin h-4 w-4" /> Uploading...</div>}
                   </FieldGroup>
                 </div>
               </div>

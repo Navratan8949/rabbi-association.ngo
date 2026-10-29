@@ -154,9 +154,17 @@ export function AdminCrudPage({
 
   const handleSubmit = async (formData) => {
     if (editingItem) {
-      await updateItem(editingItem._id || editingItem.id, formData)
+      const res = await updateItem(editingItem._id || editingItem.id, formData)
+      if (res && res.success === false) {
+        throw new Error(res.error || "Failed to update item")
+      }
+      toast.success("Updated successfully")
     } else {
-      await createItem(formData)
+      const res = await createItem(formData)
+      if (res && res.success === false) {
+        throw new Error(res.error || "Failed to create item")
+      }
+      toast.success("Created successfully")
     }
   }
 
