@@ -17,7 +17,9 @@ export function FounderMessageSection({ data }) {
       if (parsed.name) name = parsed.name;
       if (parsed.designation) designation = parsed.designation;
       if (parsed.message) message = parsed.message;
-      if (parsed.image) image = parsed.image;
+      if (parsed.image) {
+        image = typeof parsed.image === "string" ? parsed.image : (parsed.image.url || "/placeholder.svg");
+      }
     } catch (e) {
       // Fallback if not JSON
       message = data.content;
@@ -28,8 +30,16 @@ export function FounderMessageSection({ data }) {
     title = data.title;
   }
 
-  if (data?.image?.url) {
-    image = data.image.url;
+  if (data?.image) {
+    if (typeof data.image === "string" && data.image.trim()) {
+      image = data.image;
+    } else if (data.image.url) {
+      image = data.image.url;
+    }
+  }
+
+  if (!image || typeof image !== "string" || !image.trim()) {
+    image = "/placeholder.svg";
   }
 
   const displayDesignation = designation

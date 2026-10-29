@@ -8,7 +8,8 @@ const {
     deleteVolunteer, 
     createVolunteerDirectly,
     getMyProfile,
-    updateVolunteerProfile
+    updateVolunteerProfile,
+    updateVolunteerAdmin
 } = require("../controllers/volunteer.controller");
 const isAuthenticated = require("../middleware/auth");
 const authorizeRoles = require("../middleware/role");
@@ -40,6 +41,7 @@ router.route("/")
 
 router.put("/:id/approve", approveVolunteer);
 router.put("/:id/reject", rejectVolunteer);
+router.put("/:id", upload.fields([{ name: "profileImage", maxCount: 1 }]), updateVolunteerAdmin);
 router.delete("/:id", deleteVolunteer);
 
 module.exports = router;

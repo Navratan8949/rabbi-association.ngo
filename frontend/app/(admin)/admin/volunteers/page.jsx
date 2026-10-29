@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
 import { AdminCrudPage, StatusBadge } from "@/components/admin/crud-page"
+import { formatToInputDate } from "@/components/admin/crud-modal"
 import { Button } from "@/components/ui/button"
 import { Eye, XCircle, Mail, Phone, User, CalendarDays, Briefcase, HandHeart, CheckCircle2, AlertCircle } from "lucide-react"
 import api from "@/service/api"
@@ -126,6 +127,20 @@ export default function Page() {
         schema={schema}
         columns={columns}
         primaryAction="Add Volunteer"
+        mapEditData={(item) => ({
+          ...item,
+          fullName: item.user?.fullName || item.fullName || "",
+          email: item.user?.email || item.email || "",
+          phone: item.user?.mobile || item.phone || "",
+          dob: formatToInputDate(item.user?.dob || item.dob),
+          address: item.user?.address || item.address || "",
+          state: item.user?.state || item.state || "",
+          district: item.user?.district || item.district || "",
+          profession: item.profession || "",
+          skills: item.skills || "",
+          availability: item.availability || "",
+          profileImage: item.profileImage?.url ? item.profileImage : (item.user?.profileImage?.url ? item.user.profileImage : null),
+        })}
         customActions={(item) => (
           <Button 
             onClick={() => setViewItem(item)} 

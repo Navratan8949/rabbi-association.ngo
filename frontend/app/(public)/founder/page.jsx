@@ -21,7 +21,7 @@ export default async function Page() {
 
   try {
     const resTrustees = await getTrustees({ status: "active" })
-    if (resTrustees?.success && resTrustees.trustees) {
+    if (resTrustees?.success && Array.isArray(resTrustees.trustees)) {
       trusteesList = resTrustees.trustees
     }
   } catch (error) {
@@ -29,7 +29,7 @@ export default async function Page() {
   }
 
   // Fallback data if DB has no records yet
-  if (!trusteesList.length) {
+  if (!Array.isArray(trusteesList) || !trusteesList.length) {
     trusteesList = [
       {
         _id: "default-1",
@@ -100,13 +100,10 @@ export default async function Page() {
                     <img
                       src={
                         person.photo?.url ||
-                        `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=d97706&color=fff&size=256`
+                        "/placeholder-user.svg"
                       }
                       alt={person.name}
                       className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      onError={(e) => {
-                        e.currentTarget.src = "/placeholder-user.svg"
-                      }}
                     />
                   </div>
 
@@ -158,13 +155,10 @@ export default async function Page() {
                     <img
                       src={
                         trustee.photo?.url ||
-                        `https://ui-avatars.com/api/?name=${encodeURIComponent(trustee.name)}&background=051e57&color=fff&size=256`
+                        "/placeholder-user.svg"
                       }
                       alt={trustee.name}
                       className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      onError={(e) => {
-                        e.currentTarget.src = "/placeholder-user.svg"
-                      }}
                     />
                   </div>
 

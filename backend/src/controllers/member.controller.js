@@ -742,13 +742,23 @@ exports.updateMemberAdmin = async (req, res) => {
       await Member.findByIdAndUpdate(id, memberUpdate);
     }
 
+    let parsedDob = undefined;
+    if (dob !== undefined) {
+      if (!dob || dob === "") {
+        parsedDob = null;
+      } else {
+        const d = new Date(dob);
+        parsedDob = isNaN(d.getTime()) ? null : d;
+      }
+    }
+
     const userUpdate = {
       ...(fullName !== undefined && { fullName }),
       ...(email !== undefined && { email }),
       ...(mobile !== undefined && { mobile }),
       ...(state !== undefined && { state }),
       ...(district !== undefined && { district }),
-      ...(dob !== undefined && { dob }),
+      ...(parsedDob !== undefined && { dob: parsedDob }),
       ...(address !== undefined && { address }),
     };
 
@@ -764,10 +774,11 @@ exports.updateMemberAdmin = async (req, res) => {
       userUpdate.password = await bcrypt.hash(password, 10);
     }
 
-    if (Object.keys(userUpdate).length > 0) {
+    if (Object.keys(userUpdate).length > 0 && member.user) {
       const mongoose = require("mongoose");
       const User = mongoose.model("User");
-      await User.findByIdAndUpdate(member.user._id, userUpdate);
+      const userId = member.user._id || member.user;
+      await User.findByIdAndUpdate(userId, userUpdate);
     }
 
     res

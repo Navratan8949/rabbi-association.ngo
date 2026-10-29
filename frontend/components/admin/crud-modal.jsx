@@ -2,6 +2,29 @@
 import { useState, useEffect } from "react"
 import { X, Loader2 } from "lucide-react"
 
+export const formatToInputDate = (dateVal) => {
+  if (!dateVal) return "";
+  if (typeof dateVal === "string" && dateVal.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    return dateVal;
+  }
+  try {
+    const d = new Date(dateVal);
+    if (!isNaN(d.getTime())) {
+      return d.toISOString().split("T")[0];
+    }
+    if (typeof dateVal === "string") {
+      const parts = dateVal.split(/[-/]/);
+      if (parts.length === 3 && parts[2].length === 4) {
+        const d2 = new Date(`${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`);
+        if (!isNaN(d2.getTime())) {
+          return d2.toISOString().split("T")[0];
+        }
+      }
+    }
+  } catch (e) {}
+  return "";
+};
+
 export function CrudModal({ isOpen, onClose, onSubmit, title, schema, initialData }) {
   const [formData, setFormData] = useState({})
   const [loading, setLoading] = useState(false)
@@ -77,6 +100,9 @@ export function CrudModal({ isOpen, onClose, onSubmit, title, schema, initialDat
               
               // Clean payload: extract _id from populated objects
               let cleanPayload = { ...formData };
+              if (initialData && cleanPayload.password === "") {
+                delete cleanPayload.password;
+              }
               Object.keys(cleanPayload).forEach(key => {
                 if (cleanPayload[key] && typeof cleanPayload[key] === 'object' && cleanPayload[key]._id && !(cleanPayload[key] instanceof File) && !(cleanPayload[key] instanceof Blob)) {
                   cleanPayload[key] = cleanPayload[key]._id;
@@ -190,7 +216,7 @@ export function CrudModal({ isOpen, onClose, onSubmit, title, schema, initialDat
                   <input
                     type="date"
                     required={field.required}
-                    value={formData[field.name] ? new Date(formData[field.name]).toISOString().split('T')[0] : ""}
+                    value={formatToInputDate(formData[field.name])}
                     onChange={(e) => {
                       handleChange(field.name, e.target.value)
                       if (field.onChange) field.onChange(e.target.value, setFormData, formData)

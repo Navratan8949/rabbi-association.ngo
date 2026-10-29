@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AdminCrudPage, StatusBadge } from "@/components/admin/crud-page";
+import { formatToInputDate } from "@/components/admin/crud-modal";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -139,14 +140,16 @@ export default function Page() {
         schema={memberSchema}
         mapEditData={(item) => ({
           ...item,
-          fullName: item.user?.fullName || "",
-          email: item.user?.email || "",
-          mobile: item.user?.mobile || "",
-          dob: item.user?.dob ? new Date(item.user.dob).toISOString().split('T')[0] : "",
-          address: item.user?.address || "",
-          state: item.user?.state || "",
-          district: item.user?.district || "",
-          profileImage: item.profileImage || item.user?.profileImage || null,
+          fullName: item.user?.fullName || item.fullName || "",
+          email: item.user?.email || item.email || "",
+          mobile: item.user?.mobile || item.mobile || item.phone || "",
+          dob: formatToInputDate(item.user?.dob || item.dob),
+          address: item.user?.address || item.address || "",
+          state: item.user?.state || item.state || "",
+          district: item.user?.district || item.district || "",
+          roleApplied: item.roleApplied || item.membershipType || "General Member",
+          paymentAmount: item.paymentAmount || 0,
+          profileImage: item.profileImage?.url ? item.profileImage : (item.user?.profileImage?.url ? item.user.profileImage : null),
         })}
         columns={[
           {

@@ -141,9 +141,15 @@ export function AdminCrudPage({
   }
 
   const handleEdit = (item) => {
-    const editItem = mapEditData ? mapEditData(item) : item
-    setEditingItem(editItem)
-    setModalOpen(true)
+    try {
+      const editItem = mapEditData ? mapEditData(item) : item
+      setEditingItem(editItem)
+      setModalOpen(true)
+    } catch (err) {
+      console.error("Error in mapEditData:", err)
+      setEditingItem(item)
+      setModalOpen(true)
+    }
   }
 
   const handleDelete = async (id) => {

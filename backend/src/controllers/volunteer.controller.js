@@ -463,3 +463,65 @@ exports.updateVolunteerProfile = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+// Admin — Update volunteer
+exports.updateVolunteerAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const volunteer = await Volunteer.findById(id).populate("user");
+        if (!volunteer) return res.status(404).json({ success: false, message: "Volunteer not found" });
+
+        const { fullName, email, phone, profession, skills, availability, message, dob, address, state, district, password } = req.body;
+
+        if (fullName !== undefined) volunteer.fullName = fullName.trim();
+        if (email !== undefined) volunteer.email = email.trim();
+        if (phone !== undefined) volunteer.phone = phone.trim();
+        if (profession !== undefined) volunteer.profession = profession.trim();
+        if (skills !== undefined) volunteer.skills = skills.trim();
+        if (availability !== undefined) volunteer.availability = availability.trim();
+        if (message !== undefined) volunteer.message = message;
+
+        const { uploadLocalFile, deleteLocalFile } = require("../utils/fileUpload");
+        if (req.files && req.files.profileImage) {
+            if (volunteer.profileImage && volunteer.profileImage.public_id) {
+                await deleteLocalFile(volunteer.profileImage.public_id);
+            }
+            volunteer.profileImage = await uploadLocalFile(req.files.profileImage[0].path);
+        }
+
+        await volunteer.save();
+
+        if (volunteer.user) {
+            const User = require("../models/User");
+            const user = await User.findById(volunteer.user._id || volunteer.user);
+            if (user) {
+                if (fullName !== undefined) user.fullName = fullName.trim();
+                if (email !== undefined) user.email = email.trim();
+                if (phone !== undefined) user.mobile = phone.trim();
+                if (address !== undefined) user.address = address.trim();
+                if (state !== undefined) user.state = state.trim();
+                if (district !== undefined) user.district = district.trim();
+                if (dob !== undefined) {
+                    if (!dob) {
+                        user.dob = null;
+                    } else {
+                        const d = new Date(dob);
+                        user.dob = isNaN(d.getTime()) ? null : d;
+                    }
+                }
+                if (password) {
+                    const bcrypt = require("bcryptjs");
+                    user.password = await bcrypt.hash(password, 10);
+                }
+                if (volunteer.profileImage?.url) {
+                    user.profileImage = volunteer.profileImage;
+                }
+                await user.save();
+            }
+        }
+
+        res.status(200).json({ success: true, message: "Volunteer updated successfully", data: volunteer });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
