@@ -1,209 +1,145 @@
+"use client";
+
 import { PageHero } from "@/components/pages/page-hero";
-import { School, ClipboardList, Users, BookOpen, Presentation, Megaphone, Settings, UserSearch } from "lucide-react";
+import { BookOpen, Languages, Scroll, GraduationCap, Users, Heart, Award, CheckCircle2 } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
-
-export const metadata = {
-  title: "What We Do",
-  description: "Our Educational Solutions: From new school setup to academic excellence and institutional development.",
-};
-
-const services = [
-  {
-    id: "01",
-    title: "NEW SCHOOL SETUP CONSULTANCY",
-    subtitle: "From Vision to Institution",
-    desc: "We provide strategic guidance for establishing new educational institutions—from initial concept to commencement.",
-    bullets: [
-      "School concept development",
-      "Feasibility and planning",
-      "Infrastructure guidance",
-      "Academic planning",
-      "Administrative systems",
-      "Staffing and recruitment",
-      "Pre-launch planning",
-      "Institutional development"
-    ],
-    icon: School
-  },
-  {
-    id: "02",
-    title: "AFFILIATION & UPGRADATION SUPPORT",
-    subtitle: "Professional Guidance & Documentation",
-    desc: "We provide professional consultancy, guidance, and documentation support to institutions seeking appropriate educational board affiliation, recognition, or upgradation.",
-    bullets: [
-      "CBSE",
-      "CISCE / ICSE",
-      "IB",
-      "Cambridge",
-      "State Boards",
-      "Documentation support",
-      "Compliance preparation",
-      "Institutional readiness",
-      "Upgradation planning"
-    ],
-    icon: ClipboardList
-  },
-  {
-    id: "03",
-    title: "SCHOOL MANAGEMENT & ADMINISTRATION",
-    subtitle: "Building Efficient Educational Systems",
-    desc: "We help educational institutions develop effective systems for day-to-day administration and long-term institutional growth.",
-    bullets: [
-      "Academic administration",
-      "School policies and procedures",
-      "HR systems",
-      "Operational planning",
-      "Performance monitoring",
-      "Institutional development",
-      "Administrative systems",
-      "Leadership support"
-    ],
-    icon: Users
-  },
-  {
-    id: "04",
-    title: "ACADEMIC EXCELLENCE",
-    subtitle: "Strengthening Teaching and Learning",
-    desc: "We support schools in developing effective teaching-learning practices and academic systems.",
-    bullets: [
-      "Academic planning",
-      "Curriculum support",
-      "Teacher development",
-      "Assessment systems",
-      "Remedial programmes",
-      "Student development initiatives",
-      "Academic monitoring",
-      "Learning improvement strategies"
-    ],
-    icon: BookOpen
-  },
-  {
-    id: "05",
-    title: "TEACHER TRAINING & CAPACITY BUILDING",
-    subtitle: "Empowering Educators to Inspire",
-    desc: "We support the professional development of educators through training, orientation, and capacity-building programmes.",
-    bullets: [
-      "Teacher orientation",
-      "Training workshops",
-      "Classroom management",
-      "Leadership development",
-      "Communication skills",
-      "Modern teaching methodologies",
-      "Student-centred learning",
-      "Continuous professional development"
-    ],
-    icon: Presentation
-  },
-  {
-    id: "06",
-    title: "SCHOOL BRANDING & MARKETING",
-    subtitle: "Helping Institutions Communicate Their Identity",
-    desc: "We help educational institutions build a clear, professional, and meaningful identity.",
-    bullets: [
-      "School branding",
-      "Logo and visual identity",
-      "Website content",
-      "Social media strategy",
-      "Admission campaigns",
-      "Prospectus and brochures",
-      "Digital communication",
-      "Institutional profile development"
-    ],
-    icon: Megaphone
-  },
-  {
-    id: "07",
-    title: "INFRASTRUCTURE & CAMPUS DEVELOPMENT",
-    subtitle: "Creating Better Learning Environments",
-    desc: "We provide planning and development guidance for safe, functional, modern, and inspiring educational spaces.",
-    bullets: [
-      "School campus development",
-      "Classrooms",
-      "Laboratories",
-      "Libraries",
-      "Smart classrooms",
-      "Activity rooms",
-      "Sports facilities",
-      "Administrative areas",
-      "Student-friendly environments"
-    ],
-    icon: Settings
-  },
-  {
-    id: "08",
-    title: "RECRUITMENT & MANPOWER SOLUTIONS",
-    subtitle: "The Right People Build the Right Institution",
-    desc: "We support educational institutions with manpower planning, recruitment, and staff development.",
-    bullets: [
-      "Principals",
-      "Vice Principals",
-      "Coordinators",
-      "Teachers",
-      "Administrators",
-      "Counsellors",
-      "Office staff",
-      "Support staff"
-    ],
-    icon: UserSearch
-  }
-];
+import { useLanguage } from "@/context/LanguageContext";
+import { CtaBand } from "@/components/sections/cta-band";
+import { ImpactStats } from "@/components/sections/impact-stats";
 
 export default function ServicesPage() {
+  const { t, isRTL } = useLanguage();
+
+  const outreachItems = t("activities.outreach_items", [
+    "Academic Seminars",
+    "Intellectual Forums",
+    "National Conferences",
+    "Training Workshops",
+    "Youth Empowerment Programs",
+    "Online Interactive Lectures",
+    "Interfaith Harmony Dialogues",
+    "Cultural & Literary Programs",
+    "Educational & Awareness Campaigns",
+    "Community Service Initiatives",
+  ]);
+
+  const programs = [
+    {
+      id: "01",
+      title: t("activities.academic_title", "Academic & Educational Programs"),
+      desc: t("activities.academic_text", "Organizing academic and educational programs to spread knowledge, encourage scholarly research, and promote continuous learning."),
+      icon: BookOpen,
+      color: "from-blue-600 to-indigo-700",
+    },
+    {
+      id: "02",
+      title: t("activities.arabic_title", "Arabic Language Programs"),
+      desc: t("activities.arabic_text", "Conducting specialized courses and workshops in Arabic language both offline and online."),
+      icon: Languages,
+      color: "from-emerald-600 to-teal-700",
+    },
+    {
+      id: "03",
+      title: t("activities.hadith_title", "Hadith & Tafsir Programs"),
+      desc: t("activities.hadith_text", "Holding specialized academic programs in Hadith studies, Quranic interpretation, and Islamic sciences."),
+      icon: Scroll,
+      color: "from-amber-600 to-orange-700",
+    },
+    {
+      id: "04",
+      title: t("activities.lectures_title", "Lectures from Al-Azhar"),
+      desc: t("activities.lectures_text", "Organizing academic webinars and interactive sessions featuring distinguished professors from Al-Azhar University, Cairo."),
+      icon: GraduationCap,
+      color: "from-purple-600 to-pink-700",
+    },
+    {
+      id: "05",
+      title: t("activities.outreach_title", "Intellectual & Outreach Programs"),
+      desc: t("activities.academic_text", "Comprehensive scholarly symposiums, youth guidance, and dialogue initiatives:"),
+      items: Array.isArray(outreachItems) ? outreachItems : [],
+      icon: Users,
+      color: "from-navy to-slate-800",
+    },
+    {
+      id: "06",
+      title: t("activities.humanitarian_title", "Humanitarian & Community Initiatives"),
+      desc: t("activities.humanitarian_text", "Dedicated to community service, supporting underserved families, healthcare drives, and humanitarian relief."),
+      icon: Heart,
+      color: "from-rose-600 to-red-700",
+    },
+    {
+      id: "07",
+      title: t("activities.empowerment_title", "Scholar Empowerment"),
+      desc: t("activities.empowerment_text", "Empowering Indian scholars through international academic exposure, teacher training, and scholarly publication opportunities."),
+      icon: Award,
+      color: "from-amber-500 to-yellow-600",
+    },
+  ];
+
   return (
     <main className="min-h-screen bg-slate-50">
       <PageHero
-        eyebrow="What We Do"
-        title="Our Educational Solutions"
-        description="Providing strategic guidance and support to educational institutions for sustainable growth."
-        breadcrumbItems={[
-          { label: "Home", href: "/" },
-          { label: "Our Work", href: "/projects" },
-          { label: "What We Do", href: "/services" },
-        ]}
+        eyebrow={t("nav.our_work", "Our Work")}
+        title={t("activities.title", "Activities & Programs")}
+        description={t("activities.academic_text", "Comprehensive academic, educational, and community initiatives.")}
+        image="/rabbi-context/focus_3.jpg"
       />
 
-      <section className="py-24">
+      <div className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-2">
-            {services.map((svc, idx) => {
-              const Icon = svc.icon;
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-sm font-bold uppercase tracking-widest text-accent mb-3 block">
+              {t("org.tagline", "Knowledge | Moderation | Unity | Service to Humanity")}
+            </span>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-navy tracking-tight">
+              {t("activities.title", "Our Activities & Programs")}
+            </h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {programs.map((p) => {
+              const Icon = p.icon;
               return (
-                <Reveal key={svc.id} delay={idx * 0.05}>
-                  <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-                      <span className="text-8xl font-black text-navy">{svc.id}</span>
+                <div
+                  key={p.id}
+                  className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                      <Icon className="size-7" />
                     </div>
-                    
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="size-14 rounded-2xl bg-accent/10 flex items-center justify-center shrink-0">
-                        <Icon className="size-7 text-accent" />
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-slate-400 mb-1 block">{svc.id}</span>
-                        <h2 className="text-xl font-bold text-navy leading-tight">{svc.title}</h2>
-                      </div>
-                    </div>
-                    
-                    <h3 className="text-accent font-bold mb-4">{svc.subtitle}</h3>
-                    <p className="text-slate-600 font-medium leading-relaxed mb-8">{svc.desc}</p>
-                    
-                    <div className="mt-auto pt-6 border-t border-slate-100">
-                      <ul className="grid sm:grid-cols-2 gap-y-3 gap-x-6">
-                        {svc.bullets.map((bullet, bIdx) => (
-                          <li key={bIdx} className="flex items-start gap-2">
-                            <div className="size-1.5 rounded-full bg-accent mt-2 shrink-0"></div>
-                            <span className="text-sm font-medium text-slate-600 leading-tight">{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <span className="text-2xl font-black text-slate-200 group-hover:text-accent/30 transition-colors">
+                      {p.id}
+                    </span>
                   </div>
-                </Reveal>
+
+                  <h3 className="text-xl font-bold text-navy mb-4 group-hover:text-accent transition-colors">
+                    {p.title}
+                  </h3>
+
+                  <p className="text-slate-600 text-base leading-relaxed flex-1 font-medium">
+                    {p.desc}
+                  </p>
+
+                  {p.items && p.items.length > 0 && (
+                    <div className="mt-6 pt-6 border-t border-slate-100 space-y-2">
+                      {p.items.slice(0, 5).map((item, i) => (
+                        <div key={i} className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                          <CheckCircle2 className="size-3.5 text-accent shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
         </div>
-      </section>
+      </div>
+
+      <ImpactStats />
+      <CtaBand />
     </main>
   );
 }

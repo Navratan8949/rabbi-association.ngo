@@ -34,7 +34,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import api from "@/service/api";
-import { GoogleTranslate } from "@/components/shared/google-translate";
 
 const NAV = [
   { href: "/volunteer-portal", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -250,10 +249,6 @@ export default function VolunteerLayout({ children }) {
               <span className="absolute right-2.5 top-2.5 size-2 rounded-full bg-rose-500 border-2 border-white"></span>
             </button> */}
 
-            <GoogleTranslate variant="light" />
-
-            <div className="h-8 w-px bg-border/60"></div>
-
             <Link
               href="/volunteer-portal/profile"
               className="flex items-center gap-3 group"
@@ -296,7 +291,6 @@ export default function VolunteerLayout({ children }) {
           </div>
 
           <div className="flex items-center gap-3">
-            <GoogleTranslate variant="light" />
             <Link
               href="/volunteer-portal/profile"
               className="flex size-9 shrink-0 items-center justify-center rounded-full bg-navy text-xs font-bold text-white shadow-sm overflow-hidden"

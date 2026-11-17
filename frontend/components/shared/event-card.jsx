@@ -10,14 +10,23 @@ export function EventCard({ event }) {
   return (
     <Link href={`/events/${event._id}`} className="group block h-full">
       <article className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-primary/20 bg-primary text-white shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-accent/40 hover:shadow-2xl">
-        <div className="relative aspect-[16/10] overflow-hidden bg-muted flex items-center justify-center">
-          <Image
-            src={event.image?.url || (typeof event.image === 'string' ? event.image : null) || "/placeholder.svg"}
-            alt={event.title}
-            fill
-            className="object-contain transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
+        <div className="relative aspect-[16/10] overflow-hidden bg-slate-900/30">
+          {(event.image?.url || (typeof event.image === 'string' && event.image)) ? (
+            <Image
+              src={event.image?.url || event.image}
+              alt={event.title || "Event"}
+              fill
+              className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          ) : (
+            <Image
+              src="/placeholder.svg"
+              alt={event.title || "Event"}
+              fill
+              className="object-cover opacity-50"
+            />
+          )}
         </div>
         <div className="flex flex-1 flex-col p-6 sm:p-8">
           <h3 className="text-2xl font-bold leading-snug text-white group-hover:text-accent transition-colors">{event.title}</h3>

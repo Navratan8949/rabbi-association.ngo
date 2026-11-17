@@ -26,7 +26,7 @@ exports.createGalleryItem = async (req, res) => {
             createdBy: req.user.id,
         });
 
-        res.status(201).json({ success: true, galleryItem });
+        res.status(201).json({ success: true, galleryItem, gallery: galleryItem, data: galleryItem });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -51,7 +51,13 @@ exports.getAllGalleryItems = async (req, res) => {
             .sort("-createdAt")
             .limit(limit);
 
-        res.status(200).json({ success: true, count: galleryItems.length, galleryItems });
+        res.status(200).json({
+            success: true,
+            count: galleryItems.length,
+            galleryItems,
+            gallery: galleryItems,
+            data: galleryItems,
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -62,7 +68,7 @@ exports.getGalleryItemById = async (req, res) => {
     try {
         const galleryItem = await Gallery.findById(req.params.id);
         if (!galleryItem) return res.status(404).json({ success: false, message: "Gallery item not found" });
-        res.status(200).json({ success: true, galleryItem });
+        res.status(200).json({ success: true, galleryItem, gallery: galleryItem, data: galleryItem });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -93,7 +99,7 @@ exports.updateGalleryItem = async (req, res) => {
         }
 
         await galleryItem.save();
-        res.status(200).json({ success: true, galleryItem });
+        res.status(200).json({ success: true, galleryItem, gallery: galleryItem, data: galleryItem });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

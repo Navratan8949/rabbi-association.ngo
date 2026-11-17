@@ -10,6 +10,16 @@ export const createCertificate = async (data) => {
     }
 };
 
+// Get Public Certificates
+export const getPublicCertificates = async () => {
+    try {
+        const response = await api.get("/certificates/public");
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 // Get All Certificates (Admin)
 export const getCertificates = async (params) => {
     try {

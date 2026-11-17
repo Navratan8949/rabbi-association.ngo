@@ -8,21 +8,25 @@ export function formatINR(amount = 0) {
 }
 
 export function CampaignCard({ campaign }) {
+  const id = campaign._id || campaign.id
   const raised = campaign.raisedAmount || 0
   const target = campaign.targetAmount || 1
   const pct = Math.min(100, Math.round((raised / target) * 100))
+  const imageUrl = campaign.image?.url || (typeof campaign.image === 'string' ? campaign.image : null) || "/placeholder.svg"
 
   return (
-    <Link href={`/crowdfunding/${campaign._id}`} className="group block h-full">
+    <Link href={`/crowdfunding/${id}`} className="group block h-full">
       <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift">
-        <div className="relative aspect-[16/10] overflow-hidden">
-          <Image
-            src={campaign.image || "/placeholder.svg"}
-            alt={campaign.title}
-            fill
-            className="object-contain transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
+        <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 border-b border-border/50">
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={campaign.title || "Campaign"}
+              fill
+              className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          )}
         </div>
         <div className="flex flex-1 flex-col p-5">
           <h3 className="text-lg font-bold leading-snug group-hover:text-navy">{campaign.title}</h3>

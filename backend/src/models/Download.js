@@ -16,7 +16,7 @@ const downloadSchema = new mongoose.Schema(
 
         category: {
             type: String,
-            enum: ["fatwa", "book", "article", "document", "report", "other"],
+            enum: ["certificate", "fatwa", "book", "article", "document", "report", "other"],
             default: "document",
         },
 

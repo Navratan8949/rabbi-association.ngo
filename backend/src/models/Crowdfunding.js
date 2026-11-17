@@ -14,6 +14,30 @@ const crowdfundingSchema = new mongoose.Schema(
             trim: true,
         },
 
+        story: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+
+        category: {
+            type: String,
+            trim: true,
+            default: "General Welfare",
+        },
+
+        beneficiary: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+
+        organizer: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+
         image: {
             public_id: {
                 type: String,
@@ -47,6 +71,11 @@ const crowdfundingSchema = new mongoose.Schema(
             type: String,
             enum: ["active", "completed", "closed"],
             default: "active",
+        },
+
+        translations: {
+            type: mongoose.Schema.Types.Mixed,
+            default: {},
         },
     },
     {

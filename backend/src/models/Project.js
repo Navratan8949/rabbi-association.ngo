@@ -43,6 +43,10 @@ const projectSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    translations: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

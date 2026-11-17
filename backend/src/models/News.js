@@ -41,6 +41,10 @@ const newsSchema = new mongoose.Schema(
             type: Date,
             default: Date.now,
         },
+        translations: {
+            type: mongoose.Schema.Types.Mixed,
+            default: {},
+        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

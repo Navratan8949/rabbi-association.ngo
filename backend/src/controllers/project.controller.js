@@ -3,13 +3,20 @@ const { uploadLocalFile, deleteLocalFile } = require("../utils/fileUpload");
 
 exports.createProject = async (req, res) => {
     try {
-        const { title, description, goalAmount, raisedAmount, status, startDate, endDate, isFeatured } = req.body;
+        const { title, description, goalAmount, raisedAmount, status, startDate, endDate, isFeatured, translations } = req.body;
         let image = { public_id: "", url: "" };
         if (req.file) {
             const uploadResult = await uploadLocalFile(req.file.path);
             if (uploadResult) {
                 image = { public_id: uploadResult.public_id, url: uploadResult.url };
             }
+        }
+
+        let parsedTranslations = {};
+        if (typeof translations === "string") {
+            try { parsedTranslations = JSON.parse(translations); } catch (e) {}
+        } else if (typeof translations === "object" && translations !== null) {
+            parsedTranslations = translations;
         }
 
         const project = await Project.create({
@@ -22,6 +29,7 @@ exports.createProject = async (req, res) => {
             endDate,
             isFeatured,
             image,
+            translations: parsedTranslations,
             createdBy: req.user.id
         });
 
@@ -56,6 +64,9 @@ exports.updateProject = async (req, res) => {
         if (!project) return res.status(404).json({ success: false, message: "Project not found" });
 
         const updatedData = { ...req.body };
+        if (typeof updatedData.translations === "string") {
+            try { updatedData.translations = JSON.parse(updatedData.translations); } catch (e) {}
+        }
         if (req.file) {
             const uploadResult = await uploadLocalFile(req.file.path);
             if (uploadResult) {

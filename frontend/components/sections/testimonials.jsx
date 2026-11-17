@@ -1,15 +1,18 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowRight, ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { TestimonialCard } from "@/components/shared/testimonial-card"
 import { getTestimonials } from "@/service/testimonial.service"
 import { SectionHeading } from "@/components/shared/section-heading"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/context/LanguageContext"
 
 export function Testimonials() {
+  const { t, isRTL } = useLanguage()
   const scrollRef = useRef(null)
   const [testimonials, setTestimonials] = useState([])
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -37,15 +40,15 @@ export function Testimonials() {
   }
 
   return (
-    <section className="bg-slate-50 py-16 md:py-20 relative overflow-hidden">
+    <section className="bg-slate-50 py-16 md:py-20 relative overflow-hidden" dir={isRTL ? "rtl" : "ltr"}>
       <div className="mx-auto max-w-7xl px-4">
         {/* Header Area Centered */}
         <div className="flex flex-col items-center justify-center text-center">
           <SectionHeading
             align="center"
-            eyebrow="Voices of Change"
-            title="Stories from our community"
-            description="Real words from the people whose lives have been touched by your generosity."
+            eyebrow={t("testimonials_section.eyebrow", "Voices of Impact")}
+            title={t("testimonials_section.title", "Words From Our Community")}
+            description={t("testimonials_section.description", "Reflections and feedback from scholars, students, and community members participating in our programs.")}
             className="mx-auto"
             inverted={false}
           />
@@ -59,14 +62,14 @@ export function Testimonials() {
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {testimonials.length > 0 ? (
-              testimonials.map((t) => (
-                <div key={t._id} className="w-[320px] md:w-[380px] shrink-0 snap-center">
-                  <TestimonialCard item={t} />
+              testimonials.map((tItem) => (
+                <div key={tItem._id} className="w-[320px] md:w-[380px] shrink-0 snap-center">
+                  <TestimonialCard item={tItem} />
                 </div>
               ))
             ) : (
               <div className="w-full text-center py-12 text-slate-500 font-medium">
-                No testimonials available at the moment.
+                {t("testimonials_section.empty", "No testimonials available at the moment.")}
               </div>
             )}
           </div>
@@ -84,8 +87,9 @@ export function Testimonials() {
 
         <div className="mt-8 flex justify-center">
           <Button asChild size="lg" variant="outline" className="rounded-full border-slate-200 bg-white text-navy font-bold hover:bg-accent hover:text-white hover:border-accent transition-colors shadow-sm">
-            <Link href="/testimonials">
-              View All Testimonials <ArrowRight className="ml-2 size-4" />
+            <Link href="/testimonials" className="inline-flex items-center gap-2">
+              <span>{t("testimonials_section.view_all", "View All Testimonials")}</span>
+              <ArrowIcon className="size-4" />
             </Link>
           </Button>
         </div>

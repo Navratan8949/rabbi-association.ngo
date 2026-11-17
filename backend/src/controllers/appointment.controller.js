@@ -86,6 +86,33 @@ exports.updateAppointmentLetter = async (req, res) => {
   }
 };
 
+exports.regenerateAppointmentLetter = async (req, res) => {
+  try {
+    const letter = await AppointmentLetter.findById(req.params.id);
+    if (!letter) {
+      return res.status(404).json({ success: false, message: "Appointment letter not found" });
+    }
+
+    const populatedLetter = await generateAndSaveAppointmentLetter({
+      memberId: letter.member,
+      designation: letter.designation,
+      department: letter.department,
+      joiningDate: letter.joiningDate,
+      protocol: req.protocol,
+      host: req.get("host"),
+      existingLetterNo: letter.letterNo,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Appointment letter regenerated successfully with updated stamp and signature",
+      appointmentLetter: populatedLetter,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 exports.deleteAppointmentLetter = async (req, res) => {
   try {
     const letter = await AppointmentLetter.findByIdAndDelete(req.params.id);

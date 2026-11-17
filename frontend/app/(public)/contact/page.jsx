@@ -8,6 +8,7 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { SITE as DEFAULT_SITE } from "@/constants/site";
 import { Reveal } from "@/components/shared/reveal";
 import { FaqSection } from "@/components/sections/faq-section";
+import { useLanguage } from "@/context/LanguageContext";
 
 function FacebookIcon({ className }) {
   return (
@@ -47,6 +48,7 @@ function YoutubeIcon({ className }) {
 }
 
 export default function Page() {
+  const { t, isRTL } = useLanguage();
   const dispatch = useDispatch();
   const { data: siteContent } = useSelector((state) => state.siteContent);
 
@@ -99,14 +101,13 @@ export default function Page() {
           <Reveal>
             <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-amber-500 backdrop-blur-md">
               <span className="size-1.5 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.8)] animate-pulse" />
-              Get In Touch
+              {t("contact.get_in_touch", "Get In Touch")}
             </span>
             <h1 className="text-5xl font-bold tracking-tight text-white md:text-6xl lg:text-[4rem] drop-shadow-xl">
-              Contact <span className="text-amber-500">Us</span>
+              {t("contact.title", "Contact Us")}
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300 font-medium drop-shadow-lg">
-              We're here to assist you with membership, events, academic
-              programs, collaborations, or any general inquiries.
+              {t("contact.desc", "We're here to assist you with membership, events, academic programs, collaborations, or any general inquiries.")}
             </p>
           </Reveal>
         </div>
@@ -126,12 +127,10 @@ export default function Page() {
                   <MapPin className="size-6" />
                 </div>
                 <h3 className="text-2xl font-bold text-navy">
-                  Head Office
+                  {t("contact.head_office_title", "Head Office")}
                 </h3>
-                <p className="mt-3 text-muted-foreground leading-relaxed">
-                  Rabbi Association – India Branch
-                  <br />
-                  New Delhi, India
+                <p className="mt-3 text-muted-foreground leading-relaxed text-base">
+                  {t("contact.head_office_address", "New Delhi, India")}
                 </p>
                 <a
                   href={SITE.maps}

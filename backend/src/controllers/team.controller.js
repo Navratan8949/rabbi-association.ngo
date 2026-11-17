@@ -14,7 +14,7 @@ exports.getAllTeamMembers = async (req, res) => {
 // Admin — Create team member
 exports.createTeamMember = async (req, res) => {
     try {
-        const { name, designation, description, email, phone, mobile, website, socialLinks, order } = req.body;
+        const { name, designation, description, email, phone, mobile, website, socialLinks, order, translations } = req.body;
 
         let photo = { public_id: "", url: "" };
         if (req.file) {
@@ -31,6 +31,13 @@ exports.createTeamMember = async (req, res) => {
             }
         }
 
+        let parsedTranslations = {};
+        if (typeof translations === "string") {
+            try { parsedTranslations = JSON.parse(translations); } catch (e) {}
+        } else if (typeof translations === "object" && translations !== null) {
+            parsedTranslations = translations;
+        }
+
         const effectivePhone = (phone || mobile || "").trim();
 
         const member = await Team.create({
@@ -44,6 +51,7 @@ exports.createTeamMember = async (req, res) => {
             socialLinks: parsedSocialLinks,
             order: order ? Number(order) : 0,
             photo,
+            translations: parsedTranslations,
             createdBy: req.user._id,
         });
 
@@ -60,6 +68,12 @@ exports.updateTeamMember = async (req, res) => {
         if (!member) return res.status(404).json({ success: false, message: "Team member not found" });
 
         const updatedData = { ...req.body };
+
+        if (updatedData.translations && typeof updatedData.translations === "string") {
+            try {
+                updatedData.translations = JSON.parse(updatedData.translations);
+            } catch (e) {}
+        }
         if (req.file) {
             const uploadResult = await uploadLocalFile(req.file.path);
             if (uploadResult) {

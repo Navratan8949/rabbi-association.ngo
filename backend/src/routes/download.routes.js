@@ -10,7 +10,7 @@ router.get("/", getAllDownloads);
 
 // Admin only
 router.post("/", isAuthenticated, authorizeRoles(["admin"]), upload.single("file"), createDownload);
-router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), updateDownload);
+router.put("/:id", isAuthenticated, authorizeRoles(["admin"]), upload.single("file"), updateDownload);
 router.delete("/:id", isAuthenticated, authorizeRoles(["admin"]), deleteDownload);
 
 module.exports = router;

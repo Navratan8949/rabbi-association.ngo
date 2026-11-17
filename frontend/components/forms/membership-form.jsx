@@ -5,8 +5,10 @@ import api from "@/service/api";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function MembershipFormClient() {
+  const { t, isRTL } = useLanguage();
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -132,6 +134,7 @@ export function MembershipFormClient() {
     <form
       className="grid gap-10 rounded-[2.5rem] border border-border/70 bg-white p-8 sm:p-12 shadow-lg relative overflow-hidden"
       onSubmit={handleSubmit}
+      dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
 
@@ -157,10 +160,10 @@ export function MembershipFormClient() {
       )}
 
       <div className="relative z-10">
-        <h3 className={sectionTitleClasses}>Personal Information</h3>
+        <h3 className={sectionTitleClasses}>{t("membership.personal_title", "Personal Information")}</h3>
         <div className="grid sm:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className={labelClasses}>Full Name *</label>
+            <label className={labelClasses}>{t("membership.personal_fields.full_name", "Full Name")} *</label>
             <input
               name="fullName"
               type="text"
@@ -171,7 +174,7 @@ export function MembershipFormClient() {
             />
           </div>
           <div>
-            <label className={labelClasses}>Gender *</label>
+            <label className={labelClasses}>{t("membership.personal_fields.gender", "Gender")} *</label>
             <select
               name="gender"
               className={inputClasses}
@@ -190,11 +193,11 @@ export function MembershipFormClient() {
 
         <div className="grid sm:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className={labelClasses}>Date of Birth *</label>
+            <label className={labelClasses}>{t("membership.personal_fields.dob", "Date of Birth")} *</label>
             <input name="dob" type="date" className={inputClasses} required />
           </div>
           <div>
-            <label className={labelClasses}>Email Address *</label>
+            <label className={labelClasses}>{t("membership.personal_fields.email", "Email Address")} *</label>
             <input
               name="email"
               type="email"
@@ -208,7 +211,7 @@ export function MembershipFormClient() {
 
         <div className="grid sm:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className={labelClasses}>Phone Number *</label>
+            <label className={labelClasses}>{t("membership.personal_fields.phone", "Phone Number")} *</label>
             <input
               name="mobile"
               type="tel"
@@ -242,7 +245,7 @@ export function MembershipFormClient() {
         </div>
 
         <div className="mb-6">
-          <label className={labelClasses}>Full Address *</label>
+          <label className={labelClasses}>{t("membership.address_fields.full_address", "Full Address")} *</label>
           <input
             name="address"
             type="text"
@@ -254,7 +257,7 @@ export function MembershipFormClient() {
 
         <div className="grid sm:grid-cols-3 gap-6">
           <div>
-            <label className={labelClasses}>State *</label>
+            <label className={labelClasses}>{t("membership.address_fields.state", "State")} *</label>
             <input
               name="state"
               type="text"
@@ -264,7 +267,7 @@ export function MembershipFormClient() {
             />
           </div>
           <div>
-            <label className={labelClasses}>District *</label>
+            <label className={labelClasses}>{t("membership.address_fields.district", "District")} *</label>
             <input
               name="district"
               type="text"
@@ -274,7 +277,7 @@ export function MembershipFormClient() {
             />
           </div>
           <div>
-            <label className={labelClasses}>Pincode *</label>
+            <label className={labelClasses}>{t("membership.address_fields.postal_code", "Postal Code")} *</label>
             <input
               name="postalCode"
               type="text"
@@ -403,11 +406,11 @@ export function MembershipFormClient() {
       </div>
 
       <div className="relative z-10">
-        <h3 className={sectionTitleClasses}>Document Uploads</h3>
+        <h3 className={sectionTitleClasses}>{t("membership.documents_title", "Required Documents")}</h3>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="rounded-xl border border-dashed border-slate-300 p-4 text-center bg-white hover:bg-slate-50 transition-colors flex flex-col justify-center">
             <label className="cursor-pointer block w-full">
-              <span className={labelClasses}>Profile Photo *</span>
+              <span className={labelClasses}>{t("membership.documents_fields.photo", "Profile Photo")} *</span>
               <span className="text-[11px] font-medium text-slate-500 mb-3 block">
                 Passport Size (JPG/PNG)
               </span>
@@ -423,7 +426,7 @@ export function MembershipFormClient() {
 
           <div className="rounded-xl border border-dashed border-slate-300 p-4 text-center bg-white hover:bg-slate-50 transition-colors flex flex-col justify-between">
             <div>
-              <span className={labelClasses}>ID Proof Type *</span>
+              <span className={labelClasses}>{t("membership.documents_fields.id_proof", "ID Proof Type")} *</span>
               <select
                 name="idProofType"
                 className={`${inputClasses} mb-4`}
@@ -440,7 +443,7 @@ export function MembershipFormClient() {
               </select>
             </div>
             <label className="cursor-pointer block w-full">
-              <span className={labelClasses}>Upload ID Proof *</span>
+              <span className={labelClasses}>{t("membership.documents_fields.id_proof", "Upload ID Proof")} *</span>
               <input
                 name="idProof"
                 type="file"
@@ -475,11 +478,10 @@ export function MembershipFormClient() {
           className="w-full inline-flex h-14 items-center justify-center rounded-xl bg-primary px-8 text-base font-bold tracking-wide text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.01] disabled:opacity-50 disabled:hover:scale-100 shadow-xl shadow-primary/20"
         >
           {loading ? <Loader2 className="mr-2 size-5 animate-spin" /> : null}
-          SUBMIT MEMBERSHIP APPLICATION &rarr;
+          {t("membership.submit_button", "SUBMIT MEMBERSHIP APPLICATION")} &rarr;
         </button>
         <p className="text-center text-xs text-slate-500 mt-4 font-medium uppercase tracking-wider">
-          By submitting this application, you agree to the Terms and Conditions
-          of the Association
+          {t("membership.declaration_text", "By submitting this application, you agree to the Terms and Conditions of the Association")}
         </p>
       </div>
     </form>

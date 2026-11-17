@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowRight, Loader2, CheckCircle2 } from "lucide-react"
+import { ArrowRight, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react"
 import { createContact } from "@/service/contact.service"
+import { useLanguage } from "@/context/LanguageContext"
 
 export function ContactForm() {
+  const { t, isRTL } = useLanguage()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,12 +29,11 @@ export function ContactForm() {
     setSuccess(false)
 
     try {
-      console.log('formData Contact', formData)
       await createContact(formData)
       setSuccess(true)
       setFormData({ name: "", email: "", mobile: "", subject: "", message: "" })
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to send message. Please try again.")
+      setError(err.response?.data?.message || t("contact.error", "Failed to send message. Please try again."))
     } finally {
       setLoading(false)
     }
@@ -40,12 +41,14 @@ export function ContactForm() {
 
   const inputClasses = "w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-navy placeholder:text-slate-500 transition-all hover:bg-slate-100 hover:border-slate-300 focus:border-accent focus:bg-white focus:outline-none focus:ring-4 focus:ring-accent/20 disabled:opacity-50"
 
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight
+
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
+    <form className="space-y-6" onSubmit={handleSubmit} dir={isRTL ? "rtl" : "ltr"}>
       {success && (
         <div className="rounded-2xl bg-blue-50 p-5 text-blue-800 flex items-start gap-4 border border-blue-100/50 shadow-sm">
           <CheckCircle2 className="size-6 shrink-0 text-blue-600 mt-0.5" />
-          <span className="font-medium">Thank you! Your message has been sent successfully. Our team will get back to you shortly.</span>
+          <span className="font-medium">{t("contact.success", "Thank you! Your message has been sent successfully. Our team will get back to you shortly.")}</span>
         </div>
       )}
 
@@ -62,7 +65,7 @@ export function ContactForm() {
             id="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Your Full Name"
+            placeholder={t("membership.personal_fields.name", "Your Full Name")}
             disabled={loading}
             className={inputClasses}
             required
@@ -75,7 +78,7 @@ export function ContactForm() {
             id="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Email Address"
+            placeholder={t("membership.personal_fields.email", "Email Address")}
             disabled={loading}
             className={inputClasses}
             required
@@ -86,11 +89,11 @@ export function ContactForm() {
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="relative">
           <input
-            type="number"
+            type="tel"
             id="mobile"
             value={formData.mobile}
             onChange={handleChange}
-            placeholder="Phone Number"
+            placeholder={t("membership.personal_fields.mobile", "Phone Number")}
             disabled={loading}
             className={inputClasses}
           />
@@ -102,7 +105,7 @@ export function ContactForm() {
             id="subject"
             value={formData.subject}
             onChange={handleChange}
-            placeholder="Subject of Inquiry"
+            placeholder={t("contact.subject_placeholder", "Subject of Inquiry")}
             disabled={loading}
             className={inputClasses}
             required
@@ -115,7 +118,7 @@ export function ContactForm() {
           id="message"
           value={formData.message}
           onChange={handleChange}
-          placeholder="How can we help you? Please describe in detail..."
+          placeholder={t("contact.message_placeholder", "How can we help you? Please describe in detail...")}
           rows={5}
           disabled={loading}
           className={`${inputClasses} resize-none`}
@@ -129,8 +132,8 @@ export function ContactForm() {
           disabled={loading}
           className="group inline-flex h-14 w-full sm:w-auto items-center justify-center gap-3 rounded-full bg-navy px-10 text-base font-bold text-white transition-all hover:bg-navy/90 hover:shadow-xl hover:shadow-navy/20 hover:-translate-y-1 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
-          {loading ? <Loader2 className="size-5 animate-spin" /> : "Send Message"}
-          {!loading && <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />}
+          {loading ? <Loader2 className="size-5 animate-spin" /> : t("contact.send_message", "Send Message")}
+          {!loading && <ArrowIcon className="size-5 transition-transform group-hover:translate-x-1" />}
         </button>
       </div>
     </form>

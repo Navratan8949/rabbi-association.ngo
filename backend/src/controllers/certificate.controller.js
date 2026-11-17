@@ -88,6 +88,17 @@ exports.createCertificate = async (req, res) => {
     }
 };
 
+exports.getPublicCertificates = async (req, res) => {
+    try {
+        const certificates = await Certificate.find({ status: "active" })
+            .select("certificateNo title description pdf status issueDate createdAt")
+            .sort("-createdAt");
+        res.status(200).json({ success: true, count: certificates.length, certificates });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 exports.getAllCertificates = async (req, res) => {
     try {
         const certificates = await Certificate.find()

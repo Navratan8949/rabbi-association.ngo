@@ -3,7 +3,20 @@ const { uploadLocalFile, deleteLocalFile } = require("../utils/fileUpload");
 
 exports.createCampaign = async (req, res) => {
     try {
-        const { title, description, targetAmount, startDate, endDate, status } = req.body;
+        const { 
+            title, 
+            description, 
+            story,
+            category,
+            beneficiary,
+            organizer,
+            targetAmount, 
+            raisedAmount,
+            startDate, 
+            endDate, 
+            status, 
+            translations 
+        } = req.body;
 
         let image = { public_id: "", url: "" };
         if (req.file) {
@@ -13,14 +26,27 @@ exports.createCampaign = async (req, res) => {
             }
         }
 
+        let parsedTranslations = {};
+        if (typeof translations === "string") {
+            try { parsedTranslations = JSON.parse(translations); } catch (e) {}
+        } else if (typeof translations === "object" && translations !== null) {
+            parsedTranslations = translations;
+        }
+
         const campaign = await Crowdfunding.create({
             title,
             description,
-            targetAmount,
+            story: story || "",
+            category: category || "General Welfare",
+            beneficiary: beneficiary || "",
+            organizer: organizer || "",
+            targetAmount: Number(targetAmount) || 0,
+            raisedAmount: Number(raisedAmount) || 0,
             startDate,
             endDate,
-            status,
-            image
+            status: status || "active",
+            image,
+            translations: parsedTranslations
         });
 
         res.status(201).json({ success: true, campaign });
@@ -54,6 +80,9 @@ exports.updateCampaign = async (req, res) => {
         if (!campaign) return res.status(404).json({ success: false, message: "Campaign not found" });
 
         const updatedData = { ...req.body };
+        if (typeof updatedData.translations === "string") {
+            try { updatedData.translations = JSON.parse(updatedData.translations); } catch (e) {}
+        }
         if (req.file) {
             const uploadResult = await uploadLocalFile(req.file.path);
             if (uploadResult) {

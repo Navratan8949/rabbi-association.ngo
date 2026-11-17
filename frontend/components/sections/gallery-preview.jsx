@@ -13,8 +13,9 @@ export function GalleryPreview() {
   useEffect(() => {
     getGalleryItems({ limit: 6 })
       .then((data) => {
-        if (data.success) {
-          setGallery(data.galleryItems.slice(0, 6));
+        if (data?.success) {
+          const list = data.galleryItems || data.data || data.gallery || [];
+          setGallery(list.slice(0, 6));
         }
       })
       .catch(console.error);

@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/sonner";
 import { SplashScreen } from "@/components/splash-screen/splash-screen";
 import { ReduxProvider } from "@/redux/Provider";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { cookies } from "next/headers";
 import { Outfit } from "next/font/google";
 import Script from "next/script";
@@ -117,17 +118,16 @@ export const viewport = {
 
 export default async function RootLayout({ children }) {
   const cookieStore = await cookies();
+  const appLocale = cookieStore.get("app_locale")?.value;
   const googtrans = cookieStore.get("googtrans")?.value;
   let dir = "ltr";
   let lang = "en";
 
-  if (googtrans) {
-    const selectedLang = googtrans.split("/").pop();
-    if (["ar", "ur"].includes(selectedLang)) {
+  const resolvedLang = appLocale || (googtrans ? googtrans.split("/").pop() : null);
+  if (resolvedLang && ["en", "ar", "ur", "hi"].includes(resolvedLang)) {
+    lang = resolvedLang;
+    if (["ar", "ur"].includes(resolvedLang)) {
       dir = "rtl";
-    }
-    if (selectedLang) {
-      lang = selectedLang;
     }
   }
 
@@ -208,8 +208,10 @@ export default async function RootLayout({ children }) {
       </head>
       <body className={`${fontPrimary.variable} font-sans antialiased overflow-x-hidden`} suppressHydrationWarning>
         <ReduxProvider>
-          {children}
-          <Toaster position="top-center" richColors />
+          <LanguageProvider initialLanguage={lang}>
+            {children}
+            <Toaster position="top-center" richColors />
+          </LanguageProvider>
         </ReduxProvider>
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>

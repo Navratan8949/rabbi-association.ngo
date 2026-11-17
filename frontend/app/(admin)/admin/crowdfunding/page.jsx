@@ -11,9 +11,26 @@ export default function Page() {
 
   const schema = [
     { name: "title", label: "Campaign Title", required: true },
-    { name: "description", label: "Description", type: "textarea", required: true },
+    { 
+      name: "category", 
+      label: "Campaign Category", 
+      type: "select", 
+      required: true,
+      options: [
+        { label: "Education & Scholarships", value: "Education Support" },
+        { label: "Healthcare & Medical Relief", value: "Healthcare & Medical" },
+        { label: "Community & Rural Welfare", value: "Community Welfare" },
+        { label: "Emergency & Disaster Relief", value: "Disaster Relief" },
+        { label: "Orphan & Family Care", value: "Orphan Care" },
+        { label: "General Social Welfare", value: "General Welfare" }
+      ]
+    },
+    { name: "description", label: "Short Summary (Displays on Card)", type: "textarea", required: true },
+    { name: "story", label: "Detailed Story & Fund Utilization Plan (Displays on Detail Page)", type: "textarea", required: false },
     { name: "targetAmount", label: "Target Amount (₹)", type: "number", required: true },
     { name: "raisedAmount", label: "Raised Amount (₹)", type: "number", required: false },
+    { name: "beneficiary", label: "Beneficiary / Target Group", type: "text", required: false },
+    { name: "organizer", label: "Campaign Organizer / Lead", type: "text", required: false },
     { name: "startDate", label: "Start Date", type: "date", required: false },
     { name: "endDate", label: "End Date", type: "date", required: false },
     { name: "status", label: "Status", type: "select", required: true, options: [
@@ -21,7 +38,7 @@ export default function Page() {
       { label: "Completed", value: "completed" },
       { label: "Closed", value: "closed" }
     ]},
-    { name: "image", label: "Campaign Image", type: "file", required: false }
+    { name: "image", label: "Campaign Image / Banner", type: "file", required: false }
   ]
 
   const columns = [
@@ -120,9 +137,27 @@ export default function Page() {
                   
                   <div className="flex flex-wrap gap-4 pt-2">
                     <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Category</p>
+                      <span className="inline-flex rounded-full bg-accent/20 px-2.5 py-0.5 text-xs font-bold text-accent-foreground">
+                        {viewItem.category || "General Welfare"}
+                      </span>
+                    </div>
+                    <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Status</p>
                       <StatusBadge status={viewItem.status} />
                     </div>
+                    {viewItem.beneficiary && (
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Beneficiary</p>
+                        <p className="text-sm font-semibold text-slate-800">{viewItem.beneficiary}</p>
+                      </div>
+                    )}
+                    {viewItem.organizer && (
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Organizer</p>
+                        <p className="text-sm font-semibold text-slate-800">{viewItem.organizer}</p>
+                      </div>
+                    )}
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Start Date</p>
                       <p className="text-sm font-semibold text-slate-800">{viewItem.startDate ? new Date(viewItem.startDate).toLocaleDateString() : "N/A"}</p>
@@ -158,11 +193,20 @@ export default function Page() {
               </div>
 
               <div className="mt-6">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Description</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Short Description</p>
                 <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
                   {viewItem.description}
                 </div>
               </div>
+
+              {viewItem.story && (
+                <div className="mt-6">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Detailed Story & Plan</p>
+                  <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+                    {viewItem.story}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Footer */}

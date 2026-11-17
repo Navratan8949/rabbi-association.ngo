@@ -50,6 +50,10 @@ const eventSchema = new mongoose.Schema(
             enum: ["upcoming", "ongoing", "completed", "cancelled"],
             default: "upcoming",
         },
+        translations: {
+            type: mongoose.Schema.Types.Mixed,
+            default: {},
+        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

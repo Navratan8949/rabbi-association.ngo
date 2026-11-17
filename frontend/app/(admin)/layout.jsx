@@ -11,7 +11,6 @@ import { selectUser, clearUser } from "@/redux/features/userSlice"
 import api from "@/service/api"
 import { toast } from "sonner"
 import { useEffect, useState } from "react"
-import { GoogleTranslate } from "@/components/shared/google-translate"
 
 export default function AdminLayout({ children }) {
   const router = useRouter()
@@ -78,7 +77,6 @@ export default function AdminLayout({ children }) {
             </div>
 
             <div className="flex items-center gap-3 sm:gap-4">
-              <GoogleTranslate variant="light" />
               <Link 
                 href="/" 
                 target="_blank" 

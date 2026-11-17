@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { useSelector } from "react-redux";
+import { useLanguage } from "@/context/LanguageContext";
 
 const DEFAULT_AREAS = [
   {
@@ -59,9 +60,49 @@ const DEFAULT_AREAS = [
 ];
 
 export function FocusAreas() {
+  const { t, isRTL } = useLanguage();
   const { data: siteContent } = useSelector((state) => state.siteContent);
 
-  let areas = DEFAULT_AREAS;
+  const localizedAreas = [
+    {
+      icon: "BookOpen",
+      title: t("activities.academic_title", "ACADEMIC & EDUCATIONAL PROGRAMS"),
+      desc: t("activities.academic_text", "Organizing academic and educational programs to spread knowledge, encourage scholarly research, and promote continuous learning."),
+      image: "/rabbi-context/focus_1.jpg",
+    },
+    {
+      icon: "Languages",
+      title: t("activities.arabic_title", "ARABIC LANGUAGE PROGRAMS"),
+      desc: t("activities.arabic_text", "Conducting specialized courses and workshops in Arabic language both offline and online."),
+      image: "/rabbi-context/focus_2.jpg",
+    },
+    {
+      icon: "Scroll",
+      title: t("activities.hadith_title", "HADITH & TAFSIR PROGRAMS"),
+      desc: t("activities.hadith_text", "Holding specialized academic programs in Hadith studies, Quranic interpretation, and Islamic sciences."),
+      image: "/rabbi-context/focus_3.jpg",
+    },
+    {
+      icon: "GraduationCap",
+      title: t("activities.lectures_title", "LECTURES FROM AL-AZHAR"),
+      desc: t("activities.lectures_text", "Organizing academic webinars and interactive sessions featuring distinguished professors from Al-Azhar University, Cairo."),
+      image: "/rabbi-context/focus_4.jpg",
+    },
+    {
+      icon: "Users",
+      title: t("activities.outreach_title", "INTELLECTUAL & OUTREACH PROGRAMS"),
+      desc: t("activities.academic_text", "Academic seminars, intellectual forums, national conferences, training workshops, and interfaith dialogues."),
+      image: "/rabbi-context/focus_5.jpg",
+    },
+    {
+      icon: "Heart",
+      title: t("activities.humanitarian_title", "HUMANITARIAN & COMMUNITY INITIATIVES"),
+      desc: t("activities.humanitarian_text", "Dedicated to community service, supporting underserved families, healthcare drives, and humanitarian relief."),
+      image: "/rabbi-context/focus_6.jpg",
+    },
+  ];
+
+  let areas = localizedAreas;
   if (siteContent?.focus_areas?.content) {
     try {
       const parsed = JSON.parse(siteContent.focus_areas.content);
@@ -78,9 +119,9 @@ export function FocusAreas() {
           <div className="flex flex-col items-center justify-center text-center">
             <SectionHeading
               align="center"
-              eyebrow="What We Do"
-              title="Our Educational Solutions"
-              description="Professional guidance and support from vision to impact for educational institutions."
+              eyebrow={t("nav.our_work", "What We Do")}
+              title={t("activities.title", "Our Activities & Programs")}
+              description={t("activities.academic_text", "Comprehensive educational, academic, and community initiatives.")}
               className="mx-auto"
             />
           </div>

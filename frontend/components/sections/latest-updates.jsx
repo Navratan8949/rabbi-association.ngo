@@ -3,45 +3,52 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
+  ArrowLeft,
   BookOpen,
   CalendarDays,
   HeartHandshake,
   Newspaper,
   ChevronRight,
+  ChevronLeft,
   Clock,
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getNews } from "@/service/news.service";
 import { getEvents } from "@/service/event.service";
-
-const serviceLinks = [
-  {
-    title: "Projects & Activities",
-    href: "/projects",
-    icon: BookOpen,
-    desc: "Complete guidance for new and existing educational institutions.",
-    color: "bg-blue-500/10 text-blue-600 border-blue-200/60",
-  },
-  {
-    title: "Events & Campaigns",
-    href: "/events",
-    icon: Newspaper,
-    desc: "Professional development and capacity building for educators.",
-    color: "bg-amber-500/10 text-amber-600 border-amber-200/60",
-  },
-  {
-    title: "Membership Registration",
-    href: "/membership",
-    icon: HeartHandshake,
-    desc: "Join our global network of educational professionals.",
-    color: "bg-blue-500/10 text-blue-600 border-blue-200/60",
-  },
-];
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedField } from "@/lib/localized-field";
 
 export function LatestUpdates() {
+  const { t, isRTL, language } = useLanguage();
   const [news, setNews] = useState([]);
   const [events, setEvents] = useState([]);
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
+  const ChevronIcon = isRTL ? ChevronLeft : ChevronRight;
+
+  const serviceLinks = [
+    {
+      title: t("latest_updates.service_1_title", "Projects & Activities"),
+      href: "/projects",
+      icon: BookOpen,
+      desc: t("latest_updates.service_1_desc", "Academic, educational, and social welfare programs across India."),
+      color: "bg-blue-500/10 text-blue-600 border-blue-200/60",
+    },
+    {
+      title: t("latest_updates.service_2_title", "Events & Conferences"),
+      href: "/events",
+      icon: Newspaper,
+      desc: t("latest_updates.service_2_desc", "Seminars, workshops, and lectures by prominent scholars."),
+      color: "bg-amber-500/10 text-amber-600 border-amber-200/60",
+    },
+    {
+      title: t("latest_updates.service_3_title", "Membership Registration"),
+      href: "/membership",
+      icon: HeartHandshake,
+      desc: t("latest_updates.service_3_desc", "Join the prestigious network of Al-Azhar graduates in India."),
+      color: "bg-blue-500/10 text-blue-600 border-blue-200/60",
+    },
+  ];
 
   useEffect(() => {
     // Fetch News
@@ -71,7 +78,7 @@ export function LatestUpdates() {
   }, []);
 
   return (
-    <section className="border-y border-border/60 bg-gradient-to-b from-card via-background to-card py-10 md:py-12">
+    <section className="border-y border-border/60 bg-gradient-to-b from-card via-background to-card py-10 md:py-12" dir={isRTL ? "rtl" : "ltr"}>
       <div className="mx-auto grid grid-cols-1 max-w-7xl gap-8 px-4 lg:grid-cols-12 lg:gap-10">
         {/* Left Column: Latest News & Updates (Col 7) */}
         <div className="lg:col-span-7 flex flex-col justify-between min-w-0">
@@ -80,51 +87,56 @@ export function LatestUpdates() {
               <span className="flex size-10 items-center justify-center rounded-lg bg-accent/15 text-accent font-bold mb-1">
                 <Newspaper className="size-5" />
               </span>
-              <h2 className="text-2xl font-bold text-navy">Latest Updates</h2>
+              <h2 className="text-2xl font-bold text-navy">{t("latest_updates.title", "Latest Updates")}</h2>
             </div>
 
             <div className="space-y-3">
               {news.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-border/80 bg-card/50 p-8 text-center shadow-sm">
                   <p className="text-sm font-medium text-muted-foreground">
-                    No recent updates published yet.
+                    {t("latest_updates.empty", "No recent updates published yet.")}
                   </p>
                 </div>
               ) : (
-                news.map((item) => (
-                  <Link
-                    key={item._id}
-                    href={`/news/${item._id}`}
-                    className="group relative block overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white p-6 sm:p-8 shadow-sm transition-all duration-300 hover:border-accent hover:-translate-y-1 hover:shadow-md"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent">
-                        {item.category?.replace("_", " ") || "NEWS"}
-                      </span>
-                      <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1 shrink-0">
-                        <Clock className="size-3" />
-                        {new Date(
-                          item.createdAt || Date.now(),
-                        ).toLocaleDateString("en-IN", {
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </span>
-                    </div>
+                news.map((item) => {
+                  const itemTitle = getLocalizedField(item, "title", language);
+                  const itemDesc = getLocalizedField(item, "description", language);
 
-                    <h3 className="text-lg sm:text-xl font-bold text-navy group-hover:text-accent transition-colors line-clamp-1">
-                      {item.title}
-                    </h3>
+                  return (
+                    <Link
+                      key={item._id}
+                      href={`/news/${item._id}`}
+                      className="group relative block overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white p-6 sm:p-8 shadow-sm transition-all duration-300 hover:border-accent hover:-translate-y-1 hover:shadow-md"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span className="inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent">
+                          {item.category?.replace("_", " ") || "NEWS"}
+                        </span>
+                        <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1 shrink-0">
+                          <Clock className="size-3" />
+                          {new Date(
+                            item.createdAt || Date.now(),
+                          ).toLocaleDateString(isRTL ? "ar-EG" : "en-IN", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
 
-                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600 font-medium">
-                      {item.description}
-                    </p>
+                      <h3 className="text-lg sm:text-xl font-bold text-navy group-hover:text-accent transition-colors line-clamp-1">
+                        {itemTitle}
+                      </h3>
 
-                    <div className="mt-5 flex items-center gap-1 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-accent group-hover:translate-x-1 transition-all">
-                      Read Story <ChevronRight className="size-3.5" />
-                    </div>
-                  </Link>
-                ))
+                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600 font-medium">
+                        {itemDesc}
+                      </p>
+
+                      <div className="mt-5 flex items-center gap-1 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-accent group-hover:translate-x-1 transition-all">
+                        {t("latest_updates.read_more", "Read Story")} <ChevronIcon className="size-3.5" />
+                      </div>
+                    </Link>
+                  );
+                })
               )}
             </div>
             
@@ -136,9 +148,10 @@ export function LatestUpdates() {
               >
                 <Link
                   href="/news"
-                  className="inline-flex items-center"
+                  className="inline-flex items-center gap-2"
                 >
-                  View All Updates <ArrowRight className="ml-2 size-4" />
+                  <span>{t("latest_updates.view_all", "View All Updates")}</span>
+                  <ArrowIcon className="size-4" />
                 </Link>
               </Button>
             </div>
@@ -153,7 +166,7 @@ export function LatestUpdates() {
                 <Sparkles className="size-5 text-accent" />
               </span>
               <h2 className="text-[22px] leading-tight sm:text-2xl font-bold text-navy">
-                Rabbi Association Resources
+                {t("latest_updates.resources_title", "Important Resources")}
               </h2>
             </div>
 
@@ -173,7 +186,7 @@ export function LatestUpdates() {
                   <div className="flex-1 min-w-0 pt-0.5">
                     <h3 className="font-semibold text-navy text-base sm:text-[17px] group-hover:text-accent transition-colors flex items-start justify-between gap-2 min-w-0">
                       <span className="block leading-tight">{item.title}</span>
-                      <ChevronRight className="size-5 mt-0.5 text-slate-400 group-hover:text-accent group-hover:translate-x-1 transition-all shrink-0" />
+                      <ChevronIcon className="size-5 mt-0.5 text-slate-400 group-hover:text-accent group-hover:translate-x-1 transition-all shrink-0" />
                     </h3>
                     <p className="mt-1.5 text-xs sm:text-sm text-slate-600 font-medium leading-snug">
                       {item.desc}
@@ -189,13 +202,13 @@ export function LatestUpdates() {
               <div className="absolute -right-6 -top-6 size-24 rounded-full bg-accent/20 blur-xl" />
               <div className="relative z-10">
                 <span className="inline-flex items-center gap-1 rounded-full bg-accent/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent backdrop-blur-sm">
-                  ★ Next Featured Drive
+                  {t("latest_updates.next_event_badge", "★ Next Featured Drive")}
                 </span>
                 <h3 className="mt-2 text-base font-bold text-white line-clamp-1">
-                  {events[0].title}
+                  {getLocalizedField(events[0], "title", language)}
                 </h3>
                 <p className="mt-1 text-xs text-white/75 line-clamp-1">
-                  {events[0].location}
+                  {getLocalizedField(events[0], "location", language)}
                 </p>
               </div>
             </div>

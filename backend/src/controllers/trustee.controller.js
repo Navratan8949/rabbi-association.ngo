@@ -37,7 +37,7 @@ exports.getTrusteeById = async (req, res) => {
 // Admin — Create Trustee / Founder / Inspirational Person
 exports.createTrustee = async (req, res) => {
     try {
-        const { name, category, designation, description, email, phone, website, socialLinks, order, status } = req.body;
+        const { name, category, designation, description, email, phone, website, socialLinks, order, status, translations } = req.body;
 
         let photo = { public_id: "", url: "" };
         if (req.file) {
@@ -56,6 +56,13 @@ exports.createTrustee = async (req, res) => {
             }
         }
 
+        let parsedTranslations = {};
+        if (typeof translations === "string") {
+            try { parsedTranslations = JSON.parse(translations); } catch (e) {}
+        } else if (typeof translations === "object" && translations !== null) {
+            parsedTranslations = translations;
+        }
+
         const trustee = await Trustee.create({
             name,
             category: category || "trustee",
@@ -68,6 +75,7 @@ exports.createTrustee = async (req, res) => {
             order: order ? Number(order) : 0,
             status: status || "active",
             photo,
+            translations: parsedTranslations,
             createdBy: req.user ? req.user._id : undefined,
         });
 
@@ -84,6 +92,12 @@ exports.updateTrustee = async (req, res) => {
         if (!trustee) return res.status(404).json({ success: false, message: "Record not found" });
 
         const updatedData = { ...req.body };
+
+        if (updatedData.translations && typeof updatedData.translations === "string") {
+            try {
+                updatedData.translations = JSON.parse(updatedData.translations);
+            } catch (e) {}
+        }
 
         if (req.file) {
             const uploadResult = await uploadLocalFile(req.file.path);

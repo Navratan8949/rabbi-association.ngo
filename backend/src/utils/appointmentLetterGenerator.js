@@ -5,11 +5,48 @@ const fs = require("fs");
 const path = require("path");
 const { getSiteName, getSiteLogoDetails } = require("./siteSettings");
 
+function resolveLocalImagePath(imageUrl, defaultRelativePath) {
+    if (imageUrl) {
+        const cleanUrl = String(imageUrl).split("?")[0];
+        const filename = cleanUrl.split("/").pop();
+
+        if (filename) {
+            // 1. Check in backend uploads
+            const inUploads = path.join(__dirname, "..", "..", "public", "uploads", filename);
+            if (fs.existsSync(inUploads) && !inUploads.endsWith(".svg")) return inUploads;
+
+            // 2. Check in backend images
+            const inImages = path.join(__dirname, "..", "..", "public", "images", filename);
+            if (fs.existsSync(inImages) && !inImages.endsWith(".svg")) return inImages;
+
+            // 3. Check in frontend public
+            const inFrontend = path.join(__dirname, "..", "..", "..", "frontend", "public", filename);
+            if (fs.existsSync(inFrontend) && !inFrontend.endsWith(".svg")) return inFrontend;
+        }
+    }
+
+    if (defaultRelativePath) {
+        const defaultPath = path.join(__dirname, "..", "..", defaultRelativePath);
+        if (fs.existsSync(defaultPath) && !defaultPath.endsWith(".svg")) {
+            return defaultPath;
+        }
+    }
+    return null;
+}
+
 const generateLetterNo = () => {
     return "RA-AL-" + Date.now().toString().slice(-6);
 };
 
-exports.generateAndSaveAppointmentLetter = async ({ memberId, designation, department, joiningDate, protocol, host }) => {
+exports.generateAndSaveAppointmentLetter = async ({ 
+    memberId, 
+    designation, 
+    department, 
+    joiningDate, 
+    protocol, 
+    host,
+    existingLetterNo = null 
+}) => {
     return new Promise(async (resolve, reject) => {
         try {
             const member = await Member.findById(memberId).populate("user");
@@ -17,10 +54,12 @@ exports.generateAndSaveAppointmentLetter = async ({ memberId, designation, depar
                 return reject(new Error("Member not found"));
             }
 
-            const letterNo = generateLetterNo();
+            const letterNo = existingLetterNo || generateLetterNo();
             const siteName = await getSiteName();
             const siteLogoDetails = await getSiteLogoDetails();
             const dynamicSignatureUrl = siteLogoDetails.signature;
+            const dynamicStampUrl = siteLogoDetails.stamp;
+            const dynamicLogoUrl = siteLogoDetails.logo;
 
             // 1. Generate PDF
             const pdfFileName = `${letterNo}.pdf`;
@@ -45,29 +84,29 @@ exports.generateAndSaveAppointmentLetter = async ({ memberId, designation, depar
             doc.rect(20, 20, doc.page.width - 40, doc.page.height - 40).lineWidth(1).stroke(goldColor);
             doc.rect(24, 24, doc.page.width - 48, doc.page.height - 48).lineWidth(2).stroke(navyColor);
 
-            const dynamicLogoUrl = siteLogoDetails.logo;
-            let logoPath = path.join(__dirname, "..", "..", "public", "images", "logo.png");
-            
-            if (dynamicLogoUrl && dynamicLogoUrl.includes("/public/uploads/")) {
-                const logoFileName = dynamicLogoUrl.split("/").pop();
-                const dynamicPath = path.join(__dirname, "..", "..", "public", "uploads", logoFileName);
-                if (fs.existsSync(dynamicPath)) {
-                    logoPath = dynamicPath;
+            // 2. Resolve Dynamic Logo
+            const logoPath = resolveLocalImagePath(dynamicLogoUrl, path.join("public", "images", "logo.png"));
+
+            // Watermark
+            if (logoPath && fs.existsSync(logoPath)) {
+                try {
+                    doc.save();
+                    doc.opacity(0.04);
+                    doc.image(logoPath, (doc.page.width - 320) / 2, (doc.page.height - 320) / 2, { width: 320 });
+                    doc.restore();
+                } catch (e) {
+                    console.error("Watermark render error:", e.message);
                 }
             }
 
-            // Watermark
-            if (fs.existsSync(logoPath)) {
-                doc.save();
-                doc.opacity(0.05);
-                doc.image(logoPath, (doc.page.width - 300) / 2, (doc.page.height - 300) / 2, { width: 300 });
-                doc.restore();
-            }
-
             // Header Section
-            if (fs.existsSync(logoPath)) {
-                doc.image(logoPath, (doc.page.width - 70) / 2, 45, { width: 70 });
-                doc.y = 125;
+            if (logoPath && fs.existsSync(logoPath)) {
+                try {
+                    doc.image(logoPath, (doc.page.width - 70) / 2, 45, { width: 70 });
+                    doc.y = 125;
+                } catch (e) {
+                    doc.y = 60;
+                }
             } else {
                 doc.y = 60;
             }
@@ -77,7 +116,9 @@ exports.generateAndSaveAppointmentLetter = async ({ memberId, designation, depar
             const secondHalf = siteNameParts.slice(Math.ceil(siteNameParts.length / 2)).join(" ").toUpperCase();
 
             doc.font('Times-Bold').fontSize(22).fillColor(navyColor).text(firstHalf, { align: "center" });
-            doc.font('Times-Bold').fontSize(22).fillColor(navyColor).text(secondHalf, { align: "center" });
+            if (secondHalf) {
+                doc.font('Times-Bold').fontSize(22).fillColor(navyColor).text(secondHalf, { align: "center" });
+            }
             
             doc.moveDown(0.3);
             doc.font('Helvetica-Bold').fontSize(9).fillColor(goldColor).text("GOVT. REGD. NGO | EMPOWERING THE COMMUNITY", { align: "center", characterSpacing: 2 });
@@ -133,55 +174,78 @@ exports.generateAndSaveAppointmentLetter = async ({ memberId, designation, depar
             doc.moveDown(0.8);
             doc.text("We believe your skills and experience will be an excellent match for our organization. We look forward to your positive impact on our NGO's mission and continuous dedication to community service. We expect you to uphold the values and code of conduct of the organization at all times.", { align: 'justify', lineGap: 4 });
             
-            doc.moveDown(2);
+            doc.moveDown(2.5);
 
-            // Signature
-            doc.text("Sincerely,");
-            doc.moveDown(0.5);
+            // --- SIGNATURE & OFFICIAL STAMP SECTION ---
+            const sigY = Math.min(doc.y, doc.page.height - 180);
 
-            let signaturePath = path.join(__dirname, "..", "..", "public", "images", "signature.png");
-            let hasDynamicSignature = false;
+            // Resolve Signature & Official Stamp dynamically
+            const signaturePath = resolveLocalImagePath(dynamicSignatureUrl, path.join("public", "images", "signature.png"));
+            const stampPath = resolveLocalImagePath(dynamicStampUrl, path.join("public", "images", "association-stamp.png"));
 
-            if (dynamicSignatureUrl && dynamicSignatureUrl.includes("/public/uploads/")) {
-                const sigFileName = dynamicSignatureUrl.split("/").pop();
-                const dynamicPath = path.join(__dirname, "..", "..", "public", "uploads", sigFileName);
-                if (fs.existsSync(dynamicPath)) {
-                    signaturePath = dynamicPath;
-                    hasDynamicSignature = true;
+            // "Sincerely,"
+            doc.font('Helvetica').fontSize(10).fillColor(textColor).text("Sincerely,", 50, sigY);
+
+            // Official Association Stamp placed right WITH the signature
+            const stampWidth = 95;
+            const stampX = 180;
+            const stampY = sigY + 10;
+
+            if (stampPath && fs.existsSync(stampPath)) {
+                try {
+                    doc.save();
+                    doc.opacity(0.92);
+                    doc.image(stampPath, stampX, stampY, { width: stampWidth });
+                    doc.restore();
+                } catch (stampErr) {
+                    console.error("Error drawing stamp in PDF:", stampErr.message);
                 }
             }
 
-            if (fs.existsSync(signaturePath)) {
-                doc.x = 50;
-                doc.image(signaturePath, { width: 100 });
-                doc.moveDown(0.5);
+            // Draw Authorized Signature on Left
+            if (signaturePath && fs.existsSync(signaturePath)) {
+                try {
+                    doc.image(signaturePath, 50, sigY + 20, { width: 125 });
+                } catch (sigErr) {
+                    doc.font('Helvetica-Oblique').fontSize(16).fillColor(navyColor).text("Tushar Kumar", 50, sigY + 30);
+                }
             } else {
-                doc.moveDown(2.5);
-                doc.text("_______________________");
+                doc.font('Helvetica-Oblique').fontSize(16).fillColor(navyColor).text("Tushar Kumar", 50, sigY + 30);
             }
 
-            doc.x = 50;
-            doc.font('Helvetica-Bold').fontSize(10).fillColor(headingColor).text("Authorized Signatory");
-            doc.font('Helvetica').fontSize(8).fillColor(goldColor).text(siteName);
+            doc.font('Helvetica-Bold').fontSize(10).fillColor(headingColor).text("Authorized Signatory", 50, sigY + 74);
+            doc.font('Helvetica').fontSize(8).fillColor(goldColor).text(siteName, 50, sigY + 88);
 
-            // Footer (just the line, removing the text as requested)
+            // Footer line
             doc.rect(50, doc.page.height - 60, doc.page.width - 100, 1).fill(goldColor);
 
             doc.end();
 
-            // 2. Save to database when PDF is completely written
+            // 3. Save to database when PDF is completely written
             writeStream.on("finish", async () => {
                 try {
-                    const pdfUrl = `${protocol}://${host}/public/uploads/appointments/${pdfFileName}`;
+                    const proto = protocol || "http";
+                    const h = host || "localhost:8000";
+                    const pdfUrl = `${proto}://${h}/public/uploads/appointments/${pdfFileName}`;
 
-                    const appointmentLetter = await AppointmentLetter.create({
-                        member: memberId,
-                        letterNo,
-                        designation,
-                        department,
-                        joiningDate,
-                        pdf: { public_id: "", url: pdfUrl }
-                    });
+                    let appointmentLetter = await AppointmentLetter.findOne({ letterNo });
+
+                    if (appointmentLetter) {
+                        appointmentLetter.designation = designation;
+                        appointmentLetter.department = department;
+                        appointmentLetter.joiningDate = joiningDate;
+                        appointmentLetter.pdf = { public_id: pdfFileName, url: pdfUrl };
+                        await appointmentLetter.save();
+                    } else {
+                        appointmentLetter = await AppointmentLetter.create({
+                            member: memberId,
+                            letterNo,
+                            designation,
+                            department,
+                            joiningDate,
+                            pdf: { public_id: pdfFileName, url: pdfUrl }
+                        });
+                    }
 
                     const populatedLetter = await AppointmentLetter.findById(appointmentLetter._id).populate({
                         path: "member",

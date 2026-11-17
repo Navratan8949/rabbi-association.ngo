@@ -3,7 +3,10 @@ const router = express.Router();
 const isAuthenticated = require("../middleware/auth");
 const authorizeRoles = require("../middleware/role");
 const upload = require("../utils/multer");
-const { createCertificate, getAllCertificates, getMyCertificates, updateCertificate, deleteCertificate } = require("../controllers/certificate.controller");
+const { createCertificate, getAllCertificates, getMyCertificates, getPublicCertificates, updateCertificate, deleteCertificate } = require("../controllers/certificate.controller");
+
+// Public routes
+router.get("/public", getPublicCertificates);
 
 // Member routes
 router.get("/me", isAuthenticated, getMyCertificates);

@@ -40,6 +40,16 @@ export const updateAppointment = async (id, data) => {
     }
 };
 
+// Regenerate Appointment Letter PDF
+export const regenerateAppointment = async (id) => {
+    try {
+        const response = await api.post(`/appointments/${id}/regenerate`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 // Delete Appointment
 export const deleteAppointment = async (id) => {
     try {

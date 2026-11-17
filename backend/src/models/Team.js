@@ -67,6 +67,11 @@ const teamSchema = new mongoose.Schema(
             default: "active",
         },
 
+        translations: {
+            type: mongoose.Schema.Types.Mixed,
+            default: {},
+        },
+
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
