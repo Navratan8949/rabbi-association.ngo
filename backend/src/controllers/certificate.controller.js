@@ -1,6 +1,7 @@
 const Certificate = require("../models/Certificate");
 const Member = require("../models/Member");
 const Volunteer = require("../models/Volunteer");
+require("../models/User");
 const { generateCertificatePDF } = require("../utils/generatePDF");
 const { SendVerificationCode } = require("../utils/sendMail");
 const { getSiteName, getSiteLogoDetails } = require("../utils/siteSettings");
@@ -29,7 +30,8 @@ exports.createCertificate = async (req, res) => {
             userName = targetDoc.user ? targetDoc.user.fullName : "Volunteer";
             isVolunteer = true;
         } else {
-            return res.status(400).json({ success: false, message: "Either member or volunteer ID must be provided" });
+            // General / Organization Certificate
+            userName = req.body.recipientName || "Rabbi Association Recipient";
         }
 
         const uploadedFile = (req.files && (req.files.pdf?.[0] || req.files.file?.[0])) || req.file;
@@ -54,8 +56,8 @@ exports.createCertificate = async (req, res) => {
         }
 
         const certificate = await Certificate.create({
-            member: isVolunteer ? undefined : targetDoc._id,
-            volunteer: isVolunteer ? targetDoc._id : undefined,
+            member: isVolunteer || !targetDoc ? undefined : targetDoc._id,
+            volunteer: isVolunteer && targetDoc ? targetDoc._id : undefined,
             certificateNo,
             title,
             description,
@@ -63,23 +65,21 @@ exports.createCertificate = async (req, res) => {
             pdf
         });
 
-        targetDoc.certificate.push(certificate._id);
-        await targetDoc.save();
+        if (targetDoc) {
+            targetDoc.certificate.push(certificate._id);
+            await targetDoc.save();
 
-        const populatedCertificate = await Certificate.findById(certificate._id)
-            .populate({ path: "member", populate: { path: "user", select: "fullName email" } })
-            .populate({ path: "volunteer", populate: { path: "user", select: "fullName email" } });
-
-        // Send Email Notification
-        if (targetDoc.user && targetDoc.user.email) {
-            const userEmail = targetDoc.user.email;
-            const siteName = await getSiteName();
-            SendVerificationCode(
-                userEmail,
-                `<p>Dear ${userName},</p><p>We are delighted to inform you that you have been awarded a new certificate: "<strong>${title}</strong>".</p><p>Description: ${description || ""}</p><p>You can view and download your certificate from your Portal.</p><p>Thank you for your continuous support!</p><p>Best Regards,<br/>${siteName} Team</p>`,
-                `Congratulations! You have received a new Certificate - ${siteName}`,
-                `Dear ${userName},\n\nWe are delighted to inform you that you have been awarded a new certificate: "${title}".\n\nDescription: ${description || ""}\n\nYou can view and download your certificate from your Portal.\n\nThank you for your continuous support!\n\nBest Regards,\n${siteName} Team`
-            );
+            // Send Email Notification
+            if (targetDoc.user && targetDoc.user.email) {
+                const userEmail = targetDoc.user.email;
+                const siteName = await getSiteName();
+                SendVerificationCode(
+                    userEmail,
+                    `<p>Dear ${userName},</p><p>We are delighted to inform you that you have been awarded a new certificate: "<strong>${title}</strong>".</p><p>Description: ${description || ""}</p><p>You can view and download your certificate from your Portal.</p><p>Thank you for your continuous support!</p><p>Best Regards,<br/>${siteName} Team</p>`,
+                    `Congratulations! You have received a new Certificate - ${siteName}`,
+                    `Dear ${userName},\n\nWe are delighted to inform you that you have been awarded a new certificate: "${title}".\n\nDescription: ${description || ""}\n\nYou can view and download your certificate from your Portal.\n\nThank you for your continuous support!\n\nBest Regards,\n${siteName} Team`
+                );
+            }
         }
 
         res.status(201).json({ success: true, certificate: populatedCertificate });

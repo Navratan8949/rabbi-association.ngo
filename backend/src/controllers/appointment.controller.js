@@ -1,5 +1,6 @@
 const AppointmentLetter = require("../models/AppointmentLetter");
 const Member = require("../models/Member");
+require("../models/User");
 const {
   generateAndSaveAppointmentLetter,
 } = require("../utils/appointmentLetterGenerator");
