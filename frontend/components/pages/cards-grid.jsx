@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { CalendarDays } from "lucide-react"
+import { CalendarDays, ArrowRight } from "lucide-react"
 
 function hrefFor(type, id) {
   if (type === "project") return `/projects/${id}`
@@ -58,9 +58,18 @@ export function CardsGrid({ items = [], type }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent opacity-0 transition group-hover:opacity-100 z-[2]" />
               </div>
               <div className="flex flex-1 flex-col p-6 sm:p-8">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-accent">{item.category || item.type || item.status || "Trust"}</p>
-                <h2 className="mt-2 text-2xl font-bold leading-snug group-hover:text-accent transition-colors">{item.title}</h2>
-                <p className="mt-3 flex-1 line-clamp-3 text-base leading-relaxed text-white/80 font-medium">{item.description || item.content}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white border border-white/20">
+                    {item.category || item.type || item.status || "Campaign"}
+                  </span>
+                  {item.status && (
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">
+                      {item.status}
+                    </span>
+                  )}
+                </div>
+                <h2 className="mt-3 text-2xl font-bold leading-snug text-white group-hover:text-amber-100 transition-colors">{item.title}</h2>
+                <p className="mt-3 flex-1 line-clamp-3 text-base leading-relaxed text-white/90 font-medium">{item.description || item.content}</p>
                 
                 {type === "event" && item.eventDate && (
                   <p className="mt-4 flex items-center gap-2 text-sm font-medium text-white/80">
@@ -70,22 +79,27 @@ export function CardsGrid({ items = [], type }) {
                 )}
                 
                 {hasProgressBar && (
-                  <div className="mt-6 rounded-xl bg-white/5 p-4 border border-white/10">
+                  <div className="mt-6 rounded-xl bg-black/15 p-4 border border-white/20">
                     <div className="mb-2 flex justify-between text-xs font-bold uppercase tracking-wider">
-                      <span className="text-white/70">Raised</span>
-                      <span className="text-white">₹{raised.toLocaleString("en-IN")} / ₹{goal.toLocaleString("en-IN")}</span>
+                      <span className="text-white/80">Raised</span>
+                      <span className="text-white font-extrabold">₹{raised.toLocaleString("en-IN")} / ₹{goal.toLocaleString("en-IN")}</span>
                     </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full rounded-full bg-accent transition-all duration-1000" style={{ width: `${progress}%` }} />
+                    <div className="h-2.5 overflow-hidden rounded-full bg-black/25">
+                      <div className="h-full rounded-full bg-white transition-all duration-1000" style={{ width: `${progress}%` }} />
                     </div>
                   </div>
                 )}
 
-                <div className="mt-6 border-t border-white/10 pt-5">
-                  <span className="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-widest text-accent transition-colors group-hover:text-white">
-                    Read more
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <div className="mt-6 border-t border-white/20 pt-5 flex items-center justify-between">
+                  <span className="inline-flex items-center gap-1.5 rounded-xl bg-white/20 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white transition-all group-hover:bg-white group-hover:text-navy shadow-xs">
+                    {type === "campaign" ? "Know More" : "Read more"}
+                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
                   </span>
+                  {type === "campaign" && (
+                    <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-white hover:underline transition-all">
+                      Support Cause &rarr;
+                    </span>
+                  )}
                 </div>
               </div>
             </Link>

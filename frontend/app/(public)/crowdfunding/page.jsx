@@ -23,7 +23,7 @@ export default async function Page() {
     <>
       <PageHero
         title="Crowdfunding"
-        description="Support our initiatives to provide education, healthcare, and welfare to the underprivileged. Calculate and pay your Zakat to purify your wealth."
+        description="Support our transparent community initiatives providing higher education scholarships, clean drinking water, winter relief, and medical aid to underprivileged families."
         image="/logo.png"
       />
       <CardsGrid items={campaigns} type="campaign" />

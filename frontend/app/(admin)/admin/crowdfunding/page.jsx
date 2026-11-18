@@ -17,10 +17,13 @@ export default function Page() {
       type: "select", 
       required: true,
       options: [
+        { label: "Higher Education & Scholarships", value: "Higher Education" },
+        { label: "School Water & Health", value: "School Water & Health" },
+        { label: "Healthcare Relief & Medical Aid", value: "Healthcare Relief" },
+        { label: "Winter Relief & Emergency Welfare", value: "Emergency Relief" },
         { label: "Education & Scholarships", value: "Education Support" },
-        { label: "Healthcare & Medical Relief", value: "Healthcare & Medical" },
         { label: "Community & Rural Welfare", value: "Community Welfare" },
-        { label: "Emergency & Disaster Relief", value: "Disaster Relief" },
+        { label: "Disaster & Flood Relief", value: "Disaster Relief" },
         { label: "Orphan & Family Care", value: "Orphan Care" },
         { label: "General Social Welfare", value: "General Welfare" }
       ]
