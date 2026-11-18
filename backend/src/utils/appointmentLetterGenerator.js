@@ -1,5 +1,6 @@
 const AppointmentLetter = require("../models/AppointmentLetter");
 const Member = require("../models/Member");
+require("../models/User");
 const pdf = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
