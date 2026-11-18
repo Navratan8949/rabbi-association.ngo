@@ -3,15 +3,11 @@
 import { useSelector } from "react-redux"
 import { Reveal } from "@/components/shared/reveal"
 import { Quote } from "lucide-react"
-import { useLanguage } from "@/context/LanguageContext"
 
 export function ParallaxBanner() {
-  const { t, isRTL } = useLanguage()
   const { data: siteContent } = useSelector((state) => state.siteContent)
 
-  let author = t("org.name", "World Association for Al-Azhar Graduates – India")
-  let motto = t("org.motto", "Moderation is our methodology, unity is our strength, knowledge is our identity, and service to humanity is our mission.")
-  let tagline = t("org.tagline", "Knowledge | Moderation | Unity | Service to Humanity")
+  let author = "RABBI ASSOCIATION"
 
   if (siteContent?.parallax_banner?.content) {
     try {
@@ -40,9 +36,10 @@ export function ParallaxBanner() {
           <Quote className="size-6 text-white" />
         </div>
         
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-snug text-white mb-8 tracking-tight">
-          <span className="block mb-4 text-accent font-extrabold">{tagline}</span>
-          <span className="block text-white/90 text-lg md:text-2xl font-medium leading-relaxed italic">"{motto}"</span>
+        <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-snug text-white mb-8 tracking-tight">
+          <span className="block mb-2">Education with Purpose.</span>
+          <span className="block mb-2 text-white/90">Excellence with Values.</span>
+          <span className="block text-accent">Making Life Better.</span>
         </h2>
         
         <div className="flex items-center justify-center gap-4 mt-8">

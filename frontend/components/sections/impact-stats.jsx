@@ -4,7 +4,6 @@ import * as LucideIcons from "lucide-react";
 import { Counter } from "@/components/shared/counter";
 import { Reveal } from "@/components/shared/reveal";
 import { useSelector } from "react-redux";
-import { useLanguage } from "@/context/LanguageContext";
 
 const DEFAULT_STATS = [
   { label: "Arabic Language Courses", value: "25+", icon: "GraduationCap" },
@@ -13,16 +12,9 @@ const DEFAULT_STATS = [
 ];
 
 export function ImpactStats() {
-  const { t, isRTL } = useLanguage();
   const { data: siteContent } = useSelector((state) => state.siteContent);
 
-  const localizedStats = [
-    { label: t("impact.stats.0.label", "Arabic Language Courses & Workshops"), value: "25+", icon: "GraduationCap" },
-    { label: t("impact.stats.1.label", "Academic & Intellectual Gatherings"), value: "100+", icon: "Users" },
-    { label: t("impact.stats.2.label", "Welfare & Community Support Programs"), value: "10+", icon: "HandHeart" },
-  ];
-
-  let stats = localizedStats;
+  let stats = DEFAULT_STATS;
   if (siteContent?.impact_stats?.content) {
     try {
       const parsed = JSON.parse(siteContent.impact_stats.content);

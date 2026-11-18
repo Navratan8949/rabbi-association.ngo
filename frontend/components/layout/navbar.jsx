@@ -25,7 +25,6 @@ import { Logo } from "@/components/shared/logo"
 import { MAIN_NAV, isGroup } from "@/constants/nav"
 import { SITE } from "@/constants/site"
 import { GoogleTranslate } from "@/components/shared/google-translate"
-import { useLanguage } from "@/context/LanguageContext"
 import { useSelector, useDispatch } from "react-redux"
 import { selectUser, clearUser } from "@/redux/features/userSlice"
 import api from "@/service/api"
@@ -65,7 +64,6 @@ const NAV_ICONS = {
 
 // Hover-enabled dropdown wrapper
 function HoverDropdown({ item, isGroupActive, isActive }) {
-  const { t } = useLanguage()
   const [open, setOpen] = useState(false)
   const closeTimer = useRef(null)
 
@@ -78,7 +76,6 @@ function HoverDropdown({ item, isGroupActive, isActive }) {
   }
 
   const Icon = NAV_ICONS[item.label] || Activity;
-  const displayLabel = item.key ? t(item.key, item.label) : item.label;
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
@@ -91,7 +88,7 @@ function HoverDropdown({ item, isGroupActive, isActive }) {
           }`}
       >
         <Icon className="size-4" />
-        {displayLabel}
+        {item.label}
         <ChevronDown className={`size-3.5 opacity-50 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
       </DropdownMenuTrigger>
 
@@ -102,33 +99,29 @@ function HoverDropdown({ item, isGroupActive, isActive }) {
         onMouseLeave={handleMouseLeave}
         className="w-64 rounded-2xl border border-border/40 bg-white/95 backdrop-blur-xl p-2 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
       >
-        {item.children.map((child) => {
-          const childLabel = child.key ? t(child.key, child.label) : child.label;
-          return (
-            <DropdownMenuItem 
-              key={child.href} 
-              className="group/item rounded-xl p-0 focus:bg-transparent data-[highlighted]:bg-transparent outline-none border-none"
+        {item.children.map((child) => (
+          <DropdownMenuItem 
+            key={child.href} 
+            className="group/item rounded-xl p-0 focus:bg-transparent data-[highlighted]:bg-transparent outline-none border-none"
+          >
+            <Link
+              href={child.href}
+              className={`group/link flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${isActive(child.href)
+                ? "bg-primary/10 font-bold text-primary hover:bg-primary hover:text-white group-data-[highlighted]/item:bg-primary group-data-[highlighted]/item:!text-white group-focus/item:bg-primary group-focus/item:!text-white"
+                : "text-foreground/70 hover:bg-primary hover:text-white hover:shadow-sm group-data-[highlighted]/item:bg-primary group-data-[highlighted]/item:!text-white group-focus/item:bg-primary group-focus/item:!text-white"
+                }`}
             >
-              <Link
-                href={child.href}
-                className={`group/link flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${isActive(child.href)
-                  ? "bg-primary/10 font-bold text-primary hover:bg-primary hover:text-white group-data-[highlighted]/item:bg-primary group-data-[highlighted]/item:!text-white group-focus/item:bg-primary group-focus/item:!text-white"
-                  : "text-foreground/70 hover:bg-primary hover:text-white hover:shadow-sm group-data-[highlighted]/item:bg-primary group-data-[highlighted]/item:!text-white group-focus/item:bg-primary group-focus/item:!text-white"
-                  }`}
-              >
-                <span className="font-medium">{childLabel}</span>
-                <ChevronRight className={`size-4 transition-transform duration-300 ${isActive(child.href) ? "translate-x-0 opacity-100 group-hover/link:text-white group-data-[highlighted]/item:text-white group-focus/item:text-white" : "-translate-x-2 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-100"}`} />
-              </Link>
-            </DropdownMenuItem>
-          );
-        })}
+              <span className="font-medium">{child.label}</span>
+              <ChevronRight className={`size-4 transition-transform duration-300 ${isActive(child.href) ? "translate-x-0 opacity-100 group-hover/link:text-white group-data-[highlighted]/item:text-white group-focus/item:text-white" : "-translate-x-2 opacity-0 group-hover/link:translate-x-0 group-hover/link:opacity-100"}`} />
+            </Link>
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )
 }
 
 function TopBar() {
-  const { t } = useLanguage()
   const user = useSelector(selectUser)
   const { data: siteContent } = useSelector((state) => state.siteContent)
   const dispatch = useDispatch()
@@ -219,25 +212,25 @@ function TopBar() {
             <div className="flex items-center gap-3">
               <Link href={user.role === "admin" ? '/admin' : user.role === "volunteer" ? '/volunteer-portal' : '/member'} className="inline-flex items-center gap-1.5 text-[#051e57] bg-white transition hover:bg-white/90 px-3 py-1 rounded-full text-[11px] font-bold shadow-sm">
                 <LayoutDashboard className="size-3.5" />
-                {t("nav.portal", "Dashboard")}
+                Dashboard
               </Link>
               <button
                 onClick={handleLogout}
                 className="inline-flex items-center gap-1 text-white/80 hover:text-rose-400 text-[11px] font-semibold transition-colors"
               >
                 <LogOut className="size-3" />
-                {t("nav.logout", "Logout")}
+                Logout
               </button>
             </div>
           ) : (
             <div className="flex items-center gap-4">
               <Link href="/login" className="inline-flex items-center gap-1.5 text-white/90 transition hover:text-white text-[11px] font-semibold tracking-wide">
                 <User className="size-3.5 text-amber-400" />
-                {t("nav.login", "Member / Volunteer Login")}
+                Member / Volunteer Login
               </Link>
               <Link href="/admin-login" className="inline-flex items-center gap-1.5 text-white/90 transition hover:text-white text-[11px] font-semibold tracking-wide">
                 <Lock className="size-3.5 text-amber-400" />
-                {t("nav.admin_login", "Admin Login")}
+                Admin Login
               </Link>
             </div>
           )}
@@ -248,7 +241,6 @@ function TopBar() {
 }
 
 export function Navbar() {
-  const { t, isRTL } = useLanguage()
   const pathname = usePathname()
   const user = useSelector(selectUser)
   const { data: siteContent } = useSelector((state) => state.siteContent)
@@ -322,7 +314,6 @@ export function Navbar() {
           <div className="hidden items-center gap-2 lg:flex">
             {MAIN_NAV.map((item) => {
               const Icon = NAV_ICONS[item.label] || Activity;
-              const displayLabel = item.key ? t(item.key, item.label) : item.label;
               return isGroup(item) ? (
                 <HoverDropdown
                   key={item.label}
@@ -340,7 +331,7 @@ export function Navbar() {
                     }`}
                 >
                   <Icon className="size-4" />
-                  {displayLabel}
+                  {item.label}
                 </Link>
               )
             })}
@@ -353,7 +344,7 @@ export function Navbar() {
             >
               <Link href="/donate">
                 <Heart className="mr-2 size-4 animate-pulse text-white" />
-                {t("nav.donate", "Donate Now")}
+                Donate Now
               </Link>
             </Button>
 
@@ -378,32 +369,28 @@ export function Navbar() {
                   <Accordion type="multiple" className="w-full">
                     {MAIN_NAV.map((item) => {
                       const Icon = NAV_ICONS[item.label] || Activity;
-                      const displayLabel = item.key ? t(item.key, item.label) : item.label;
                       return isGroup(item) ? (
                         <AccordionItem key={item.label} value={item.label} className="border-border/60">
                           <AccordionTrigger className="px-2 py-3.5 text-[15px] font-bold hover:no-underline hover:text-primary transition-colors">
                             <span className="flex items-center gap-3">
                               <Icon className="size-5 text-primary/70" />
-                              {displayLabel}
+                              {item.label}
                             </span>
                           </AccordionTrigger>
                           <AccordionContent className="pb-3 pl-8">
                             <div className="flex flex-col gap-1 border-l-2 border-border/60 ml-2 pl-4">
-                              {item.children.map((child) => {
-                                const childLabel = child.key ? t(child.key, child.label) : child.label;
-                                return (
-                                  <Link
-                                    key={child.href}
-                                    href={child.href}
-                                    className={`flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${isActive(child.href)
-                                      ? "bg-primary/10 text-primary translate-x-1"
-                                      : "text-foreground/75 hover:bg-primary hover:text-white hover:translate-x-1"
-                                      }`}
-                                  >
-                                    {childLabel}
-                                  </Link>
-                                );
-                              })}
+                              {item.children.map((child) => (
+                                <Link
+                                  key={child.href}
+                                  href={child.href}
+                                  className={`flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${isActive(child.href)
+                                    ? "bg-primary/10 text-primary translate-x-1"
+                                    : "text-foreground/75 hover:bg-primary hover:text-white hover:translate-x-1"
+                                    }`}
+                                >
+                                  {child.label}
+                                </Link>
+                              ))}
                             </div>
                           </AccordionContent>
                         </AccordionItem>
@@ -417,7 +404,7 @@ export function Navbar() {
                             }`}
                         >
                           <Icon className="size-5 text-primary/70" />
-                          {displayLabel}
+                          {item.label}
                         </Link>
                       )
                     })}
@@ -427,7 +414,7 @@ export function Navbar() {
                     <Button asChild className="h-14 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 font-bold text-slate-950 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all">
                       <Link href="/donate">
                         <Heart className="mr-2 size-5" />
-                        {t("nav.donate", "Make a Donation")}
+                        Make a Donation
                       </Link>
                     </Button>
                     
@@ -437,12 +424,12 @@ export function Navbar() {
                           <Button asChild variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-slate-200 bg-white shadow-sm hover:border-amber-400 hover:bg-amber-50 transition-all text-slate-700 hover:text-amber-700">
                             <Link href={user.role === "admin" ? '/admin' : user.role === "volunteer" ? '/volunteer-portal' : '/member'}>
                               <LayoutDashboard className="size-5" />
-                              <span className="text-[11px] font-bold uppercase tracking-wider">{t("nav.portal", "Portal")}</span>
+                              <span className="text-[11px] font-bold uppercase tracking-wider">Portal</span>
                             </Link>
                           </Button>
                           <Button onClick={handleLogout} variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-rose-100 bg-rose-50 shadow-sm hover:border-rose-300 hover:bg-rose-100 transition-all text-rose-600">
                             <LogOut className="size-5" />
-                            <span className="text-[11px] font-bold uppercase tracking-wider">{t("nav.logout", "Logout")}</span>
+                            <span className="text-[11px] font-bold uppercase tracking-wider">Logout</span>
                           </Button>
                         </>
                       ) : (
@@ -450,13 +437,13 @@ export function Navbar() {
                           <Button asChild variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-slate-200 bg-white shadow-sm hover:border-amber-400 hover:bg-amber-50 transition-all text-slate-700 hover:text-amber-700 text-center px-1">
                             <Link href="/login">
                               <User className="size-5" />
-                              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider leading-tight">{t("nav.member_login", "Member Login")}</span>
+                              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider leading-tight">Member<br/>Login</span>
                             </Link>
                           </Button>
                           <Button asChild variant="outline" className="h-20 flex flex-col justify-center items-center gap-1.5 rounded-2xl border-slate-200 bg-white shadow-sm hover:border-amber-400 hover:bg-amber-50 transition-all text-slate-700 hover:text-amber-700 text-center px-1">
                             <Link href="/admin-login">
                               <Lock className="size-5" />
-                              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider leading-tight">{t("nav.admin_login", "Admin Login")}</span>
+                              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider leading-tight">Admin<br/>Login</span>
                             </Link>
                           </Button>
                         </>

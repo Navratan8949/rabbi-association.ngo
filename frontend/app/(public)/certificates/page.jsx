@@ -10,18 +10,14 @@ import {
   ExternalLink, 
   Loader2, 
   Award, 
-  ShieldCheck, 
   Eye, 
   Search, 
   X,
   FileCheck2,
   FolderOpen
 } from "lucide-react"
-import { useLanguage } from "@/context/LanguageContext"
-import { toast } from "sonner"
 
 export default function CertificatesPage() {
-  const { language, isRTL, t } = useLanguage()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("all")
@@ -137,12 +133,12 @@ export default function CertificatesPage() {
 
   const categories = useMemo(() => {
     return [
-      { id: "all", label: t("certificates.tab_all", "All Resources") },
-      { id: "certificate", label: t("certificates.tab_certificates", "Certificates") },
-      { id: "document", label: t("certificates.tab_documents", "Official Documents") },
-      { id: "report", label: t("certificates.tab_reports", "Reports & Publications") },
+      { id: "all", label: "All Resources" },
+      { id: "certificate", label: "Certificates" },
+      { id: "document", label: "Official Documents" },
+      { id: "report", label: "Reports & Publications" },
     ]
-  }, [t])
+  }, [])
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
@@ -175,14 +171,11 @@ export default function CertificatesPage() {
   }
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-slate-50/50">
+    <div className="min-h-screen bg-slate-50/50">
       <PageHero
-        eyebrow={t("certificates.eyebrow", "Public Records & Credentials")}
-        title={t("certificates.title", "Certificates & Documents")}
-        description={t(
-          "certificates.description",
-          "View, preview, and download our official NGO certificates, legal documents, accreditation, and publications."
-        )}
+        eyebrow="Public Records & Credentials"
+        title="Certificates & Documents"
+        description="View, preview, and download our official NGO certificates, legal documents, accreditation, and publications."
         image="/logo.png"
       />
 
@@ -212,21 +205,19 @@ export default function CertificatesPage() {
 
           {/* Search Bar */}
           <div className="relative w-full md:w-80">
-            <Search className={`absolute ${isRTL ? "right-3.5" : "left-3.5"} top-1/2 -translate-y-1/2 size-4 text-slate-400`} />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t("certificates.search_placeholder", "Search documents, certificates...")}
-              className={`w-full rounded-2xl border border-slate-200 bg-white py-2.5 ${
-                isRTL ? "pr-10 pl-4 text-right" : "pl-10 pr-4 text-left"
-              } text-sm text-navy shadow-xs placeholder:text-slate-400 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10 transition-all`}
+              placeholder="Search documents, certificates..."
+              className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-left text-sm text-navy shadow-xs placeholder:text-slate-400 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10 transition-all"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className={`absolute ${isRTL ? "left-3" : "right-3"} top-1/2 -translate-y-1/2 rounded-full p-1 text-slate-400 hover:text-navy`}
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-slate-400 hover:text-navy"
               >
                 <X className="size-3.5" />
               </button>
@@ -239,7 +230,7 @@ export default function CertificatesPage() {
           <div className="flex flex-col items-center justify-center py-24 text-slate-400">
             <Loader2 className="size-10 animate-spin text-accent" />
             <p className="mt-4 text-base font-bold text-navy">
-              {t("certificates.loading", "Loading documents and certificates...")}
+              Loading documents and certificates...
             </p>
           </div>
         ) : filteredItems.length === 0 ? (
@@ -247,12 +238,12 @@ export default function CertificatesPage() {
             <div className="rounded-3xl border border-dashed border-slate-200 bg-white p-12 shadow-xs">
               <FolderOpen className="size-14 text-slate-300 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-navy">
-                {t("certificates.no_results", "No documents found")}
+                No documents found
               </h3>
               <p className="mt-2 text-sm text-slate-500 font-medium">
                 {searchQuery
-                  ? t("certificates.try_different", "Try clearing your search query or switching categories.")
-                  : t("certificates.no_documents_msg", "Please check back later for official publications.")}
+                  ? "Try clearing your search query or switching categories."
+                  : "Please check back later for official publications."}
               </p>
               {searchQuery && (
                 <button
@@ -260,7 +251,7 @@ export default function CertificatesPage() {
                   onClick={() => setSearchQuery("")}
                   className="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-navy px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-navy/90"
                 >
-                  {t("certificates.clear_search", "Clear Search")}
+                  Clear Search
                 </button>
               )}
             </div>
@@ -268,9 +259,6 @@ export default function CertificatesPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredItems.map((doc) => {
-              const isImage = !!doc.fileUrl?.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i)
-              const isPdf = !!doc.fileUrl?.match(/\.pdf(\?.*)?$/i) || doc.fileType === "pdf"
-
               return (
                 <div
                   key={doc._id}
@@ -322,7 +310,7 @@ export default function CertificatesPage() {
                             className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-navy py-2.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer"
                           >
                             <Eye className="size-3.5" />
-                            {t("certificates.preview_btn", "Preview")}
+                            Preview
                           </button>
 
                           <a
@@ -331,14 +319,14 @@ export default function CertificatesPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-xs hover:border-accent hover:text-accent transition-colors"
-                            title={t("certificates.download_btn", "Download File")}
+                            title="Download File"
                           >
                             <Download className="size-4" />
                           </a>
                         </>
                       ) : (
                         <div className="w-full text-center py-2 text-xs font-semibold text-slate-400">
-                          {t("certificates.pending_upload", "Document Upload Pending")}
+                          Document Upload Pending
                         </div>
                       )}
                     </div>
@@ -359,7 +347,7 @@ export default function CertificatesPage() {
           />
           <div className="relative w-full max-w-5xl rounded-3xl border border-white/20 bg-white shadow-2xl overflow-hidden flex flex-col max-h-[92vh] ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-150">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-navy/5 bg-gradient-to-r from-navy to-[#022c1d] px-6 py-4.5 text-white shrink-0">
+            <div className="flex items-center justify-between border-b border-navy/5 bg-gradient-to-r from-navy to-slate-900 px-6 py-4.5 text-white shrink-0">
               <div className="flex items-center gap-3 overflow-hidden">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white font-bold text-xs uppercase">
                   {previewItem.category?.slice(0, 3) || "DOC"}
@@ -369,9 +357,9 @@ export default function CertificatesPage() {
                     {previewItem.title}
                   </h2>
                   <p className="text-xs text-white/70 capitalize">
-                    {t("certificates.category", "Category")}: <span className="font-semibold text-white/90">{previewItem.category}</span>
+                    Category: <span className="font-semibold text-white/90">{previewItem.category}</span>
                     {previewItem.certificateNo && (
-                      <> &bull; {t("certificates.cert_no", "Cert No")}: <span className="font-mono font-bold text-amber-300">{previewItem.certificateNo}</span></>
+                      <> &bull; Cert No: <span className="font-mono font-bold text-amber-300">{previewItem.certificateNo}</span></>
                     )}
                   </p>
                 </div>
@@ -408,7 +396,7 @@ export default function CertificatesPage() {
                 <div className="text-center py-16 text-slate-500">
                   <FileText className="size-14 mx-auto text-slate-400 mb-2" />
                   <p className="text-base font-bold text-navy">
-                    {t("certificates.no_file", "No preview available for this document.")}
+                    No preview available for this document.
                   </p>
                 </div>
               )}
@@ -430,7 +418,7 @@ export default function CertificatesPage() {
                       className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-xs hover:bg-slate-100 transition-colors"
                     >
                       <ExternalLink className="size-3.5" />
-                      {t("certificates.open_new_tab", "Open in New Tab")}
+                      Open in New Tab
                     </a>
                     <a
                       href={previewItem.fileUrl}
@@ -438,7 +426,7 @@ export default function CertificatesPage() {
                       className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-xs font-bold text-accent-foreground shadow-xs hover:bg-accent/90 transition-colors"
                     >
                       <Download className="size-3.5" />
-                      {t("certificates.download_pdf", "Download PDF")}
+                      Download PDF
                     </a>
                   </>
                 )}
@@ -447,7 +435,7 @@ export default function CertificatesPage() {
                   onClick={() => setPreviewItem(null)}
                   className="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-200 hover:text-navy transition-colors"
                 >
-                  {t("common.close", "Close")}
+                  Close
                 </button>
               </div>
             </div>

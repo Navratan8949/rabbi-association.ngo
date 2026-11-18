@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
 
 export function ScrollToTop() {
-  const { t, isRTL } = useLanguage();
   const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -49,9 +47,7 @@ export function ScrollToTop() {
 
   return (
     <div
-      className={`fixed z-[99] transition-all duration-300 ${
-        isRTL ? "left-6" : "right-6"
-      } bottom-24 ${
+      className={`fixed z-[99] transition-all duration-300 right-6 bottom-24 ${
         visible
           ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
           : "opacity-0 translate-y-4 scale-90 pointer-events-none"
@@ -60,7 +56,7 @@ export function ScrollToTop() {
       <button
         type="button"
         onClick={scrollToTop}
-        aria-label={t("common.scroll_to_top", "Scroll to top")}
+        aria-label="Scroll to top"
         className="group relative flex size-13 items-center justify-center rounded-full bg-navy/95 text-white shadow-xl shadow-navy/30 backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-accent hover:text-navy hover:shadow-2xl hover:shadow-accent/40 active:scale-95 cursor-pointer border border-white/20"
       >
         {/* SVG Circular Progress Ring */}
@@ -94,11 +90,9 @@ export function ScrollToTop() {
 
         {/* Hover Tooltip */}
         <span
-          className={`absolute ${
-            isRTL ? "left-full ml-3" : "right-full mr-3"
-          } hidden sm:group-hover:inline-flex items-center rounded-xl bg-navy/90 px-3 py-1 text-xs font-bold text-white shadow-lg backdrop-blur-md whitespace-nowrap pointer-events-none transition-opacity duration-200 border border-white/10`}
+          className="absolute right-full mr-3 hidden sm:group-hover:inline-flex items-center rounded-xl bg-navy/90 px-3 py-1 text-xs font-bold text-white shadow-lg backdrop-blur-md whitespace-nowrap pointer-events-none transition-opacity duration-200 border border-white/10"
         >
-          {t("common.scroll_to_top", "Back to top")}
+          Back to top
         </span>
       </button>
     </div>

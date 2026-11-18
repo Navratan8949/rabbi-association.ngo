@@ -2,28 +2,13 @@
 import Image from "next/image";
 import { Quote } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
-import { useLanguage } from "@/context/LanguageContext";
 
 export function FounderMessageSection({ data }) {
-  const { t, isRTL } = useLanguage();
-
-  let title = t("president_message.section_title", "President's Message");
-  let name = t("president_message.signatory_name", "Prof. Dr. Mohammad Mubeen Saleem Al-Azhari");
-  let designation = t("president_message.signatory_title", "President, World Association for Al-Azhar Graduates – India");
-  
-  const docMessage = [
-    t("president_message.bismillah", ""),
-    t("president_message.salutation", ""),
-    t("president_message.p1", ""),
-    t("president_message.p2", ""),
-    t("president_message.p3", ""),
-    t("president_message.p4", ""),
-    t("president_message.p5", ""),
-    t("president_message.closing", "")
-  ].filter(Boolean).join("\n\n");
-
-  let message = docMessage ||
-    "Welcome to the official website of the World Association for Al-Azhar Graduates – India.\n\nOur organisation was established with a vision to make a meaningful contribution to individuals, educational institutions, and communities through professional expertise guided by strong human, ethical, and social values.";
+  let title = "Founder's Message";
+  let name = "Founder & Trustee";
+  let designation = "Rabbi Association";
+  let message =
+    "Welcome to the official website of the Rabbi Association.\n\nOur organisation was established with a vision to make a meaningful contribution to individuals, educational institutions, and communities through professional expertise guided by strong human, ethical, and social values.\n\nWe believe that education is more than the transmission of knowledge. True education forms the mind, shapes character, strengthens values, develops leadership, and inspires people to serve humanity.\n\nWe invite you to join this shared journey and contribute your knowledge, experience and expertise to the advancement of society.";
   let image = "/placeholder.svg";
 
   if (data?.content) {
@@ -82,7 +67,7 @@ export function FounderMessageSection({ data }) {
               <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent" />
             </div>
             {/* Accent decoration */}
-            <div className={`absolute -bottom-6 -z-10 h-full w-full rounded-3xl border-4 border-accent hidden sm:block ${isRTL ? "-left-6" : "-right-6"}`} />
+            <div className="absolute -bottom-6 -right-6 -z-10 h-full w-full rounded-3xl border-4 border-accent hidden md:block" />
           </Reveal>
 
           {/* Text Side */}

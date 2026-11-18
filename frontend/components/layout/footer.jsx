@@ -6,7 +6,6 @@ import { Mail, MapPin, Phone, ChevronRight, GraduationCap } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { FOOTER_QUICK_LINKS, FOOTER_RESOURCE_LINKS } from "@/constants/nav";
 import { SITE } from "@/constants/site";
-import { useLanguage } from "@/context/LanguageContext";
 
 function FacebookIcon({ className }) {
   return (
@@ -48,7 +47,6 @@ function YoutubeIcon({ className }) {
 import { useSelector } from "react-redux";
 
 export function Footer() {
-  const { t } = useLanguage();
   const pathname = usePathname();
   const { data: siteContent } = useSelector((state) => state.siteContent) || {};
   if (
@@ -110,7 +108,7 @@ export function Footer() {
               <Logo />
             </div>
             <p className="mt-6 text-sm leading-relaxed text-slate-400 line-clamp-3 md:line-clamp-none">
-              {t("org.motto", site.description)}
+              {site.description}
             </p>
             <div className="mt-6 flex items-center gap-2.5">
               <a
@@ -146,7 +144,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-8 lg:gap-10 lg:col-span-2 lg:pl-10">
             <div>
               <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
-                {t("footer.quick_links", "Quick Links")}
+                Quick Links
               </h3>
               <ul className="mt-5 space-y-3">
                 {FOOTER_QUICK_LINKS.map((l) => (
@@ -155,7 +153,7 @@ export function Footer() {
                       href={l.href}
                       className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
                     >
-                      {l.key ? t(l.key, l.label) : l.label}
+                      {l.label}
                     </Link>
                   </li>
                 ))}
@@ -164,7 +162,7 @@ export function Footer() {
 
             <div>
               <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
-                {t("footer.resources", "Resources")}
+                Resources
               </h3>
               <ul className="mt-5 space-y-3">
                 {FOOTER_RESOURCE_LINKS.map((l) => (
@@ -173,7 +171,7 @@ export function Footer() {
                       href={l.href}
                       className="group flex items-center text-sm text-slate-400 transition-colors hover:text-white font-medium"
                     >
-                      {l.key ? t(l.key, l.label) : l.label}
+                      {l.label}
                     </Link>
                   </li>
                 ))}
@@ -183,13 +181,13 @@ export function Footer() {
 
           <div className="lg:col-span-1">
             <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
-              {t("footer.contact_info", "Reach Us")}
+              Reach Us
             </h3>
             <ul className="mt-6 space-y-4 text-sm text-slate-400 font-medium">
               <li className="flex gap-3 group">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
                 <span className="leading-relaxed transition-colors group-hover:text-slate-300">
-                  {t("contact.head_office_address", site.address)}
+                  {site.address}
                 </span>
               </li>
               <li className="flex gap-3 group">
@@ -220,7 +218,7 @@ export function Footer() {
               href="/membership"
               className="mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-amber-500 px-6 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400 hover:scale-105 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]"
             >
-              {t("nav.membership", "Become a Member")}
+              Become a Member
             </Link>
           </div>
         </div>
@@ -228,11 +226,14 @@ export function Footer() {
 
       <div className="relative border-t border-slate-800">
         <div className="mx-auto max-w-7xl px-4 py-8 text-center text-slate-500">
-          <div className="text-sm sm:text-base italic mb-3 font-medium text-slate-400 text-center">
-            {t("org.motto", "Knowledge | Moderation | Unity | Service to Humanity")}
+          <div className="text-sm sm:text-base italic mb-1 font-medium text-slate-400 text-center">
+            Christ the Rabbi — Our Teacher, Model & Guide
+          </div>
+          <div className="text-sm sm:text-base italic mb-6 font-medium text-slate-400 text-center">
+            Led by the Holy Spirit — the Advocate
           </div>
           <div className="flex flex-col items-center justify-center gap-4 text-xs md:flex-row font-medium">
-            <p>© {new Date().getFullYear()} {t("org.name", site.name)}. {t("footer.copyright", "All Rights Reserved")}.</p>
+            <p>© 2026 {site.name}. All Rights Reserved.</p>
             <div className="flex gap-4">
               <Link
                 href="/privacy-policy"

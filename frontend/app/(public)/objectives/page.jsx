@@ -3,11 +3,10 @@
 import { PageHero } from "@/components/pages/page-hero"
 import { ImpactStats } from "@/components/sections/impact-stats"
 import { CtaBand } from "@/components/sections/cta-band"
-import { BookOpen, HeartPulse, Sparkles, HandHeart, ShieldCheck, Users, ArrowRight, Target, CheckCircle2 } from "lucide-react"
+import { BookOpen, HeartPulse, Sparkles, HandHeart, ShieldCheck, Users, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useSelector } from "react-redux"
-import { useLanguage } from "@/context/LanguageContext"
 
 const DEFAULT_OBJECTIVES = [
   {
@@ -20,28 +19,33 @@ const DEFAULT_OBJECTIVES = [
 ]
 
 export default function Page() {
-  const { t, isRTL } = useLanguage()
   const { data: siteContent } = useSelector((state) => state.siteContent)
 
-  const items = t("objectives.items", [])
-  const objectiveList = Array.isArray(items) && items.length > 0 ? items : [
-    "Highlight Al-Azhar Al-Sharif's academic and civilisational contributions globally.",
-    "Connect Al-Azhar graduates across India into a cohesive national network.",
-    "Promote academic collaboration, research, and intellectual dialogue.",
-    "Disseminate values of moderation, balance, mutual respect, and tolerance.",
-    "Support Arabic language education and classical Islamic sciences.",
-    "Organise academic conferences, intellectual seminars, and training programs.",
-    "Nurture youth leadership and intellectual capacity development.",
-    "Foster peaceful coexistence, interfaith dialogue, and societal harmony.",
-    "Present the authentic, compassionate teachings and human values of Islam."
-  ]
+  let objectives = DEFAULT_OBJECTIVES
+
+  if (siteContent?.objectives?.content) {
+    try {
+      const parsed = JSON.parse(siteContent.objectives.content)
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        objectives = parsed.map(obj => ({
+          ...obj,
+          icon: obj.icon === "BookOpen" ? BookOpen :
+                obj.icon === "Users" ? Users :
+                obj.icon === "Sparkles" ? Sparkles :
+                obj.icon === "ShieldCheck" ? ShieldCheck :
+                obj.icon === "HeartPulse" ? HeartPulse :
+                obj.icon === "HandHeart" ? HandHeart : BookOpen
+        }))
+      }
+    } catch (e) {}
+  }
 
   return (
     <>
       <PageHero
-        eyebrow={t("objectives.title", "Our Objectives")}
-        title={t("org.name", "World Association for Al-Azhar Graduates – India")}
-        description={t("org.motto", "Knowledge | Moderation | Unity | Service to Humanity")}
+        eyebrow="Our Objectives"
+        title="Fostering Knowledge, Moderation and Service"
+        description="Our core mission is divided into actionable objectives that guide every initiative we undertake."
         image="/hero-community-education-india.png"
       />
 
@@ -62,20 +66,20 @@ export default function Page() {
             </div>
             <div className="flex flex-col justify-center">
               <span className="mb-4 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-accent">
-                <span className="h-[2px] w-8 bg-accent"></span> {t("about.distinctive_title", "Our Purpose")}
+                <span className="h-[2px] w-8 bg-accent"></span> Our Purpose
               </span>
               <h2 className="text-3xl font-bold tracking-tight text-navy sm:text-4xl md:text-5xl mb-6">
-                {t("home.heading", "Strengthening ties, spreading knowledge, and building communities.")}
+                Strengthening ties, spreading knowledge, and building communities.
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground mb-6">
-                {t("home.intro", "The association works to connect alumni across India and empower them to serve society.")}
+                The Rabbi Association works to connect Rabbi Association alumni across India and empower them to serve society.
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground mb-8">
-                {t("about.distinctive_text", "Our objectives reflect the balanced, humane, and scholarly traditions of Al-Azhar.")}
+                Our objectives reflect the balanced, humane, and scholarly traditions of Rabbi Association, focusing on intellectual exchange, peaceful coexistence, and educational development.
               </p>
               <div className="flex items-center gap-4">
                 <Link href="/about" className="inline-flex items-center justify-center rounded-xl bg-navy px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-navy/90 hover:shadow-xl">
-                  {t("nav.about", "Learn About Us")} <ArrowRight className="ml-2 size-4" />
+                  Learn About Us <ArrowRight className="ml-2 size-4" />
                 </Link>
               </div>
             </div>
@@ -89,27 +93,30 @@ export default function Page() {
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12 md:mb-20">
-            <h2 className="text-3xl font-bold tracking-tight text-navy sm:text-4xl">
-              {t("objectives.title", "Our Objectives")}
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tight text-navy sm:text-4xl">What We Strive to Achieve</h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              {t("org.tagline", "Knowledge | Moderation | Unity | Service to Humanity")}
+              These objectives shape our programs, direct our focus, and define our commitment to society.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {objectiveList.map((objText, index) => {
+            {objectives.map((obj, index) => {
+              const Icon = obj.icon
               return (
                 <div
                   key={index}
                   className="group relative flex flex-col rounded-3xl bg-white p-8 shadow-sm ring-1 ring-border/50 transition-all hover:shadow-xl hover:-translate-y-1 hover:ring-navy/20"
                 >
-                  <div className="mb-6 inline-flex size-14 shrink-0 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-600 transition-transform duration-300 group-hover:scale-110 font-black text-xl">
-                    {index + 1}
+                  <div className={`mb-6 inline-flex size-14 shrink-0 items-center justify-center rounded-2xl ${obj.bgColor} ${obj.color} transition-transform duration-300 group-hover:scale-110`}>
+                    <Icon className="size-7" />
                   </div>
 
-                  <p className="text-foreground/90 font-medium text-[16px] leading-relaxed flex-1">
-                    {objText}
+                  <h3 className="mb-3 text-xl font-bold text-navy group-hover:text-accent transition-colors">
+                    {obj.title}
+                  </h3>
+
+                  <p className="text-muted-foreground leading-relaxed">
+                    {obj.description}
                   </p>
 
                   <div className="absolute -inset-px -z-10 rounded-3xl bg-gradient-to-br from-navy/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 blur-xl"></div>

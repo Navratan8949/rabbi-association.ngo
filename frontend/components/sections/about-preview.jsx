@@ -6,16 +6,17 @@ import { ArrowRight, Target, Eye, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/shared/reveal";
 import { useSelector } from "react-redux";
-import { useLanguage } from "@/context/LanguageContext";
 
 export function AboutPreview() {
-  const { t, isRTL } = useLanguage();
   const { data: siteContent } = useSelector((state) => state.siteContent);
 
-  let title = t("about.title", "ABOUT US");
-  let description = `${t("about.al_azhar_text", "")}\n\n${t("about.world_assoc_text", "")}\n\n${t("about.india_branch_p1", "")}`;
-  let mission = t("home.mission", "");
-  let vision = t("home.vision", "");
+  let title = "ABOUT US";
+  let description =
+    "Rabbi Association is an education consultancy and institutional development organisation committed to advancing quality education, human empowerment, institutional excellence, and sustainable social development.\n\nFounded on 5 September 2026, Rabbi Association was established with a vision to make a meaningful contribution to individuals, educational institutions, and communities through professional expertise guided by strong human, ethical, and social values.\n\nWe believe that education is more than the transmission of knowledge. True education forms the mind, shapes character, strengthens values, develops leadership, and inspires people to serve humanity.";
+  let mission =
+    "Rabbi Association exists to serve humanity through Christ-centred education, guided by Christ the Rabbi—our Teacher, Model, and Guide—and led by the Holy Spirit, the Advocate. We are committed to making life better through quality education, empowering people, strengthening educational institutions, creating equal opportunities, and supporting sustainable social development.";
+  let vision =
+    "Witnessing Christ Through Education. Rabbi Association exists to witness to the teachings of Christ the Rabbi—our Teacher, Model, and Guide, led by the Holy Spirit, the Advocate. We envision a society where education forms minds, shapes character, inspires responsible leadership, upholds human dignity, and transforms lives through love, truth, justice, compassion, and service.";
   let image = "/rabbi-context/about_us_classroom.jpg";
 
   if (siteContent?.about_preview?.content) {
@@ -78,16 +79,17 @@ export function AboutPreview() {
                 <span className="h-1.5 w-1.5 rounded-full bg-accent"></span>
               </div>
 
-              <h2 className="font-bold leading-[1.2] text-slate-900 text-3xl sm:text-4xl lg:text-5xl">
-                {t("about.al_azhar_title", "About Al-Azhar Al-Sharif")}
+              <h2 className="font-bold leading-[1.2] text-slate-900 text-4xl sm:text-5xl">
+                Making Life Better Through{" "}
+                <span className="text-accent">Education.</span>
               </h2>
             </div>
 
             <div className="space-y-6">
-              {description.split("\n\n").filter(Boolean).map((paragraph, index) => (
+              {description.split("\n\n").map((paragraph, index) => (
                 <p
                   key={index}
-                  className="text-slate-600 text-[16px] md:text-[17px] leading-relaxed"
+                  className="text-slate-600 text-[17px] leading-relaxed"
                 >
                   {paragraph}
                 </p>
@@ -98,24 +100,24 @@ export function AboutPreview() {
           {/* Clean Mission & Vision Blocks */}
           <div className="mt-10 grid gap-8 sm:grid-cols-2 pt-10 border-t border-gray-100">
             <Reveal delay={0.1}>
-              <div className="pl-0 sm:pl-5 border-l-0 sm:border-l-4 border-accent text-center sm:text-start flex flex-col">
-                <div className="flex items-center gap-2 text-slate-900 font-bold text-lg mb-3">
+              <div className="pl-0 sm:pl-5 border-l-0 sm:border-l-4 border-accent text-center flex flex-col items-center">
+                <div className="flex items-center justify-center gap-2 text-slate-900 font-bold text-lg mb-3">
                   <Target className="w-5 h-5 text-accent" />
-                  {t("home.mission_title", "Our Mission")}
+                  Our Mission
                 </div>
-                <p className="text-[14px] md:text-[15px] leading-relaxed text-slate-600">
+                <p className="text-[15px] leading-relaxed text-slate-600">
                   {mission}
                 </p>
               </div>
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="pl-0 sm:pl-5 border-l-0 sm:border-l-4 border-accent text-center sm:text-start flex flex-col">
-                <div className="flex items-center gap-2 text-slate-900 font-bold text-lg mb-3">
+              <div className="pl-0 sm:pl-5 border-l-0 sm:border-l-4 border-accent text-center flex flex-col items-center">
+                <div className="flex items-center justify-center gap-2 text-slate-900 font-bold text-lg mb-3">
                   <Eye className="w-5 h-5 text-accent" />
-                  {t("home.vision_title", "Our Vision")}
+                  Our Vision
                 </div>
-                <p className="text-[14px] md:text-[15px] leading-relaxed text-slate-600">
+                <p className="text-[15px] leading-relaxed text-slate-600">
                   {vision}
                 </p>
               </div>
@@ -129,7 +131,7 @@ export function AboutPreview() {
               className="h-14 rounded-full bg-accent px-8 text-base font-bold text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:-translate-y-1 hover:bg-accent/90 hover:shadow-accent/40"
             >
               <Link href="/about">
-                {t("nav.about", "Explore About Us")}
+                Explore About Us
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </Button>

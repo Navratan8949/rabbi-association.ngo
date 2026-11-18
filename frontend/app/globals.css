@@ -355,30 +355,5 @@
   will-change: opacity, transform;
 }
 
-/* ==========================================================================
-   Multi-Language & RTL Direction Support
-   ========================================================================== */
-html[dir="rtl"] {
-  direction: rtl;
-}
-
-html[dir="rtl"] body {
-  text-align: right;
-}
-
-html[lang="ar"] {
-  font-family: "Noto Naskh Arabic", "Traditional Arabic", "Amiri", "Geeza Pro", Tahoma, var(--font-sans), sans-serif;
-}
-
-html[lang="ur"] {
-  font-family: "Noto Nastaliq Urdu", "Urdu Typesetting", "Jameel Noori Nastaleeq", "Segoe UI", Tahoma, sans-serif;
-  line-height: 1.8;
-}
-
-html[lang="hi"] {
-  font-family: "Noto Sans Devanagari", "Mangal", "Kohinoor Devanagari", var(--font-sans), sans-serif;
-}
-
-
 
 
