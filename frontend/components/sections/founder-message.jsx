@@ -2,14 +2,15 @@
 import Image from "next/image";
 import { Quote } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
+import { toAbsoluteFileUrl } from "@/lib/utils";
 
 export function FounderMessageSection({ data }) {
-  let title = "Founder's Message";
-  let name = "Founder & Trustee";
-  let designation = "Rabbi Association";
+  let title = "Founder & CEO";
+  let name = "AJAY PAUL";
+  let designation = "Founder";
   let message =
-    "Welcome to the official website of the Rabbi Association.\n\nOur organisation was established with a vision to make a meaningful contribution to individuals, educational institutions, and communities through professional expertise guided by strong human, ethical, and social values.\n\nWe believe that education is more than the transmission of knowledge. True education forms the mind, shapes character, strengthens values, develops leadership, and inspires people to serve humanity.\n\nWe invite you to join this shared journey and contribute your knowledge, experience and expertise to the advancement of society.";
-  let image = "/placeholder.svg";
+    "Dear Friends, Well-Wishers and Partners,\n\nEvery community has people who need opportunities, support and someone willing to stand beside them. Education may change the future of a child, timely information may help a family access a welfare benefit, and appropriate legal assistance may help a person seek justice.\n\nThese realities inspire the mission of RABBI ASSOCIATION.\n\nOur vision is to build an organisation that responds to the genuine needs of poor and marginalised communities through education, social welfare, institutional development, citizen empowerment and humanitarian service.\n\nWe aspire to support the transformation of schools, strengthen educational institutions, promote skill development, improve awareness of government schemes, facilitate access to appropriate legal services and stand for the dignity and rights of vulnerable people.\n\nWe also seek to work with government authorities, corporate organisations, charitable foundations, educational institutions, healthcare institutions, NGOs and individuals who share our commitment to social development.\n\nWe understand that lasting change requires sincerity, responsible leadership, professional collaboration and accountability. We therefore aim to develop our programmes carefully, use resources for their intended charitable purposes and measure our progress through meaningful outcomes.\n\nI invite institutions, organisations, professionals, volunteers and well-wishers to join us in this mission.\n\nTogether, let us turn compassion into action, opportunities into progress and service into lasting social change.\n\nWith gratitude and commitment.";
+  let image = "/founder-ajay-paul.jpg";
 
   if (data?.content) {
     try {
@@ -18,7 +19,7 @@ export function FounderMessageSection({ data }) {
       if (parsed.designation) designation = parsed.designation;
       if (parsed.message) message = parsed.message;
       if (parsed.image) {
-        image = typeof parsed.image === "string" ? parsed.image : (parsed.image.url || "/placeholder.svg");
+        image = typeof parsed.image === "string" ? parsed.image : (parsed.image.url || "/founder-ajay-paul.jpg");
       }
     } catch (e) {
       // Fallback if not JSON
@@ -39,12 +40,14 @@ export function FounderMessageSection({ data }) {
   }
 
   if (!image || typeof image !== "string" || !image.trim()) {
-    image = "/placeholder.svg";
+    image = "/founder-ajay-paul.jpg";
   }
 
+  const finalImage = toAbsoluteFileUrl(image) || image;
+
   const displayDesignation = designation
-    ? designation.replace(/,\s*/g, " | ")
-    : "";
+    ? (designation.includes("Rabbi Association") ? designation : `${designation} | Rabbi Association`)
+    : "Rabbi Association";
 
   return (
     <section className="relative overflow-hidden bg-muted/30 py-16 md:py-20">
@@ -56,15 +59,13 @@ export function FounderMessageSection({ data }) {
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* Image Side */}
           <Reveal className="relative mx-auto w-full max-w-md lg:mx-0">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-border">
-              <Image
-                src={image}
+            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-border bg-slate-100">
+              <img
+                src={finalImage}
                 alt={name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="size-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent pointer-events-none" />
             </div>
             {/* Accent decoration */}
             <div className="absolute -bottom-6 -right-6 -z-10 h-full w-full rounded-3xl border-4 border-accent hidden md:block" />

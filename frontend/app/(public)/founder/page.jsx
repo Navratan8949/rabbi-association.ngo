@@ -2,9 +2,109 @@ import { PageHero } from "@/components/pages/page-hero"
 import { FounderMessageSection } from "@/components/sections/founder-message"
 import { getSiteContentById } from "@/service/site-content.service"
 import { getTrustees } from "@/service/trustee.service"
-import { Sparkles, ShieldCheck, Mail, Phone, Globe, Heart, Quote } from "lucide-react"
+import { toAbsoluteFileUrl } from "@/lib/utils"
+import { Sparkles, ShieldCheck, Mail, Phone, Globe, Quote } from "lucide-react"
 
 export const metadata = { title: "Founder & Trustees" }
+
+function PersonShowcaseCard({ person, fallbackImage }) {
+  const photoUrl = toAbsoluteFileUrl(person.photo?.url) || fallbackImage || "/placeholder-user.png"
+  const designation = person.designation || (person.category === "inspirational_person" ? "Inspiration & Guiding Light" : "Board of Trustees")
+  const subtext = designation ? (designation.includes("Rabbi Association") ? designation : `${designation} | Rabbi Association`) : "Rabbi Association"
+
+  return (
+    <div className="relative overflow-hidden rounded-[2.5rem] bg-white p-8 sm:p-12 lg:p-14 border border-slate-200/80 shadow-xl transition-all duration-300 hover:shadow-2xl">
+      {/* Decorative ambient blurred shapes */}
+      <div className="absolute -left-20 -top-20 size-80 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+      <div className="absolute -right-20 -bottom-20 size-80 rounded-full bg-accent/5 blur-3xl pointer-events-none" />
+
+      <div className="grid items-center gap-10 lg:gap-14 lg:grid-cols-12 relative z-10">
+        {/* Photo Container with offset orange accent frame */}
+        <div className="lg:col-span-5 relative mx-auto w-full max-w-[320px] sm:max-w-[360px] lg:max-w-none">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl ring-1 ring-border bg-slate-100">
+            <img
+              src={photoUrl}
+              alt={person.name}
+              className="size-full object-cover transition-transform duration-500 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent pointer-events-none" />
+          </div>
+          {/* Signature offset orange accent frame */}
+          <div className="absolute -bottom-5 -right-5 -z-10 h-full w-full rounded-3xl border-4 border-accent hidden sm:block" />
+        </div>
+
+        {/* Content Side */}
+        <div className="lg:col-span-7 relative flex flex-col justify-between text-center sm:text-left">
+          <div>
+            {/* Orange Quote Icon Badge */}
+            <div className="mb-6 inline-flex size-12 md:size-14 items-center justify-center rounded-2xl bg-accent/10 text-accent ring-1 ring-accent/20">
+              <Quote className="size-6 fill-current" />
+            </div>
+
+            {/* Title / Role */}
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-navy">
+              {designation}
+            </h3>
+
+            {/* Message / Description */}
+            {person.description && (
+              <div className="mt-5 text-sm md:text-base text-slate-600 leading-relaxed font-medium whitespace-pre-wrap">
+                <p>{person.description}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Signature / Author Footer Block */}
+          <div className="mt-8 border-t border-slate-200/80 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="font-extrabold text-navy text-lg md:text-xl uppercase tracking-wider">
+                {person.name}
+              </p>
+              <p className="text-sm font-semibold text-slate-500 mt-1">
+                {subtext}
+              </p>
+            </div>
+
+            {/* Contact Links */}
+            {(person.email || person.phone || person.website) && (
+              <div className="flex items-center gap-2 self-center sm:self-auto">
+                {person.email && (
+                  <a
+                    href={`mailto:${person.email}`}
+                    className="flex size-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-accent hover:text-white transition-all shadow-xs"
+                    title={person.email}
+                  >
+                    <Mail className="size-4" />
+                  </a>
+                )}
+                {person.phone && (
+                  <a
+                    href={`tel:${person.phone}`}
+                    className="flex size-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-accent hover:text-white transition-all shadow-xs"
+                    title={person.phone}
+                  >
+                    <Phone className="size-4" />
+                  </a>
+                )}
+                {person.website && (
+                  <a
+                    href={person.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex size-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600 hover:bg-accent hover:text-white transition-all shadow-xs"
+                    title={person.website}
+                  >
+                    <Globe className="size-4" />
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default async function Page() {
   let founderData = null
@@ -38,7 +138,7 @@ export default async function Page() {
         designation: "Inspiration & Guiding Light",
         description:
           "A dedicated teacher whose life reflected a deep commitment to education, ethical values, and service. Our organizational philosophy and commitment to humanity are inspired by his enduring legacy.",
-        photo: { url: "" },
+        photo: { url: "/placeholder-user.png" },
       },
       {
         _id: "default-2",
@@ -46,8 +146,8 @@ export default async function Page() {
         category: "trustee",
         designation: "Managing Trustee",
         description:
-          "Stewarding the strategic direction, ethical governance, and social initiatives of the Rabbi Association.",
-        photo: { url: "" },
+          "Stewarding the strategic direction, ethical governance, and social initiatives of the Rabbi Association with integrity and dedication to community upliftment.",
+        photo: { url: "/placeholder-user.png" },
       }
     ]
   }
@@ -76,7 +176,7 @@ export default async function Page() {
         <section className="py-16 md:py-24 bg-white border-y border-slate-200/60 relative overflow-hidden">
           <div className="absolute top-0 right-0 -mr-20 -mt-20 size-96 rounded-full bg-amber-500/5 blur-3xl pointer-events-none" />
           
-          <div className="mx-auto max-w-7xl px-4 lg:px-8 relative z-10">
+          <div className="mx-auto max-w-6xl px-4 lg:px-8 relative z-10">
             <div className="text-center mb-16 max-w-3xl mx-auto">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100/80 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-800 mb-4 border border-amber-200">
                 <Sparkles className="size-3.5 text-amber-600" /> Inspiration & Guiding Light
@@ -89,39 +189,13 @@ export default async function Page() {
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2 justify-center max-w-5xl mx-auto">
+            <div className="space-y-12">
               {inspirationalPersons.map((person) => (
-                <div
+                <PersonShowcaseCard
                   key={person._id}
-                  className="group relative flex flex-col sm:flex-row gap-6 bg-gradient-to-br from-amber-50/40 via-white to-slate-50/80 rounded-3xl p-6 sm:p-8 border border-amber-200/70 shadow-sm hover:shadow-md hover:border-amber-400/60 transition-all duration-300"
-                >
-                  {/* Portrait */}
-                  <div className="size-32 sm:size-36 shrink-0 mx-auto sm:mx-0 overflow-hidden rounded-2xl border-2 border-amber-200 bg-white shadow-md relative">
-                    <img
-                      src={
-                        person.photo?.url ||
-                        "/placeholder-user.svg"
-                      }
-                      alt={person.name}
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-
-                  {/* Details */}
-                  <div className="flex flex-col justify-center text-center sm:text-left flex-1">
-                    <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100/60 px-2.5 py-0.5 rounded-full w-fit mx-auto sm:mx-0 mb-2 border border-amber-200/60">
-                      {person.designation || "Inspiration & Guiding Light"}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-bold text-navy leading-snug">
-                      {person.name}
-                    </h3>
-                    {person.description && (
-                      <p className="mt-3 text-sm text-slate-600 leading-relaxed font-medium">
-                        "{person.description}"
-                      </p>
-                    )}
-                  </div>
-                </div>
+                  person={person}
+                  fallbackImage="/placeholder-user.png"
+                />
               ))}
             </div>
           </div>
@@ -131,7 +205,7 @@ export default async function Page() {
       {/* 3. Board of Trustees Section */}
       {trustees.length > 0 && (
         <section className="py-16 md:py-24 bg-slate-50">
-          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+          <div className="mx-auto max-w-6xl px-4 lg:px-8">
             <div className="text-center mb-16 max-w-3xl mx-auto">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100/80 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-blue-800 mb-4 border border-blue-200">
                 <ShieldCheck className="size-3.5 text-blue-600" /> Governance & Leadership
@@ -144,76 +218,13 @@ export default async function Page() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+            <div className="space-y-12">
               {trustees.map((trustee) => (
-                <div
+                <PersonShowcaseCard
                   key={trustee._id}
-                  className="group flex flex-col bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden hover:shadow-lg hover:border-blue-500/30 transition-all duration-300"
-                >
-                  {/* Photo Banner */}
-                  <div className="h-72 w-full bg-slate-100 overflow-hidden relative flex items-center justify-center border-b border-slate-100">
-                    <img
-                      src={
-                        trustee.photo?.url ||
-                        "/placeholder-user.svg"
-                      }
-                      alt={trustee.name}
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-
-                  {/* Body */}
-                  <div className="flex flex-1 flex-col p-6 sm:p-7">
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md w-fit mb-2 border border-blue-100">
-                      {trustee.designation || "Trustee"}
-                    </span>
-                    <h3 className="text-xl font-bold text-navy">
-                      {trustee.name}
-                    </h3>
-                    
-                    {trustee.description && (
-                      <p className="mt-3 text-sm text-slate-600 font-medium leading-relaxed line-clamp-4">
-                        {trustee.description}
-                      </p>
-                    )}
-
-                    {/* Contact links if provided */}
-                    {(trustee.email || trustee.phone || trustee.website) && (
-                      <div className="mt-auto pt-6 border-t border-slate-100 flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
-                        {trustee.email && (
-                          <a
-                            href={`mailto:${trustee.email}`}
-                            className="inline-flex items-center gap-1.5 hover:text-blue-600 transition-colors"
-                            title={trustee.email}
-                          >
-                            <Mail className="size-3.5 text-slate-400" />
-                            <span className="truncate max-w-[150px]">{trustee.email}</span>
-                          </a>
-                        )}
-                        {trustee.phone && (
-                          <a
-                            href={`tel:${trustee.phone}`}
-                            className="inline-flex items-center gap-1.5 hover:text-blue-600 transition-colors"
-                          >
-                            <Phone className="size-3.5 text-slate-400" />
-                            <span>{trustee.phone}</span>
-                          </a>
-                        )}
-                        {trustee.website && (
-                          <a
-                            href={trustee.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 hover:text-blue-600 transition-colors"
-                          >
-                            <Globe className="size-3.5 text-slate-400" />
-                            <span>Website</span>
-                          </a>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
+                  person={trustee}
+                  fallbackImage="/placeholder-user.png"
+                />
               ))}
             </div>
           </div>
