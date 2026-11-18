@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react"
 import { PageHero } from "@/components/pages/page-hero"
 import { getDownloads } from "@/service/download.service"
 import { getPublicCertificates } from "@/service/certificate.service"
+import { toAbsoluteFileUrl } from "@/lib/utils"
 import { 
   FileText, 
   Download, 
@@ -42,7 +43,7 @@ export default function CertificatesPage() {
               title: d.title,
               description: d.description || "",
               category: d.category || "document",
-              fileUrl: d.file?.url,
+              fileUrl: toAbsoluteFileUrl(d.file?.url),
               fileType: d.fileType || "pdf",
               type: "download",
               createdAt: d.createdAt,
@@ -65,7 +66,7 @@ export default function CertificatesPage() {
               description: c.description || (c.certificateNo ? `Certificate No: ${c.certificateNo}` : ""),
               category: "certificate",
               certificateNo: c.certificateNo,
-              fileUrl: c.pdf?.url,
+              fileUrl: toAbsoluteFileUrl(c.pdf?.url),
               fileType: "pdf",
               type: "certificate",
               createdAt: c.createdAt || c.issueDate,
@@ -84,7 +85,7 @@ export default function CertificatesPage() {
             title: "NGO Society Registration Certificate",
             description: "Official certificate of registration under the Societies Registration Act, certifying Rabbi Association as a recognized non-profit organization.",
             category: "certificate",
-            fileUrl: "/public/uploads/ngo-registration-certificate.pdf",
+            fileUrl: toAbsoluteFileUrl("/public/uploads/ngo-registration-certificate.pdf"),
             fileType: "pdf",
             type: "download",
           },
@@ -93,7 +94,7 @@ export default function CertificatesPage() {
             title: "Section 12A & 80G Tax Exemption Certificate",
             description: "Exemption certificate granted by the Income Tax Department of India under Sections 12A & 80G, granting tax deductions to donors.",
             category: "certificate",
-            fileUrl: "/public/uploads/12a-80g-tax-exemption.pdf",
+            fileUrl: toAbsoluteFileUrl("/public/uploads/12a-80g-tax-exemption.pdf"),
             fileType: "pdf",
             type: "download",
           },
@@ -102,7 +103,7 @@ export default function CertificatesPage() {
             title: "NITI Aayog NGO-Darpan Accreditation",
             description: "Accreditation and registration certificate with the Government of India NGO-Darpan Portal under NITI Aayog.",
             category: "document",
-            fileUrl: "/public/uploads/niti-aayog-darpan-cert.pdf",
+            fileUrl: toAbsoluteFileUrl("/public/uploads/niti-aayog-darpan-cert.pdf"),
             fileType: "pdf",
             type: "download",
           },
@@ -111,7 +112,7 @@ export default function CertificatesPage() {
             title: "Annual Activity & Social Impact Report",
             description: "Comprehensive annual audit, community impact milestones, educational development metrics, and welfare initiatives.",
             category: "report",
-            fileUrl: "/public/uploads/annual-impact-report.pdf",
+            fileUrl: toAbsoluteFileUrl("/public/uploads/annual-impact-report.pdf"),
             fileType: "pdf",
             type: "download",
           }

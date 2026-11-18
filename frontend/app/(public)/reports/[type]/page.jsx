@@ -11,6 +11,7 @@ import {
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { getReports } from "@/service/report.service";
+import { toAbsoluteFileUrl } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -155,7 +156,7 @@ export default async function Page({ params }) {
                       size="sm"
                       className="rounded-xl bg-accent font-bold text-accent-foreground hover:bg-accent/90"
                     >
-                      <a href={report.pdf.url} target="_blank" rel="noreferrer">
+                      <a href={toAbsoluteFileUrl(report.pdf.url)} target="_blank" rel="noreferrer">
                         <Download className="mr-1.5 size-3.5" /> Download PDF
                       </a>
                     </Button>

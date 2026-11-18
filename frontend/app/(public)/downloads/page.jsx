@@ -2,6 +2,7 @@ import { Download, FileText } from "lucide-react";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { getDownloads } from "@/service/download.service";
+import { toAbsoluteFileUrl } from "@/lib/utils";
 
 export const metadata = { title: "Downloads" };
 export const dynamic = "force-dynamic";
@@ -55,7 +56,7 @@ export default async function Page() {
                     size="sm"
                     className="shrink-0 rounded-lg"
                   >
-                    <a href={row.file.url} target="_blank" rel="noreferrer">
+                    <a href={toAbsoluteFileUrl(row.file.url)} target="_blank" rel="noreferrer">
                       <Download className="mr-2 size-4" />
                       Download
                     </a>

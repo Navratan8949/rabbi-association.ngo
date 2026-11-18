@@ -2,6 +2,7 @@ import { PageHero } from "@/components/pages/page-hero";
 import { FileText, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getReports } from "@/service/report.service";
+import { toAbsoluteFileUrl } from "@/lib/utils";
 
 export const metadata = {
   title: "Annual Reports",
@@ -56,7 +57,7 @@ export default async function AnnualReportsPage() {
                     </div>
                     {report.pdf?.url && (
                       <Button asChild className="bg-navy hover:bg-navy/90 text-white rounded-full">
-                        <a href={report.pdf.url} target="_blank" rel="noopener noreferrer">
+                        <a href={toAbsoluteFileUrl(report.pdf.url)} target="_blank" rel="noopener noreferrer">
                           <Download className="mr-2 size-4" /> Download PDF
                         </a>
                       </Button>

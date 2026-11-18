@@ -4,6 +4,7 @@ import { AdminCrudPage, StatusBadge } from "@/components/admin/crud-page"
 import { getMembers } from "@/service/member.service"
 import api from "@/service/api"
 import { Eye, FileText, Download, ExternalLink, X } from "lucide-react"
+import { toAbsoluteFileUrl } from "@/lib/utils"
 
 export default function Page() {
   const [memberOptions, setMemberOptions] = useState([])
@@ -93,7 +94,8 @@ export default function Page() {
       label: "Certificate File",
       render: (r) => {
         if (!r.pdf?.url) return <span className="text-muted-foreground text-xs italic">No File</span>
-        const isImage = r.pdf.url.match(/\.(jpeg|jpg|gif|png|webp)$/i)
+        const absUrl = toAbsoluteFileUrl(r.pdf.url)
+        const isImage = !!r.pdf.url.match(/\.(jpeg|jpg|gif|png|webp)$/i)
         return (
           <div className="flex items-center gap-2">
             {isImage ? (
@@ -103,7 +105,7 @@ export default function Page() {
                 className="group relative h-10 w-14 overflow-hidden rounded-lg border border-slate-200 shadow-sm hover:border-blue-500 transition-all cursor-pointer bg-slate-50 shrink-0"
                 title="Click to view certificate"
               >
-                <img src={r.pdf.url} alt="Certificate" className="h-full w-full object-cover group-hover:scale-105 transition-transform" />
+                <img src={absUrl} alt="Certificate" className="h-full w-full object-cover group-hover:scale-105 transition-transform" />
                 <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                   <Eye className="size-3.5 text-white" />
                 </div>
@@ -112,7 +114,7 @@ export default function Page() {
               <button
                 type="button"
                 onClick={() => setPreviewCert(r)}
-                className="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-semibold hover:bg-blue-100 border border-blue-200 transition-colors shrink-0"
+                className="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-semibold hover:bg-blue-100 border border-blue-200 transition-colors shrink-0 cursor-pointer"
                 title="Click to view PDF"
               >
                 <FileText className="size-3.5 text-rose-500" />
@@ -122,12 +124,12 @@ export default function Page() {
             <button
               type="button"
               onClick={() => setPreviewCert(r)}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
             >
               <Eye className="size-3.5" /> View
             </button>
             <a
-              href={r.pdf.url}
+              href={absUrl}
               download
               target="_blank"
               rel="noopener noreferrer"
@@ -178,23 +180,25 @@ export default function Page() {
 
             {/* Body */}
             <div className="overflow-y-auto p-6 bg-slate-100 flex items-center justify-center min-h-[350px]">
-              {previewCert.pdf?.url ? (
-                previewCert.pdf.url.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
+              {previewCert.pdf?.url ? (() => {
+                const absUrl = toAbsoluteFileUrl(previewCert.pdf.url)
+                const isImg = !!previewCert.pdf.url.match(/\.(jpeg|jpg|gif|png|webp)$/i)
+                return isImg ? (
                   <div className="flex flex-col items-center">
                     <img 
-                      src={previewCert.pdf.url} 
+                      src={absUrl} 
                       alt={previewCert.title} 
                       className="max-h-[68vh] w-auto max-w-full rounded-xl shadow-lg border border-slate-200 object-contain bg-white" 
                     />
                   </div>
                 ) : (
                   <iframe 
-                    src={previewCert.pdf.url} 
+                    src={absUrl} 
                     title={previewCert.title}
                     className="w-full h-[68vh] rounded-xl border border-slate-300 shadow-inner bg-white" 
                   />
                 )
-              ) : (
+              })() : (
                 <div className="text-center py-12 text-slate-500">
                   <FileText className="size-12 mx-auto text-slate-400 mb-2" />
                   <p className="text-sm font-semibold">No certificate document attached.</p>
@@ -208,31 +212,34 @@ export default function Page() {
                 Status: <span className="font-bold uppercase">{previewCert.status}</span>
               </span>
               <div className="flex items-center gap-3">
-                {previewCert.pdf?.url && (
-                  <>
-                    <a
-                      href={previewCert.pdf.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-100 transition-colors"
-                    >
-                      <ExternalLink className="size-3.5" /> Open in New Tab
-                    </a>
-                    <a
-                      href={previewCert.pdf.url}
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-xs font-bold text-accent-foreground shadow-sm hover:bg-accent/90 transition-colors"
-                    >
-                      <Download className="size-3.5" /> Download
-                    </a>
-                  </>
-                )}
+                {previewCert.pdf?.url && (() => {
+                  const absUrl = toAbsoluteFileUrl(previewCert.pdf.url)
+                  return (
+                    <>
+                      <a
+                        href={absUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-100 transition-colors"
+                      >
+                        <ExternalLink className="size-3.5" /> Open in New Tab
+                      </a>
+                      <a
+                        href={absUrl}
+                        download
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-xs font-bold text-accent-foreground shadow-sm hover:bg-accent/90 transition-colors"
+                      >
+                        <Download className="size-3.5" /> Download
+                      </a>
+                    </>
+                  )
+                })()}
                 <button 
                   type="button" 
                   onClick={() => setPreviewCert(null)}
-                  className="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-200 hover:text-navy transition-colors"
+                  className="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-200 hover:text-navy transition-colors cursor-pointer"
                 >
                   Close
                 </button>

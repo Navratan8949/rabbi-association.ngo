@@ -19,6 +19,7 @@ import {
   ChevronUp 
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { toAbsoluteFileUrl } from "@/lib/utils"
 
 export default function Page() {
   const [memberOptions, setMemberOptions] = useState([])
@@ -201,7 +202,7 @@ export default function Page() {
         <div className="flex items-center gap-2">
           {r.pdf?.url ? (
             <a
-              href={r.pdf.url}
+              href={toAbsoluteFileUrl(r.pdf.url)}
               download
               target="_blank"
               rel="noopener noreferrer"

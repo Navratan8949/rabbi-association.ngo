@@ -5,6 +5,7 @@ import { PageHero } from "@/components/pages/page-hero"
 import { Loader2, Download, BookOpen, FileText } from "lucide-react"
 import { getDownloads } from "@/service/download.service"
 import { Button } from "@/components/ui/button"
+import { toAbsoluteFileUrl } from "@/lib/utils"
 
 function PublicationsContent() {
   const searchParams = useSearchParams()
@@ -105,7 +106,7 @@ function PublicationsContent() {
                 
                 {item.file?.url && (
                   <Button asChild className="mt-6 w-full rounded-xl" variant="outline">
-                    <a href={item.file.url} target="_blank" rel="noreferrer">
+                    <a href={toAbsoluteFileUrl(item.file.url)} target="_blank" rel="noreferrer">
                       <Download className="mr-2 size-4" />
                       Download PDF
                     </a>

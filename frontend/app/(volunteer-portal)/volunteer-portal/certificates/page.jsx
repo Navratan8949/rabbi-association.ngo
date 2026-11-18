@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { getMyCertificates } from "@/service/certificate.service";
 import { Award, FileBadge, Download, Loader2, Eye, FileText, ExternalLink, X } from "lucide-react";
+import { toAbsoluteFileUrl } from "@/lib/utils";
 
 export default function VolunteerCertificatesPage() {
   const [certificates, setCertificates] = useState([]);
@@ -34,6 +35,7 @@ export default function VolunteerCertificatesPage() {
         ) : certificates.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {certificates.map((cert) => {
+              const absCertUrl = toAbsoluteFileUrl(cert.pdf?.url);
               const isImage = cert.pdf?.url && cert.pdf.url.match(/\.(jpeg|jpg|gif|png|webp)$/i);
               return (
                 <div
@@ -53,7 +55,7 @@ export default function VolunteerCertificatesPage() {
                       className="group relative h-48 w-full cursor-pointer overflow-hidden border-b border-border/50 bg-slate-100"
                     >
                       <img 
-                        src={cert.pdf.url} 
+                        src={absCertUrl} 
                         alt={cert.title} 
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" 
                       />
@@ -115,7 +117,7 @@ export default function VolunteerCertificatesPage() {
                               View
                             </button>
                             <a
-                              href={cert.pdf.url}
+                              href={absCertUrl}
                               download
                               target="_blank"
                               rel="noopener noreferrer"
@@ -176,23 +178,25 @@ export default function VolunteerCertificatesPage() {
 
             {/* Body */}
             <div className="overflow-y-auto p-6 bg-slate-100 flex items-center justify-center min-h-[350px]">
-              {previewCert.pdf?.url ? (
-                previewCert.pdf.url.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
+              {previewCert.pdf?.url ? (() => {
+                const absUrl = toAbsoluteFileUrl(previewCert.pdf.url)
+                const isImg = previewCert.pdf.url.match(/\.(jpeg|jpg|gif|png|webp)$/i)
+                return isImg ? (
                   <div className="flex flex-col items-center">
                     <img 
-                      src={previewCert.pdf.url} 
+                      src={absUrl} 
                       alt={previewCert.title} 
                       className="max-h-[68vh] w-auto max-w-full rounded-xl shadow-lg border border-slate-200 object-contain bg-white" 
                     />
                   </div>
                 ) : (
                   <iframe 
-                    src={previewCert.pdf.url} 
+                    src={absUrl} 
                     title={previewCert.title}
                     className="w-full h-[68vh] rounded-xl border border-slate-300 shadow-inner bg-white" 
                   />
                 )
-              ) : (
+              })() : (
                 <div className="text-center py-12 text-slate-500">
                   <FileText className="size-12 mx-auto text-slate-400 mb-2" />
                   <p className="text-sm font-semibold">No certificate document attached.</p>
@@ -206,27 +210,30 @@ export default function VolunteerCertificatesPage() {
                 Status: <span className="font-bold uppercase text-navy">{previewCert.status}</span>
               </span>
               <div className="flex items-center gap-3">
-                {previewCert.pdf?.url && (
-                  <>
-                    <a
-                      href={previewCert.pdf.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-100 transition-colors"
-                    >
-                      <ExternalLink className="size-3.5" /> Open in New Tab
-                    </a>
-                    <a
-                      href={previewCert.pdf.url}
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-xs font-bold text-accent-foreground shadow-sm hover:bg-accent/90 transition-colors"
-                    >
-                      <Download className="size-3.5" /> Download
-                    </a>
-                  </>
-                )}
+                {previewCert.pdf?.url && (() => {
+                  const absUrl = toAbsoluteFileUrl(previewCert.pdf.url)
+                  return (
+                    <>
+                      <a
+                        href={absUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-100 transition-colors"
+                      >
+                        <ExternalLink className="size-3.5" /> Open in New Tab
+                      </a>
+                      <a
+                        href={absUrl}
+                        download
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-xs font-bold text-accent-foreground shadow-sm hover:bg-accent/90 transition-colors"
+                      >
+                        <Download className="size-3.5" /> Download
+                      </a>
+                    </>
+                  )
+                })()}
                 <button 
                   type="button" 
                   onClick={() => setPreviewCert(null)}

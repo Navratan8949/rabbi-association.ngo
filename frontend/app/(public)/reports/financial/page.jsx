@@ -2,6 +2,7 @@ import { PageHero } from "@/components/pages/page-hero";
 import { PieChart, ShieldCheck, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getReports } from "@/service/report.service";
+import { toAbsoluteFileUrl } from "@/lib/utils";
 
 export const metadata = {
   title: "Financial Transparency",
@@ -61,7 +62,7 @@ export default async function FinancialTransparencyPage() {
                     </div>
                     {report.pdf?.url && (
                       <Button asChild className="bg-navy hover:bg-navy/90 text-white rounded-full">
-                        <a href={report.pdf.url} target="_blank" rel="noopener noreferrer">
+                        <a href={toAbsoluteFileUrl(report.pdf.url)} target="_blank" rel="noopener noreferrer">
                           <Download className="mr-2 size-4" /> Download Statement
                         </a>
                       </Button>

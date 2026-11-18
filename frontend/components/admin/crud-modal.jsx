@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import { X, Loader2, Eye, FileText, ExternalLink, Download } from "lucide-react"
+import { toAbsoluteFileUrl } from "@/lib/utils"
 
 export const formatToInputDate = (dateVal) => {
   if (!dateVal) return "";
@@ -191,37 +192,101 @@ export function CrudModal({ isOpen, onClose, onSubmit, title, schema, initialDat
                   <div className="rounded-xl border border-dashed border-slate-300 bg-white p-4 text-center transition-all hover:border-blue-500 hover:bg-blue-50/50">
                     <input
                       type="file"
-                      required={field.required && !initialData?.[field.name]}
-                      onChange={(e) => handleChange(field.name, e.target.files[0])}
+                      required={field.required && !initialData?.[field.name] && !formData[field.name]}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null
+                        handleChange(field.name, file)
+                      }}
                       className="w-full text-sm text-slate-500 file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-xs file:font-bold file:text-blue-700 hover:file:bg-blue-100 transition-all"
                     />
-                    {initialData?.[field.name]?.url && (
-                      <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-left shadow-sm">
-                        <div className="flex items-center gap-3">
-                          {initialData[field.name].url.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
-                            <div className="h-12 w-16 shrink-0 overflow-hidden rounded-lg bg-black/5 border border-black/10">
-                              <img src={initialData[field.name].url} alt="Current" className="h-full w-full object-cover" />
+
+                    {/* Case 1: Newly selected file before submit */}
+                    {formData[field.name] instanceof File && (() => {
+                      const file = formData[field.name]
+                      const isImg = file.type.startsWith("image/")
+                      const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")
+                      const previewUrl = URL.createObjectURL(file)
+                      const sizeKb = Math.round(file.size / 1024)
+                      const sizeDisplay = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(1)} MB` : `${sizeKb} KB`
+
+                      return (
+                        <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-emerald-300 bg-emerald-50/80 p-3 text-left">
+                          <div className="flex items-center gap-3 min-w-0">
+                            {isImg ? (
+                              <div className="size-12 shrink-0 overflow-hidden rounded-lg bg-black/5 border border-emerald-200">
+                                <img src={previewUrl} alt="Selected file" className="size-full object-cover" />
+                              </div>
+                            ) : (
+                              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-[11px] font-bold text-emerald-800 border border-emerald-300">
+                                {isPdf ? "PDF" : "FILE"}
+                              </div>
+                            )}
+                            <div className="min-w-0">
+                              <p className="text-xs font-bold text-emerald-950 truncate max-w-[200px] sm:max-w-[240px]">
+                                {file.name}
+                              </p>
+                              <p className="text-[11px] text-emerald-700 font-medium">
+                                Ready for upload &bull; {sizeDisplay}
+                              </p>
                             </div>
-                          ) : (
-                            <div className="flex h-12 w-16 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-[10px] font-bold tracking-widest text-blue-700 border border-blue-100">
-                              DOC
-                            </div>
-                          )}
-                          <div>
-                            <p className="text-xs font-bold text-navy">Current File</p>
-                            <p className="text-[10px] text-slate-500">Select a new one to replace it.</p>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => setPreviewModalFile({ url: previewUrl, title: file.name })}
+                              className="inline-flex items-center gap-1 rounded-lg bg-white px-2.5 py-1.5 text-xs font-bold text-emerald-900 border border-emerald-300 shadow-xs hover:bg-emerald-100 transition-colors cursor-pointer"
+                            >
+                              <Eye className="size-3.5" /> Preview
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleChange(field.name, null)}
+                              className="rounded-lg p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                              title="Clear selection"
+                            >
+                              <X className="size-4" />
+                            </button>
                           </div>
                         </div>
+                      )
+                    })()}
 
-                        <button
-                          type="button"
-                          onClick={() => setPreviewModalFile({ url: initialData[field.name].url, title: field.label || "Document" })}
-                          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-navy border border-slate-300 shadow-xs hover:bg-slate-100 transition-colors"
-                        >
-                          <Eye className="size-3.5" /> Preview
-                        </button>
-                      </div>
-                    )}
+                    {/* Case 2: Existing file on record */}
+                    {!formData[field.name] && initialData?.[field.name]?.url && (() => {
+                      const rawUrl = initialData[field.name].url
+                      const absUrl = toAbsoluteFileUrl(rawUrl)
+                      const isImg = !!rawUrl.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i)
+                      const isPdf = !!rawUrl.match(/\.pdf(\?.*)?$/i)
+
+                      return (
+                        <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-left shadow-xs">
+                          <div className="flex items-center gap-3 min-w-0">
+                            {isImg ? (
+                              <div className="size-12 shrink-0 overflow-hidden rounded-lg bg-black/5 border border-slate-200">
+                                <img src={absUrl} alt="Current file" className="size-full object-cover" />
+                              </div>
+                            ) : (
+                              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-[10px] font-bold tracking-widest text-blue-700 border border-blue-200">
+                                {isPdf ? "PDF" : "DOC"}
+                              </div>
+                            )}
+                            <div className="min-w-0">
+                              <p className="text-xs font-bold text-navy truncate">Current Attached File</p>
+                              <p className="text-[11px] text-slate-500 font-medium">Select a new file above to replace it.</p>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => setPreviewModalFile({ url: absUrl, title: field.label || "Document" })}
+                            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-navy border border-slate-300 shadow-xs hover:bg-slate-100 transition-colors cursor-pointer"
+                          >
+                            <Eye className="size-3.5" /> Preview
+                          </button>
+                        </div>
+                      )
+                    })()}
                   </div>
                 ) : field.type === "date" ? (
                   <input
@@ -298,42 +363,51 @@ export function CrudModal({ isOpen, onClose, onSubmit, title, schema, initialDat
 
             {/* Viewer Body */}
             <div className="overflow-y-auto p-4 bg-slate-100 flex items-center justify-center min-h-[350px]">
-              {previewModalFile.url ? (
-                previewModalFile.url.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i) ? (
+              {previewModalFile.url ? (() => {
+                const absoluteUrl = toAbsoluteFileUrl(previewModalFile.url)
+                const isImage = !!previewModalFile.url.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i)
+                return isImage ? (
                   <img
-                    src={previewModalFile.url}
+                    src={absoluteUrl}
                     alt={previewModalFile.title}
                     className="max-h-[65vh] w-auto max-w-full rounded-2xl shadow-lg border border-slate-200 object-contain bg-white"
                   />
                 ) : (
                   <iframe
-                    src={previewModalFile.url}
+                    src={absoluteUrl}
                     title={previewModalFile.title}
                     className="w-full h-[65vh] rounded-2xl border border-slate-300 shadow-inner bg-white"
                   />
                 )
-              ) : (
+              })() : (
                 <p className="text-sm font-semibold text-slate-500">No preview available</p>
               )}
             </div>
 
             {/* Footer */}
             <div className="flex items-center justify-end gap-2 border-t border-slate-200 bg-slate-50 px-6 py-3.5 shrink-0">
-              <a
-                href={previewModalFile.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700 shadow-xs hover:bg-slate-100 transition-colors"
-              >
-                <ExternalLink className="size-3.5" /> Open in New Tab
-              </a>
-              <a
-                href={previewModalFile.url}
-                download
-                className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-3.5 py-1.5 text-xs font-bold text-accent-foreground shadow-xs hover:bg-accent/90 transition-colors"
-              >
-                <Download className="size-3.5" /> Download
-              </a>
+              {previewModalFile.url && (() => {
+                const absoluteUrl = toAbsoluteFileUrl(previewModalFile.url)
+                return (
+                  <>
+                    <a
+                      href={absoluteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700 shadow-xs hover:bg-slate-100 transition-colors"
+                    >
+                      <ExternalLink className="size-3.5" /> Open in New Tab
+                    </a>
+                    <a
+                      href={absoluteUrl}
+                      download={previewModalFile.title || "download"}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-3.5 py-1.5 text-xs font-bold text-accent-foreground shadow-xs hover:bg-accent/90 transition-colors"
+                    >
+                      <Download className="size-3.5" /> Download
+                    </a>
+                  </>
+                )
+              })()}
               <button
                 type="button"
                 onClick={() => setPreviewModalFile(null)}

@@ -3,6 +3,7 @@ import { useState } from "react"
 import { AdminCrudPage, StatusBadge } from "@/components/admin/crud-page"
 import { Button } from "@/components/ui/button"
 import { Eye, XCircle, FileText, CalendarDays, ExternalLink, Activity, BookOpen, Landmark, DollarSign, Download } from "lucide-react"
+import { toAbsoluteFileUrl } from "@/lib/utils"
 
 const REPORT_SCHEMA = [
   { name: "title", label: "Report Title", type: "text", required: true },
@@ -75,7 +76,7 @@ const COLUMNS = [
     key: "pdf", 
     label: "File", 
     render: (r) => r.pdf?.url ? (
-      <a href={r.pdf.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-700 text-xs font-bold hover:bg-red-100 transition-colors border border-red-200 shadow-sm">
+      <a href={toAbsoluteFileUrl(r.pdf.url)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-red-700 text-xs font-bold hover:bg-red-100 transition-colors border border-red-200 shadow-sm">
         <FileText className="size-3.5" /> PDF
       </a>
     ) : (
@@ -168,7 +169,7 @@ export default function Page() {
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Document Action</p>
                         {viewItem.pdf?.url ? (
-                          <a href={viewItem.pdf.url} target="_blank" rel="noreferrer" className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 hover:underline">
+                          <a href={toAbsoluteFileUrl(viewItem.pdf.url)} target="_blank" rel="noreferrer" className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 hover:underline">
                             <ExternalLink className="size-4" /> View / Download
                           </a>
                         ) : (
@@ -199,7 +200,7 @@ export default function Page() {
             {/* Footer */}
             <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 shrink-0 flex justify-end gap-3">
               {viewItem.pdf?.url && (
-                 <a href={viewItem.pdf.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 h-10 rounded-xl px-6 font-bold uppercase tracking-widest text-xs bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 transition-colors shadow-sm">
+                 <a href={toAbsoluteFileUrl(viewItem.pdf.url)} target="_blank" rel="noreferrer" className="flex items-center gap-2 h-10 rounded-xl px-6 font-bold uppercase tracking-widest text-xs bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 transition-colors shadow-sm">
                    <Download className="size-4" /> Download PDF
                  </a>
               )}
