@@ -7,6 +7,19 @@ import { Eye, XCircle, Image as ImageIcon, Video, Tag } from "lucide-react"
 
 const CATEGORIES = ["Conferences", "Seminars", "Educational Programs", "Community Initiatives", "Organizational Activities", "Lectures", "Interviews"]
 
+function getYoutubeThumbnail(url) {
+  if (!url) return ""
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/)
+  return match && match[1] ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : ""
+}
+
+function toEmbedUrl(url) {
+  if (!url) return ""
+  if (url.includes("/embed/")) return url
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/)
+  return match && match[1] ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0` : url
+}
+
 const GALLERY_SCHEMA = [
   { name: "title", label: "Title", type: "text", required: true },
   { name: "description", label: "Description", type: "textarea" },
@@ -44,20 +57,23 @@ const COLUMNS = [
   { 
     key: "image", 
     label: "Media", 
-    render: (r) => r.image?.url ? (
-      <div className="relative h-12 w-20 overflow-hidden rounded-lg border border-slate-200 shadow-sm group">
-        <Image src={r.image.url} alt="" fill className="object-cover" />
-        {r.type === 'video' && (
-          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-            <Video className="size-5 text-white/90 drop-shadow-md" />
-          </div>
-        )}
-      </div>
-    ) : (
-      <div className="h-12 w-20 bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400 rounded-lg border border-slate-200 shadow-sm">
-        {r.type === 'video' ? <Video className="size-5" /> : <ImageIcon className="size-5" />}
-      </div>
-    )
+    render: (r) => {
+      const mediaUrl = r.image?.url || (r.type === 'video' ? getYoutubeThumbnail(r.videoUrl) : null);
+      return mediaUrl ? (
+        <div className="relative h-12 w-20 overflow-hidden rounded-lg border border-slate-200 shadow-sm group">
+          <Image src={mediaUrl} alt="" fill className="object-cover" />
+          {r.type === 'video' && (
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+              <Video className="size-5 text-white/90 drop-shadow-md" />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="h-12 w-20 bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400 rounded-lg border border-slate-200 shadow-sm">
+          {r.type === 'video' ? <Video className="size-5" /> : <ImageIcon className="size-5" />}
+        </div>
+      );
+    }
   },
   { 
     key: "title", 
@@ -124,14 +140,14 @@ export default function Page() {
                   {viewItem.type === 'video' && viewItem.videoUrl ? (
                     <div className="w-full h-full aspect-video">
                       <iframe 
-                        src={viewItem.videoUrl} 
+                        src={toEmbedUrl(viewItem.videoUrl)} 
                         className="w-full h-full"
                         allowFullScreen
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       ></iframe>
                     </div>
-                  ) : viewItem.image?.url ? (
-                    <img src={viewItem.image.url} alt={viewItem.title} className="w-full h-full object-contain max-h-[450px]" />
+                  ) : (viewItem.image?.url || (viewItem.type === 'video' ? getYoutubeThumbnail(viewItem.videoUrl) : null)) ? (
+                    <img src={viewItem.image?.url || getYoutubeThumbnail(viewItem.videoUrl)} alt={viewItem.title} className="w-full h-full object-contain max-h-[450px]" />
                   ) : (
                     <div className="text-slate-500 font-medium flex flex-col items-center gap-3">
                       {viewItem.type === 'video' ? <Video className="size-10 opacity-50" /> : <ImageIcon className="size-10 opacity-50" />}

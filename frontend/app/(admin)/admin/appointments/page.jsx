@@ -43,7 +43,7 @@ export default function Page() {
               setBranding({
                 stamp: parsed.stamp || "/association-stamp.png",
                 signature: parsed.signature || "",
-                siteName: parsed.siteName || "World Association for Al-Azhar Graduates – India"
+                siteName: parsed.siteName || "Rabbi Association"
               })
             } catch (e) {}
           }
