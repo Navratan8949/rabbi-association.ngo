@@ -82,14 +82,11 @@ export default function NewsDetailPage() {
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 sm:py-16">
         {/* Optional Image */}
         {news.image?.url && (
-          <div className="mb-12 overflow-hidden rounded-3xl shadow-xl shadow-navy/5">
-            <Image 
+          <div className="mb-12 overflow-hidden rounded-3xl shadow-xl shadow-navy/5 bg-slate-100 flex items-center justify-center p-3 sm:p-5">
+            <img 
               src={news.image.url} 
               alt={news.title}
-              width={1200}
-              height={600}
-              className="w-full object-cover"
-              priority
+              className="max-h-[600px] w-auto max-w-full object-contain rounded-2xl mx-auto shadow-sm"
             />
           </div>
         )}

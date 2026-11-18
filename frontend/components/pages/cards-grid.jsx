@@ -33,20 +33,29 @@ export function CardsGrid({ items = [], type }) {
 
           return (
             <Link key={item._id} href={hrefFor(type, item._id)} className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-primary/20 bg-primary text-white shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-accent/40 hover:shadow-2xl">
-              <div className="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-muted">
+              <div className="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-slate-900/10">
                 {(item.image?.url || (typeof item.image === 'string' && item.image)) ? (
-                  <Image 
-                    src={item.image?.url || item.image} 
-                    alt={item.title || "Card image"} 
-                    fill 
-                    priority={index < 4}
-                    className="object-cover transition duration-500 group-hover:scale-105" 
-                    sizes="(min-width:1024px) 33vw, 100vw" 
-                  />
+                  <>
+                    <Image 
+                      src={item.image?.url || item.image} 
+                      alt="" 
+                      fill 
+                      aria-hidden="true"
+                      className="object-cover blur-lg scale-110 opacity-30 select-none pointer-events-none" 
+                    />
+                    <Image 
+                      src={item.image?.url || item.image} 
+                      alt={item.title || "Card image"} 
+                      fill 
+                      priority={index < 4}
+                      className="object-contain p-2 transition duration-500 group-hover:scale-105 relative z-[1]" 
+                      sizes="(min-width:1024px) 33vw, 100vw" 
+                    />
+                  </>
                 ) : (
                   <span className="text-muted-foreground">No Image</span>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent opacity-0 transition group-hover:opacity-100 z-[2]" />
               </div>
               <div className="flex flex-1 flex-col p-6 sm:p-8">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-accent">{item.category || item.type || item.status || "Trust"}</p>

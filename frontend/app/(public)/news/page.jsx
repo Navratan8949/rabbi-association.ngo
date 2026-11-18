@@ -41,31 +41,44 @@ export default async function NewsPage() {
                   key={item._id || index}
                   className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-all flex flex-col"
                 >
-                  <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 flex items-center justify-center">
                     {item.image?.url ? (
-                      <Image 
-                        src={item.image.url} 
-                        alt={item.title} 
-                        fill 
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                      <>
+                        {/* Ambient blurred backdrop to eliminate harsh empty letterbox bars */}
+                        <Image 
+                          src={item.image.url} 
+                          alt="" 
+                          fill 
+                          aria-hidden="true"
+                          className="object-cover blur-lg scale-110 opacity-30 select-none pointer-events-none"
+                        />
+                        {/* Crisp foreground image fitted completely without any cutting off */}
+                        <Image 
+                          src={item.image.url} 
+                          alt={item.title} 
+                          fill 
+                          priority={index < 3}
+                          className="object-contain p-2 transition-transform duration-500 group-hover:scale-105 relative z-[1]"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-slate-300">
                         <Newspaper className="size-12" />
                       </div>
                     )}
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-accent text-navy text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-sm">
-                        {item.category || "News"}
-                      </span>
-                    </div>
                   </div>
                   <div className="p-6 flex flex-col flex-grow">
-                    <div className="flex items-center gap-2 text-slate-500 text-sm font-medium mb-3">
-                      <Calendar className="size-4" />
-                      {new Date(item.publishedAt || item.createdAt).toLocaleDateString("en-US", {
-                        year: 'numeric', month: 'short', day: 'numeric'
-                      })}
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="bg-accent text-navy text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
+                        {item.category || "News"}
+                      </span>
+                      <div className="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
+                        <Calendar className="size-3.5 text-accent" />
+                        {new Date(item.publishedAt || item.createdAt).toLocaleDateString("en-US", {
+                          year: 'numeric', month: 'short', day: 'numeric'
+                        })}
+                      </div>
                     </div>
                     <h3 className="text-xl font-bold text-navy mb-3 group-hover:text-primary transition-colors line-clamp-2">
                       {item.title}
