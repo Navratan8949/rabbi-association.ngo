@@ -156,7 +156,7 @@ export default async function TeamPage() {
                 key={index}
                 className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow"
               >
-                <div className="relative aspect-[4/5] w-full bg-slate-100 overflow-hidden">
+                <div className="relative aspect-square w-full bg-slate-100 overflow-hidden">
                   {member.photo?.url || member.image ? (
                     <Image
                       src={member.photo?.url || member.image}
