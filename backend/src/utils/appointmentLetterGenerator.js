@@ -227,7 +227,14 @@ exports.generateAndSaveAppointmentLetter = async ({
                 try {
                     const proto = protocol || "http";
                     const h = host || "localhost:8000";
-                    const pdfUrl = `${proto}://${h}/public/uploads/appointments/${pdfFileName}`;
+                    let pdfUrl;
+                    if (process.env.BACKEND_URL) {
+                        pdfUrl = `${process.env.BACKEND_URL.replace(/\/+$/, "")}/public/uploads/appointments/${pdfFileName}`;
+                    } else if (h.includes("rabbi.co.in") || (process.env.FRONTEND_URL && process.env.FRONTEND_URL.includes("rabbi.co.in"))) {
+                        pdfUrl = `https://api.rabbi.co.in/public/uploads/appointments/${pdfFileName}`;
+                    } else {
+                        pdfUrl = `${proto}://${h}/public/uploads/appointments/${pdfFileName}`;
+                    }
 
                     let appointmentLetter = await AppointmentLetter.findOne({ letterNo });
 

@@ -1,3 +1,5 @@
+const path = require("path");
+const fs = require("fs");
 const AppointmentLetter = require("../models/AppointmentLetter");
 const Member = require("../models/Member");
 require("../models/User");
@@ -124,6 +126,39 @@ exports.deleteAppointmentLetter = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "Appointment letter deleted" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.downloadAppointmentLetter = async (req, res) => {
+  try {
+    const letter = await AppointmentLetter.findById(req.params.id);
+    if (!letter) {
+      return res.status(404).json({ success: false, message: "Appointment letter not found" });
+    }
+
+    const pdfFileName = `${letter.letterNo}.pdf`;
+    const localPdfPath = path.join(__dirname, "..", "..", "public", "uploads", "appointments", pdfFileName);
+
+    // If file doesn't exist on disk, regenerate it!
+    if (!fs.existsSync(localPdfPath)) {
+      await generateAndSaveAppointmentLetter({
+        memberId: letter.member,
+        designation: letter.designation,
+        department: letter.department,
+        joiningDate: letter.joiningDate,
+        protocol: req.protocol,
+        host: req.get("host"),
+        existingLetterNo: letter.letterNo,
+      });
+    }
+
+    if (!fs.existsSync(localPdfPath)) {
+      return res.status(404).json({ success: false, message: "PDF could not be found or generated" });
+    }
+
+    res.download(localPdfPath, pdfFileName);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

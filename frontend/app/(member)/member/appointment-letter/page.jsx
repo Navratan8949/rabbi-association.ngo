@@ -3,10 +3,64 @@ import { useEffect, useState } from "react"
 import api from "@/service/api"
 import { Loader2, FileText, Download, Briefcase, Calendar } from "lucide-react"
 import { toAbsoluteFileUrl } from "@/lib/utils"
+import { toast } from "sonner"
 
 export default function Page() {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
+  const [downloadingId, setDownloadingId] = useState(null)
+
+  const handleDownloadPdf = async (e, app) => {
+    e.preventDefault()
+    if (!app.pdf?.url) {
+      toast.error("Appointment letter PDF is not available yet")
+      return
+    }
+
+    setDownloadingId(app._id)
+    const fileName = `${app.letterNo || "Appointment-Letter"}.pdf`
+    const toastId = toast.loading(`Downloading ${fileName}...`)
+
+    try {
+      const fileUrl = toAbsoluteFileUrl(app.pdf.url)
+      const res = await fetch(fileUrl, { headers: { Accept: "application/pdf" } })
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`)
+
+      const blob = await res.blob()
+      const blobUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = blobUrl
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(blobUrl)
+
+      toast.success(`${fileName} downloaded successfully!`, { id: toastId })
+    } catch (err) {
+      console.warn("Direct blob download failed, trying endpoint:", err)
+      try {
+        const dlRes = await api.get(`/appointments/${app._id}/download`, { responseType: "blob" })
+        if (dlRes.data) {
+          const blobUrl = window.URL.createObjectURL(new Blob([dlRes.data], { type: "application/pdf" }))
+          const link = document.createElement("a")
+          link.href = blobUrl
+          link.download = fileName
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          window.URL.revokeObjectURL(blobUrl)
+          toast.success(`${fileName} downloaded successfully!`, { id: toastId })
+          return
+        }
+      } catch (backendErr) {}
+
+      window.open(toAbsoluteFileUrl(app.pdf.url), "_blank", "noopener,noreferrer")
+      toast.info("Opening PDF in new tab...", { id: toastId })
+    } finally {
+      setDownloadingId(null)
+    }
+  }
 
   useEffect(() => {
     async function fetchAppointments() {
@@ -71,9 +125,19 @@ export default function Page() {
               
               <div className="mt-auto border-t border-dashed border-border/60 bg-slate-50 p-4">
                 {app.pdf?.url ? (
-                  <a href={toAbsoluteFileUrl(app.pdf.url)} download target="_blank" rel="noreferrer" className="flex w-full items-center justify-center gap-2 rounded-lg bg-navy px-3 py-2 text-xs font-semibold text-white hover:bg-navy/90 transition-colors">
-                    <Download className="size-4" /> Download PDF
-                  </a>
+                  <button
+                    type="button"
+                    onClick={(e) => handleDownloadPdf(e, app)}
+                    disabled={downloadingId === app._id}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-navy px-3 py-2 text-xs font-semibold text-white hover:bg-navy/90 transition-colors cursor-pointer disabled:opacity-50"
+                  >
+                    {downloadingId === app._id ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <Download className="size-4" />
+                    )}
+                    <span>{downloadingId === app._id ? "Downloading..." : "Download PDF"}</span>
+                  </button>
                 ) : (
                   <button disabled className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-slate-200 px-3 py-2 text-xs font-semibold text-slate-400">
                     No PDF Available

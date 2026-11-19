@@ -1,12 +1,21 @@
 import axios from "axios";
 
 const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+  if (typeof window !== "undefined" && window.location) {
+    const { hostname } = window.location;
+    if (hostname.includes("rabbi.co.in") || hostname.includes("rabbi-association.ngo")) {
+      return "https://api.rabbi.co.in/api/v1";
+    }
+  }
 
-  if (typeof window !== "undefined" && window.location.hostname) {
+  if (process.env.NEXT_PUBLIC_API_URL && !process.env.NEXT_PUBLIC_API_URL.includes("localhost")) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+
+  if (typeof window !== "undefined" && window.location.hostname && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
     return `http://${window.location.hostname}:8000/api/v1`;
   }
-  return "http://localhost:8000/api/v1";
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 };
 
 const api = axios.create({

@@ -9,26 +9,52 @@ export function toAbsoluteFileUrl(url) {
   if (!url || typeof url !== 'string') return ""
   if (url.startsWith("blob:") || url.startsWith("data:")) return url
   
-  const cleanUrl = url.trim()
+  let cleanUrl = url.trim()
   
-  if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://")) {
-    if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-      if (cleanUrl.includes("localhost:8000") || cleanUrl.includes("127.0.0.1:8000")) {
-        const prodBackendBase = process.env.NEXT_PUBLIC_API_URL 
-          ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api\/v1\/?$/, "")
-          : `http://${window.location.hostname}:8000`
-        return cleanUrl.replace(/https?:\/\/(localhost|127\.0\.0\.1):8000/, prodBackendBase)
+  // Determine the correct backend origin based on environment and browser location
+  let backendOrigin = ""
+  if (typeof window !== "undefined" && window.location) {
+    const { hostname, protocol } = window.location
+    if (hostname.includes("rabbi.co.in") || hostname.includes("rabbi-association.ngo")) {
+      backendOrigin = "https://api.rabbi.co.in"
+    } else if (hostname === "localhost" || hostname === "127.0.0.1") {
+      backendOrigin = "http://localhost:8000"
+    } else {
+      const apiEnv = process.env.NEXT_PUBLIC_API_URL
+      if (apiEnv && !apiEnv.includes("localhost")) {
+        backendOrigin = apiEnv.replace(/\/api\/v1\/?$/, "")
+      } else {
+        backendOrigin = `${protocol}//${hostname}:8000`
       }
     }
+  } else {
+    const apiEnv = process.env.NEXT_PUBLIC_API_URL
+    backendOrigin = (apiEnv && !apiEnv.includes("localhost"))
+      ? apiEnv.replace(/\/api\/v1\/?$/, "")
+      : "http://localhost:8000"
+  }
+
+  // If already an absolute URL
+  if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://")) {
+    if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+      // 1. Replace localhost / 127.0.0.1:8000
+      if (cleanUrl.includes("localhost:8000") || cleanUrl.includes("127.0.0.1:8000")) {
+        cleanUrl = cleanUrl.replace(/https?:\/\/(localhost|127\.0\.0\.1):8000/, backendOrigin)
+      } else if (cleanUrl.includes("rabbi.co.in") && !cleanUrl.includes("api.rabbi.co.in")) {
+        // e.g. http://rabbi.co.in:8000 or http://rabbi.co.in/public -> https://api.rabbi.co.in
+        cleanUrl = cleanUrl.replace(/https?:\/\/(?:www\.)?rabbi\.co\.in(?::8000)?/, "https://api.rabbi.co.in")
+      }
+    }
+    
+    // 2. Ensure HTTPS when the client page is served over HTTPS to avoid mixed-content blocks
+    if (typeof window !== "undefined" && window.location.protocol === "https:" && cleanUrl.startsWith("http://") && !cleanUrl.includes("localhost")) {
+      cleanUrl = cleanUrl.replace(/^http:\/\//, "https://")
+    }
+    
     return cleanUrl
   }
 
-  const base = process.env.NEXT_PUBLIC_API_URL 
-    ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api\/v1\/?$/, "") 
-    : (typeof window !== "undefined" && window.location.hostname 
-        ? `http://${window.location.hostname}:8000` 
-        : "http://localhost:8000")
-
+  // Relative path (e.g., /public/uploads/...)
   const path = cleanUrl.startsWith("/") ? cleanUrl : `/${cleanUrl}`
-  return `${base}${path}`
+  return `${backendOrigin}${path}`
 }

@@ -28,6 +28,7 @@ export default function Page() {
   const [uploadingStamp, setUploadingStamp] = useState(false)
   const [uploadingSig, setUploadingSig] = useState(false)
   const [regeneratingId, setRegeneratingId] = useState(null)
+  const [downloadingId, setDownloadingId] = useState(null)
   const [showStampSettings, setShowStampSettings] = useState(true)
   const crudRef = useRef(null)
 
@@ -159,6 +160,70 @@ export default function Page() {
     }
   }
 
+  // Handle downloading appointment letter PDF directly
+  const handleDownloadPdf = async (e, r) => {
+    e.preventDefault()
+    if (!r.pdf?.url) {
+      toast.error("Appointment letter PDF is not available yet")
+      return
+    }
+
+    setDownloadingId(r._id)
+    const fileName = `${r.letterNo || "Appointment-Letter"}.pdf`
+    const toastId = toast.loading(`Preparing ${fileName}...`)
+
+    try {
+      const fileUrl = toAbsoluteFileUrl(r.pdf.url)
+      
+      const res = await fetch(fileUrl, {
+        headers: { Accept: "application/pdf" }
+      })
+      
+      if (!res.ok) {
+        throw new Error(`File fetch HTTP ${res.status}`)
+      }
+      
+      const blob = await res.blob()
+      const blobUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = blobUrl
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(blobUrl)
+      
+      toast.success(`${fileName} downloaded successfully!`, { id: toastId })
+    } catch (err) {
+      console.warn("Direct blob download failed, falling back to download endpoint:", err)
+      
+      try {
+        const dlRes = await api.get(`/appointments/${r._id}/download`, { responseType: "blob" })
+        if (dlRes.data) {
+          const blobUrl = window.URL.createObjectURL(new Blob([dlRes.data], { type: "application/pdf" }))
+          const link = document.createElement("a")
+          link.href = blobUrl
+          link.download = fileName
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          window.URL.revokeObjectURL(blobUrl)
+          toast.success(`${fileName} downloaded successfully!`, { id: toastId })
+          return
+        }
+      } catch (backendErr) {
+        console.warn("Backend endpoint fallback failed:", backendErr)
+      }
+
+      // Final fallback: open in new tab
+      const fallbackUrl = toAbsoluteFileUrl(r.pdf.url)
+      window.open(fallbackUrl, "_blank", "noopener,noreferrer")
+      toast.info("Opening PDF in new tab...", { id: toastId })
+    } finally {
+      setDownloadingId(null)
+    }
+  }
+
   const appointmentSchema = [
     {
       name: "memberId",
@@ -201,15 +266,20 @@ export default function Page() {
       render: (r) => (
         <div className="flex items-center gap-2">
           {r.pdf?.url ? (
-            <a
-              href={toAbsoluteFileUrl(r.pdf.url)}
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-navy/10 px-2.5 py-1 text-xs font-semibold text-navy hover:bg-navy hover:text-white transition-colors"
+            <button
+              type="button"
+              onClick={(e) => handleDownloadPdf(e, r)}
+              disabled={downloadingId === r._id}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-navy/10 px-2.5 py-1 text-xs font-semibold text-navy hover:bg-navy hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+              title="Download Appointment Letter PDF"
             >
-              <Download className="size-3.5" /> PDF
-            </a>
+              {downloadingId === r._id ? (
+                <Loader2 className="size-3.5 animate-spin" />
+              ) : (
+                <Download className="size-3.5" />
+              )}
+              <span>{downloadingId === r._id ? "Downloading..." : "PDF"}</span>
+            </button>
           ) : (
             <span className="text-muted-foreground text-xs">No PDF</span>
           )}
