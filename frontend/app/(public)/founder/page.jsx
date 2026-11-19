@@ -27,7 +27,6 @@ function PersonShowcaseCard({ person, fallbackImage }) {
               src={photoUrl}
               alt={person.name}
               className="size-full object-cover transition-transform duration-500 hover:scale-105"
-              onError={(e) => { e.currentTarget.src = "/placeholder-user.png"; }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent pointer-events-none" />
           </div>
