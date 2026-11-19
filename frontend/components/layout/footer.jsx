@@ -101,16 +101,16 @@ export function Footer() {
         strokeWidth={0.5}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-16">
-        <div className="grid gap-12 lg:grid-cols-4">
+      <div className="relative mx-auto max-w-7xl px-4 pt-12 pb-8">
+        <div className="grid gap-8 lg:gap-10 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <div className="inline-flex rounded-xl bg-white p-3 shadow-lg shadow-black/20 border border-slate-800">
               <Logo />
             </div>
-            <p className="mt-6 text-sm leading-relaxed text-slate-400 line-clamp-3 md:line-clamp-none">
+            <p className="mt-4 text-sm leading-relaxed text-slate-400 line-clamp-4 max-w-sm">
               {site.description}
             </p>
-            <div className="mt-6 flex items-center gap-2.5">
+            <div className="mt-4 flex items-center gap-2.5">
               <a
                 href={site.socials.facebook}
                 target="_blank"
@@ -146,7 +146,7 @@ export function Footer() {
               <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
                 Quick Links
               </h3>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-4 space-y-2.5">
                 {FOOTER_QUICK_LINKS.map((l) => (
                   <li key={l.href}>
                     <Link
@@ -164,7 +164,7 @@ export function Footer() {
               <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
                 Resources
               </h3>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-4 space-y-2.5">
                 {FOOTER_RESOURCE_LINKS.map((l) => (
                   <li key={l.href}>
                     <Link
@@ -183,7 +183,7 @@ export function Footer() {
             <h3 className="text-sm font-bold uppercase tracking-widest text-amber-500">
               Reach Us
             </h3>
-            <ul className="mt-6 space-y-4 text-sm text-slate-400 font-medium">
+            <ul className="mt-4 space-y-3 text-sm text-slate-400 font-medium">
               <li className="flex gap-3 group">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-amber-500 transition-transform group-hover:scale-110" />
                 <span className="leading-relaxed transition-colors group-hover:text-slate-300">
@@ -216,7 +216,7 @@ export function Footer() {
             </ul>
             <Link
               href="/membership"
-              className="mt-8 inline-flex h-11 items-center justify-center rounded-xl bg-amber-500 px-6 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400 hover:scale-105 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]"
+              className="mt-5 inline-flex h-10 items-center justify-center rounded-xl bg-amber-500 px-5 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400 hover:scale-105 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]"
             >
               Become a Member
             </Link>
@@ -224,33 +224,30 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="relative border-t border-slate-800">
-        <div className="mx-auto max-w-7xl px-4 py-8 text-center text-slate-500">
-          <div className="text-sm sm:text-base italic mb-1 font-medium text-slate-400 text-center">
-            Christ the Rabbi — Our Teacher, Model & Guide
+      <div className="relative border-t border-slate-800/80 bg-slate-950/60">
+        <div className="mx-auto max-w-7xl px-4 py-5 text-center text-slate-500">
+          <div className="text-xs sm:text-sm italic mb-3 font-medium text-slate-400/90 text-center">
+            Christ the Rabbi — Our Teacher, Model &amp; Guide &nbsp;·&nbsp; Led by the Holy Spirit — the Advocate
           </div>
-          <div className="text-sm sm:text-base italic mb-6 font-medium text-slate-400 text-center">
-            Led by the Holy Spirit — the Advocate
-          </div>
-          <div className="flex flex-col items-center justify-center gap-4 text-xs md:flex-row font-medium">
+          <div className="flex flex-col items-center justify-between gap-3 text-xs md:flex-row font-medium pt-2 border-t border-slate-900/60">
             <p>© 2026 {site.name}. All Rights Reserved.</p>
-            <div className="flex gap-4">
+            <div className="flex items-center gap-3 text-slate-400">
               <Link
                 href="/privacy-policy"
                 className="hover:text-amber-500 transition"
               >
                 Privacy Policy
               </Link>
+              <span>·</span>
               <Link href="/terms" className="hover:text-amber-500 transition">
-                Terms & Conditions
+                Terms &amp; Conditions
               </Link>
+              <span>·</span>
+              <span className="text-slate-500">80G &amp; 12A Certified</span>
             </div>
-            <p>Registered Charitable Trust · 80G &amp; 12A Certified</p>
-          </div>
-          <div className="flex justify-center items-center pb-6 pt-2">
-            <p className="text-sm font-semibold text-slate-500 tracking-wide">
+            <p className="text-xs text-slate-400">
               Designed by{" "}
-              <span className="font-black text-white tracking-wider">
+              <span className="font-bold text-white tracking-wide">
                 ZDC Tech Global Solutions
               </span>
             </p>
