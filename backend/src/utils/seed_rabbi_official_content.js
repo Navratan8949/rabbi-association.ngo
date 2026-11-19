@@ -11,6 +11,8 @@ const Award = require("../models/Award");
 const Download = require("../models/Download");
 const Gallery = require("../models/Gallery");
 const Newsletter = require("../models/Newsletter");
+const SiteContent = require("../models/SiteContent");
+const Trustee = require("../models/Trustee");
 
 async function seedRabbiOfficial() {
   try {
@@ -766,6 +768,143 @@ async function seedRabbiOfficial() {
     ];
     await Newsletter.insertMany(newsletterData);
     console.log(`✓ Seeded ${newsletterData.length} newsletter subscribers successfully!`);
+
+    // 9. SITE CONTENT (Branding, Logo, Favicon, SEO, Founder, Vision & Mission, Contact)
+    console.log("Syncing Site Content, Branding & SEO...");
+    // Purge legacy records
+    const allContents = await SiteContent.find({});
+    for (const item of allContents) {
+      const serialized = JSON.stringify(item).toLowerCase();
+      if (serialized.includes("azhar") || serialized.includes("mubeen")) {
+        console.log(`Removing legacy record with key: [${item.key}]`);
+        await SiteContent.deleteOne({ _id: item._id });
+      }
+    }
+
+    // Site Logo & Favicon
+    await SiteContent.findOneAndUpdate(
+      { key: "site_logo" },
+      {
+        key: "site_logo",
+        title: "Site Logo & Brand",
+        content: JSON.stringify({
+          logo: "/logo.png",
+          favicon: "/favicon.ico",
+          siteName: "RABBI ASSOCIATION"
+        })
+      },
+      { upsert: true, new: true }
+    );
+
+    // Site SEO
+    await SiteContent.findOneAndUpdate(
+      { key: "site_seo" },
+      {
+        key: "site_seo",
+        title: "SEO Settings",
+        content: JSON.stringify({
+          title: "RABBI ASSOCIATION | Education, Social Welfare & Empowerment",
+          description: "Rabbi Association is committed to strengthening education through professional consultancy, institutional development, academic excellence, and sustainable educational initiatives.",
+          keywords: "Rabbi Association, School Setup Consultancy, Educational Consultancy, Teacher Training, Institutional Development, Education NGO, Social Welfare"
+        })
+      },
+      { upsert: true, new: true }
+    );
+
+    // Founder's Message (Ajay Paul)
+    const founderMessageText =
+      "Dear Friends, Well-Wishers and Partners,\n\n" +
+      "Every community has people who need opportunities, support and someone willing to stand beside them. Education may change the future of a child, timely information may help a family access a welfare benefit, and appropriate legal assistance may help a person seek justice.\n\n" +
+      "These realities inspire the mission of RABBI ASSOCIATION.\n\n" +
+      "Our vision is to build an organisation that responds to the genuine needs of poor and marginalised communities through education, social welfare, institutional development, citizen empowerment and humanitarian service.\n\n" +
+      "We aspire to support the transformation of schools, strengthen educational institutions, promote skill development, improve awareness of government schemes, facilitate access to appropriate legal services and stand for the dignity and rights of vulnerable people.\n\n" +
+      "We also seek to work with government authorities, corporate organisations, charitable foundations, educational institutions, healthcare institutions, NGOs and individuals who share our commitment to social development.\n\n" +
+      "We understand that lasting change requires sincerity, responsible leadership, professional collaboration and accountability. We therefore aim to develop our programmes carefully, use resources for their intended charitable purposes and measure our progress through meaningful outcomes.\n\n" +
+      "I invite institutions, organisations, professionals, volunteers and well-wishers to join us in this mission.\n\n" +
+      "Together, let us turn compassion into action, opportunities into progress and service into lasting social change.\n\n" +
+      "With gratitude and commitment.";
+
+    await SiteContent.findOneAndUpdate(
+      { key: "founder_message" },
+      {
+        key: "founder_message",
+        title: "Founder & CEO",
+        content: JSON.stringify({
+          name: "AJAY PAUL",
+          designation: "Founder & CEO",
+          message: founderMessageText,
+          image: {
+            url: "/founder-ajay-paul.jpg",
+            public_id: "founder_ajay_paul"
+          }
+        }),
+        image: {
+          url: "/founder-ajay-paul.jpg",
+          public_id: "founder_ajay_paul"
+        }
+      },
+      { upsert: true, new: true }
+    );
+
+    // Vision & Mission
+    await SiteContent.findOneAndUpdate(
+      { key: "vision_mission" },
+      {
+        key: "vision_mission",
+        title: "Vision & Mission",
+        content: JSON.stringify({
+          vision: "Rabbi Association exists to witness to the teachings of Christ the Rabbi—our Teacher, Model, and Guide, led by the Holy Spirit, the Advocate.\n\nWe envision a society where education forms minds, shapes character, inspires responsible leadership, upholds human dignity, and transforms lives through love, truth, justice, compassion, and service.\n\n\"Making Life Better Through Education.\"",
+          mission: "Rabbi Association exists to serve humanity through Christ-centred education, guided by Christ the Rabbi—our Teacher, Model, and Guide—and led by the Holy Spirit, the Advocate.\n\nWe are committed to making life better through quality education, empowering people, strengthening educational institutions, creating equal opportunities, and supporting sustainable social development.\n\nThrough professional consultancy, institutional development, capacity building, and meaningful partnerships, we strive to transform lives, build stronger communities, and create lasting positive impact—rooted in faith, love, integrity, excellence, and service.\n\n\"Educate with Purpose. Empower with Values. Serve with Love.\""
+        })
+      },
+      { upsert: true, new: true }
+    );
+
+    // Contact Info
+    await SiteContent.findOneAndUpdate(
+      { key: "contact_info" },
+      {
+        key: "contact_info",
+        title: "Contact Information",
+        content: JSON.stringify({
+          address: "St. Michael's Mission, Mathura (Uttar Pradesh)",
+          email: "info@rabbi.co.in",
+          phones: [
+            { number: "+919193827321", showInNavbar: true, showInFooter: true, showInContact: true }
+          ],
+          facebook: "https://facebook.com",
+          instagram: "https://instagram.com",
+          twitter: "https://twitter.com",
+          youtube: "https://youtube.com"
+        })
+      },
+      { upsert: true, new: true }
+    );
+    console.log("✓ Site Content (Logo, Favicon, SEO, Founder, Vision/Mission, Contact) synced successfully!");
+
+    // 10. TRUSTEES & INSPIRATION
+    const existingTrustees = await Trustee.find({});
+    if (existingTrustees.length === 0) {
+      await Trustee.insertMany([
+        {
+          name: "Late Shri Chandra Pal Singh",
+          category: "inspirational_person",
+          designation: "Inspiration & Guiding Light",
+          description: "A dedicated teacher whose life reflected a deep commitment to education, ethical values, and service. Our organizational philosophy and commitment to humanity are inspired by his enduring legacy.",
+          photo: { url: "/placeholder-user.png" },
+          status: "active"
+        },
+        {
+          name: "Board of Trustees",
+          category: "trustee",
+          designation: "Managing Trustee",
+          description: "Stewarding the strategic direction, ethical governance, and social initiatives of the Rabbi Association with integrity and dedication to community upliftment.",
+          photo: { url: "/placeholder-user.png" },
+          status: "active"
+        }
+      ]);
+      console.log("✓ Inspiration & Trustees seeded successfully!");
+    }
 
     console.log("\n=================================================");
     console.log("RABBI ASSOCIATION OFFICIAL DATA SYNC COMPLETE!");

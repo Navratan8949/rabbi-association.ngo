@@ -465,7 +465,7 @@ export default function SiteContentAdminPage() {
               </FieldGroup>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FieldGroup label="Founder Name">
-                  <Input value={founderForm.name} onChange={(e) => setFounderForm({ ...founderForm, name: e.target.value })} placeholder="Dr. Mubeen Saleem Rabbi Associationi" className="border-primary/20 focus-visible:ring-primary" />
+                  <Input value={founderForm.name} onChange={(e) => setFounderForm({ ...founderForm, name: e.target.value })} placeholder="Ajay Paul" className="border-primary/20 focus-visible:ring-primary" />
                 </FieldGroup>
                 <FieldGroup label="Designation / Post">
                   <Input value={founderForm.designation} onChange={(e) => setFounderForm({ ...founderForm, designation: e.target.value })} placeholder="President" className="border-primary/20 focus-visible:ring-primary" />

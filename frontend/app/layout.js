@@ -25,7 +25,11 @@ export async function generateMetadata() {
   ];
 
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+    const apiUrl =
+      process.env.INTERNAL_API_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://api.rabbi.co.in/api/v1"
+        : process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/v1");
     // Fetch site content with revalidation (allows static pages to build while keeping data fresh)
     const res = await fetch(`${apiUrl}/site-content`, { next: { revalidate: 60 } });
     if (res.ok) {
@@ -34,16 +38,16 @@ export async function generateMetadata() {
       const logoContent = data?.contents?.find((c) => c.key === "site_logo");
       if (logoContent?.content) {
         const parsed = JSON.parse(logoContent.content);
-        if (parsed.logo) siteLogo = parsed.logo;
-        if (parsed.favicon) favicon = parsed.favicon;
+        if (parsed.logo && !parsed.logo.toLowerCase().includes("azhar")) siteLogo = parsed.logo;
+        if (parsed.favicon && !parsed.favicon.toLowerCase().includes("azhar")) favicon = parsed.favicon;
       }
 
       const seoContent = data?.contents?.find((c) => c.key === "site_seo");
       if (seoContent?.content) {
         const parsed = JSON.parse(seoContent.content);
-        if (parsed.title) seoTitle = parsed.title;
-        if (parsed.description) seoDesc = parsed.description;
-        if (parsed.keywords) seoKeywords = parsed.keywords.split(",").map(k => k.trim());
+        if (parsed.title && !parsed.title.toLowerCase().includes("azhar")) seoTitle = parsed.title;
+        if (parsed.description && !parsed.description.toLowerCase().includes("azhar")) seoDesc = parsed.description;
+        if (parsed.keywords && !parsed.keywords.toLowerCase().includes("azhar")) seoKeywords = parsed.keywords.split(",").map(k => k.trim());
       }
     }
   } catch (error) {

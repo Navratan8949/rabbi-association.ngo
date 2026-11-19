@@ -15,19 +15,23 @@ export function FounderMessageSection({ data }) {
   if (data?.content) {
     try {
       const parsed = JSON.parse(data.content);
-      if (parsed.name) name = parsed.name;
-      if (parsed.designation) designation = parsed.designation;
-      if (parsed.message) message = parsed.message;
-      if (parsed.image) {
-        image = typeof parsed.image === "string" ? parsed.image : (parsed.image.url || "/founder-ajay-paul.jpg");
+      const rawText = `${parsed.name || ""} ${parsed.designation || ""} ${parsed.message || ""}`.toLowerCase();
+      if (!rawText.includes("mubeen") && !rawText.includes("azhar")) {
+        if (parsed.name) name = parsed.name;
+        if (parsed.designation) designation = parsed.designation;
+        if (parsed.message) message = parsed.message;
+        if (parsed.image) {
+          image = typeof parsed.image === "string" ? parsed.image : (parsed.image.url || "/founder-ajay-paul.jpg");
+        }
       }
     } catch (e) {
-      // Fallback if not JSON
-      message = data.content;
+      if (!data.content.toLowerCase().includes("mubeen") && !data.content.toLowerCase().includes("azhar")) {
+        message = data.content;
+      }
     }
   }
 
-  if (data?.title) {
+  if (data?.title && !data.title.toLowerCase().includes("azhar")) {
     title = data.title;
   }
 

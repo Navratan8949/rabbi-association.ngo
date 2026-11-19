@@ -1,21 +1,31 @@
 import axios from "axios";
 
-const getBaseUrl = () => {
+export const getBaseUrl = () => {
+  // 1. Browser context (Client-Side)
   if (typeof window !== "undefined" && window.location) {
-    const { hostname } = window.location;
+    const { hostname, protocol } = window.location;
     if (hostname.includes("rabbi.co.in") || hostname.includes("rabbi-association.ngo")) {
       return "https://api.rabbi.co.in/api/v1";
     }
+    if (hostname !== "localhost" && hostname !== "127.0.0.1") {
+      return `${protocol}//${hostname}:8000/api/v1`;
+    }
+  }
+
+  // 2. Server context (Next.js SSR / Build)
+  if (process.env.INTERNAL_API_URL) {
+    return process.env.INTERNAL_API_URL;
   }
 
   if (process.env.NEXT_PUBLIC_API_URL && !process.env.NEXT_PUBLIC_API_URL.includes("localhost")) {
     return process.env.NEXT_PUBLIC_API_URL;
   }
 
-  if (typeof window !== "undefined" && window.location.hostname && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-    return `http://${window.location.hostname}:8000/api/v1`;
+  if (process.env.NODE_ENV === "production") {
+    return "https://api.rabbi.co.in/api/v1";
   }
-  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+
+  return process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/v1";
 };
 
 const api = axios.create({
@@ -25,9 +35,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Run only in browser
+    config.baseURL = getBaseUrl();
     if (typeof window !== "undefined") {
-      const token = sessionStorage.getItem("token"); // adjust key if needed
+      const token = sessionStorage.getItem("token");
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

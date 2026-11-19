@@ -3,6 +3,8 @@ import { Target, Eye } from "lucide-react";
 
 import { getSiteContentById } from "@/service/site-content.service";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Mission & Vision",
   description: "Witnessing Christ Through Education. Making Life Better Through Education.",

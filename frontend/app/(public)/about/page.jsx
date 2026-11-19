@@ -7,6 +7,8 @@ import Image from "next/image";
 import { Reveal } from "@/components/shared/reveal";
 import { Target } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "About Us",
   description:

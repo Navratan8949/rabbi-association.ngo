@@ -29,15 +29,20 @@ export function toAbsoluteFileUrl(url) {
     }
   } else {
     const apiEnv = process.env.NEXT_PUBLIC_API_URL
-    backendOrigin = (apiEnv && !apiEnv.includes("localhost"))
-      ? apiEnv.replace(/\/api\/v1\/?$/, "")
-      : "http://localhost:8000"
+    if (apiEnv && !apiEnv.includes("localhost")) {
+      backendOrigin = apiEnv.replace(/\/api\/v1\/?$/, "")
+    } else if (process.env.NODE_ENV === "production") {
+      backendOrigin = "https://api.rabbi.co.in"
+    } else {
+      backendOrigin = "http://localhost:8000"
+    }
   }
 
   // If already an absolute URL
   if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://")) {
-    if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-      // 1. Replace localhost / 127.0.0.1:8000
+    const isLocalhostBrowser = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+    if (!isLocalhostBrowser) {
+      // 1. Replace localhost / 127.0.0.1:8000 with the active backend origin (e.g. https://api.rabbi.co.in)
       if (cleanUrl.includes("localhost:8000") || cleanUrl.includes("127.0.0.1:8000")) {
         cleanUrl = cleanUrl.replace(/https?:\/\/(localhost|127\.0\.0\.1):8000/, backendOrigin)
       } else if (cleanUrl.includes("rabbi.co.in") && !cleanUrl.includes("api.rabbi.co.in")) {
