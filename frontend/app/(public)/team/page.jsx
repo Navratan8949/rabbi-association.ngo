@@ -156,16 +156,20 @@ export default async function TeamPage() {
                 key={index}
                 className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow"
               >
-                <div className="relative h-72 w-full bg-slate-100 overflow-hidden flex items-center justify-center">
+                <div className="relative aspect-[4/5] w-full bg-slate-100 overflow-hidden">
                   {member.photo?.url || member.image ? (
                     <Image
                       src={member.photo?.url || member.image}
                       alt={member.name}
                       fill
-                      className="object-contain transition-transform duration-500"
+                      priority={index < 3}
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
-                    <span className="text-slate-400 font-medium">No Image</span>
+                    <div className="size-full flex items-center justify-center text-slate-400 font-medium">
+                      No Image
+                    </div>
                   )}
 
                   {/* Social Links Overlay */}
