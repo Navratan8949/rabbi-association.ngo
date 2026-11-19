@@ -9,14 +9,12 @@ export const metadata = {
 };
 
 export default async function VisionMissionPage() {
-  let contentHtml = null;
-  let pageTitle = "Mission & Vision";
+  let pageTitle = "Vision & Mission";
 
   try {
     const res = await getSiteContentById("vision_mission");
-    if (res?.success && res?.content) {
-      if (res.content.content) contentHtml = res.content.content;
-      if (res.content.title) pageTitle = res.content.title;
+    if (res?.success && res?.content?.title) {
+      pageTitle = res.content.title;
     }
   } catch (error) {
     // Content not found or error fetching. Fallback will be used.
@@ -37,12 +35,7 @@ export default async function VisionMissionPage() {
       <div className="py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           
-          {contentHtml ? (
-            <div className="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 prose prose-lg prose-slate max-w-none prose-a:text-primary">
-              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-12">
               
               {/* Vision */}
               <div className="bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100 flex flex-col items-center text-center">
@@ -84,7 +77,6 @@ export default async function VisionMissionPage() {
               </div>
 
             </div>
-          )}
 
         </div>
       </div>
